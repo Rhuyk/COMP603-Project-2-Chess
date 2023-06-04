@@ -9,6 +9,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -65,10 +66,13 @@ public class ChessPanel extends JPanel {
                    {
                        if (availableMoves[col][row]) 
                        {
-                           if(selectedPiece.getColour() == currentPlayer.getColourPiece())
+                           if(selectedPiece.getColour() == currentPlayer.getColourPiece() && board.movePiece(selectedCol, selectedRow, col, row))
                            {
-                                board.movePiece(selectedCol, selectedRow, col, row);
                                 whiteTurn = !whiteTurn;
+                           }
+                           else
+                           {
+                                JOptionPane.showMessageDialog(null, "Illegal move, " + currentPlayer.getColourPiece() + " King is under attack.");
                            }
                        }
 
