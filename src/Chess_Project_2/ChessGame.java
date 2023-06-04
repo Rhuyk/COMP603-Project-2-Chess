@@ -50,10 +50,7 @@ public class ChessGame {
             if(userInput.equalsIgnoreCase("rematch"))
             {
                 System.out.println("Starting up a rematch!");
-                board.clearAllPieces();
-                board.clearBoard();
-                board.resetBoard();
-                board.refreshBoard();
+                board.resetBoardAndPieces();
                 board = new PiecesOnBoard();
                 playChessGame(player1, player2, board);
             }
@@ -64,10 +61,7 @@ public class ChessGame {
             else if(userInput.equalsIgnoreCase("new"))
             {
                 System.out.println("Starting up new game!");
-                board.clearAllPieces();
-                board.clearBoard();
-                board.resetBoard();
-                board.refreshBoard();
+                board.resetBoardAndPieces();
                 board = new PiecesOnBoard();
                 startNewPlayers(player1,player2);
                 playChessGame(player1, player2, board);
@@ -202,7 +196,7 @@ public class ChessGame {
             
             else if(chessMove.equalsIgnoreCase("reset"))
             {
-                board.resetBoard();
+                board.resetBoardAndPieces();
                 isWhiteTurn = true;
             }
             

@@ -69,11 +69,11 @@ public class King extends Piece {
         setAvailableMoves(col-1, row+1);
         setAvailableMoves(col-1, row-1);
         
-        if(super.getColour() == PieceColour.WHITE && pieces.whiteIsInCheck())
+        if(super.getColour() == PieceColour.WHITE && pieces.isInCheck(PieceColour.WHITE))
         {
             setUnavailableMoves();
         }
-        else if(super.getColour() == PieceColour.BLACK && pieces.blackIsInCheck())
+        else if(super.getColour() == PieceColour.BLACK && pieces.isInCheck(PieceColour.BLACK))
         {
             setUnavailableMoves();
         }

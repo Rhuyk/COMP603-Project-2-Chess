@@ -39,12 +39,7 @@ public class PiecesOnBoard {
                 if(!allPieces.getTargetAreas(selectedPiece.getOppColour())[toCol][toRow] 
                         && selectedPiece.getAvailableMoves()[toCol][toRow])
                 {
-                    moveCounter++;
-                    allPieces.getPiece(fromCol, fromRow).setLastMoveNum(moveCounter);
-                    allPieces.getPiece(fromCol, fromRow).setMove();
-                    allPieces.removePiece(toCol, toRow);
-                    allPieces.getPiece(fromCol, fromRow).setColAndRow(toCol, toRow);
-                    refreshBoard();
+                    move(fromCol, fromRow, toCol, toRow);
                 }
                 //castle move
                 else if(isCastling(selectedPiece, toCol) && (toRow == 0 || toRow == 7))
@@ -68,12 +63,7 @@ public class PiecesOnBoard {
             {
                 if(selectedPiece.getAvailableMoves()[toCol][toRow] && checkPath[toCol][toRow])
                 {
-                    moveCounter++;
-                    allPieces.getPiece(fromCol, fromRow).setLastMoveNum(moveCounter);
-                    allPieces.getPiece(fromCol, fromRow).setMove();
-                    allPieces.removePiece(toCol, toRow);
-                    allPieces.getPiece(fromCol, fromRow).setColAndRow(toCol, toRow);
-                    refreshBoard();
+                    move(fromCol, fromRow, toCol, toRow);
                 }
                 //unavailable move
                 else
@@ -109,6 +99,36 @@ public class PiecesOnBoard {
         allPieces.addPiece(piece);
     }
     
+    //clear all pieces from all the pieces lists
+    public void clearAllPieces()
+    {
+        allPieces.clearPieces();
+    }
+    
+    //reset the board and the pieces lists
+    public void resetBoardAndPieces()
+    {
+        this.moveCounter = 0;
+        allPieces = new AllPieces();
+        refreshBoard();
+    }
+    
+    //update the board to the pieces lists
+    public void refreshBoard()
+    {
+        for(int col = 0; col < 8; col++) 
+        {
+            for(int row = 0; row < 8; row++) 
+            {
+                board[col][row] = null;
+            }
+        }
+        for(Piece i : allPieces.getAllPieces())
+        {
+            board[i.getColumn()][i.getRow()] = i;
+        }
+    }
+    
     //return an area on the board of a piece checking a king (check path)
     public boolean[][] getCheckPath()
     {
@@ -131,50 +151,12 @@ public class PiecesOnBoard {
     }
     
     //return true if white is in check, else false
-    public boolean whiteIsInCheck()
+    public boolean isInCheck(PieceColour colour)
     {
-        return whiteIsInCheck;
-    }
-    
-    //return true if black is in check, else false
-    public boolean blackIsInCheck()
-    {
-        return blackIsInCheck;
-    }
-    
-    //clear all pieces from the board
-    public void clearBoard() 
-    {
-        for(int col = 0; col < 8; col++) 
-        {
-            for(int row = 0; row < 8; row++) 
-            {
-                board[col][row] = null;
-            }
-        }
-    }
-    
-    //clear all pieces from all the pieces lists
-    public void clearAllPieces()
-    {
-        allPieces.clearPieces();
-    }
-    
-    //reset the board and the pieces lists
-    public void resetBoard()
-    {
-        this.moveCounter = 0;
-        allPieces = new AllPieces();
-        refreshBoard();
-    }
-    
-    //update the board to the pieces lists
-    public void refreshBoard()
-    {
-        clearBoard();
-        for(Piece i : allPieces.getAllPieces())
-        {
-            board[i.getColumn()][i.getRow()] = i;
+        if (colour == PieceColour.WHITE) {
+            return whiteIsInCheck;
+        } else {
+            return blackIsInCheck;
         }
     }
     
@@ -371,12 +353,7 @@ public class PiecesOnBoard {
             toRow = 2;
         }
         
-        moveCounter++;
-        allPieces.getPiece(col, row).setLastMoveNum(moveCounter);
-        allPieces.getPiece(col, row).setMove();
-        allPieces.removePiece(toCol, row);
-        allPieces.getPiece(col, row).setColAndRow(toCol, toRow);
-        refreshBoard();
+        move(col, row, toCol, toRow);
     }
     
     //promote pawn to other piece
@@ -415,6 +392,16 @@ public class PiecesOnBoard {
                 allPieces.replacePiece(promotion, col, row);
             }   
         }
+        refreshBoard();
+    }
+    
+    private void move(int fromCol, int fromRow, int toCol, int toRow)
+    {
+        moveCounter++;
+        allPieces.getPiece(fromCol, fromRow).setLastMoveNum(moveCounter);
+        allPieces.getPiece(fromCol, fromRow).setMove();
+        allPieces.removePiece(toCol, toRow);
+        allPieces.getPiece(fromCol, fromRow).setColAndRow(toCol, toRow);
         refreshBoard();
     }
     

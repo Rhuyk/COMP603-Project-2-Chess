@@ -219,7 +219,6 @@ public class ChessBoardFileIO {
             {
                 if (line.equals("###")) 
                 {
-                    board.clearBoard();
                     board.clearAllPieces();
                     String gameData = gameDataBuilder.toString();
                     StringTokenizer tokenizer = new StringTokenizer(gameData, "\n");
