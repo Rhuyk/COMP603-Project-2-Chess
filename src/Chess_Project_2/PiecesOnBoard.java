@@ -58,7 +58,7 @@ public class PiecesOnBoard {
             {
                 enPassant(selectedPiece, toCol);
             }
-            //other pieces move
+            //other moves
             else
             {
                 if(selectedPiece.getAvailableMoves()[toCol][toRow] && checkPath[toCol][toRow])
@@ -353,7 +353,12 @@ public class PiecesOnBoard {
             toRow = 2;
         }
         
-        move(col, row, toCol, toRow);
+        moveCounter++;
+        allPieces.getPiece(col, row).setLastMoveNum(moveCounter);
+        allPieces.getPiece(col, row).setMove();
+        allPieces.removePiece(toCol, row);
+        allPieces.getPiece(col, row).setColAndRow(toCol, toRow);
+        refreshBoard();
     }
     
     //promote pawn to other piece
