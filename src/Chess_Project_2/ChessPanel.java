@@ -32,6 +32,7 @@ public class ChessPanel extends JPanel {
     private Player player1;
     private Player player2;
     private Player currentPlayer;
+    private boolean whiteTurn = true;
     
     private JTextField player1NameField;
     private JTextField player2NameField;
@@ -43,7 +44,6 @@ public class ChessPanel extends JPanel {
         setPreferredSize(new Dimension(704 + 100, 565));
         board = new PiecesOnBoard();
         availableMoves = new boolean[8][8];
-       
         createPlayerLoginScreen();
         addMouseListener();
         
@@ -52,18 +52,13 @@ public class ChessPanel extends JPanel {
     private void addMouseListener() {
         addMouseListener(new MouseAdapter() {
             Piece selectedPiece = null;
-            boolean whiteTurn = true;
             @Override
             public void mousePressed(MouseEvent e) {
                 if (player1 != null && player2 != null) 
                 {
-                
                     int col = e.getX() / CELL_SIZE;
                     int row = (BOARD_SIZE - 1) - e.getY() / CELL_SIZE;
-                    currentPlayer = player1;
-                    if (!whiteTurn) {
-                        currentPlayer = player2;
-                    }
+                    
                     if (col >= 0 && col < BOARD_SIZE && row >= 0 && row < BOARD_SIZE) {
                         Piece clickedPiece = board.getBoard()[col][row];
 
@@ -93,14 +88,21 @@ public class ChessPanel extends JPanel {
 
                         repaint();
                     }
-            }
+                    if(!whiteTurn) 
+                    {
+                        currentPlayer = player2;
+                    }
+                    else
+                    {
+                        currentPlayer = player1;
+                    }
+                }
             }
         });
     }
     
     private void createPlayerLoginScreen() 
     {
-        // Create player login components
         JLabel player1Label = new JLabel("Player 1 Name:");
         JLabel player2Label = new JLabel("Player 2 Name:");
         player1NameField = new JTextField(10);
@@ -113,16 +115,18 @@ public class ChessPanel extends JPanel {
         player2Label.setFont(labelFont);
         startButton.setFont(labelFont);
 
-        // Add action listener to start button
         startButton.addActionListener((ActionEvent e) -> {
             String player1Name = player1NameField.getText().trim();
             String player2Name = player2NameField.getText().trim();
             
             if (player1Name.isEmpty() || player2Name.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Please enter both player names.", "Invalid Input", JOptionPane.WARNING_MESSAGE);
-            } else {
+            } 
+            else 
+            {
                 player1 = new Player(PieceColour.WHITE, player1Name);
                 player2 = new Player(PieceColour.BLACK, player2Name);
+                currentPlayer = player1;
                 startButton.setEnabled(false);
                 startButton.setVisible(false);
                 player1NameField.setVisible(false);
@@ -134,6 +138,7 @@ public class ChessPanel extends JPanel {
             }
         });
         JPanel loginPanel = new JPanel();
+        
         // Add player login components to the panel
         loginPanel.add(player1Label);
         loginPanel.add(player1NameField);
@@ -282,12 +287,28 @@ public class ChessPanel extends JPanel {
         
         resignButton.addActionListener((ActionEvent e) -> 
         {
+            int response = JOptionPane.showConfirmDialog(null, currentPlayer.getPlayerName()+", do you wish to resign?", "Resign", JOptionPane.YES_NO_OPTION);
+            if(response == JOptionPane.YES_OPTION)
+            {
+                JOptionPane.showMessageDialog(null, currentPlayer.getPlayerName() + " has resigned. This game has ended via resignation");
+            }
             
         });
 
         drawButton.addActionListener((ActionEvent e) -> 
         {
-            
+            // Ask the other play for a draw
+            int response = JOptionPane.showConfirmDialog(null, currentPlayer.getPlayerName()+" asks for a draw. Player 2, do you accept the draw?", "Draw Proposal", JOptionPane.YES_NO_OPTION);
+
+            if (response == JOptionPane.YES_OPTION) 
+            {
+                JOptionPane.showMessageDialog(null, "The game has ended via draw.");
+            } 
+            else 
+            {
+                JOptionPane.showMessageDialog(null, "Player 2 declined the draw.");
+            }
+
         });
 
         saveButton.addActionListener((ActionEvent e) -> 
@@ -297,6 +318,7 @@ public class ChessPanel extends JPanel {
 
         quitButton.addActionListener((ActionEvent e) -> 
         {
+            System.out.println("Thank you for playing");
             System.exit(0);
         });
 
@@ -305,6 +327,6 @@ public class ChessPanel extends JPanel {
         buttonPanel.add(saveButton);
         buttonPanel.add(quitButton);
 
-        add(buttonPanel, BorderLayout.SOUTH);
+        add(buttonPanel, BorderLayout.AFTER_LINE_ENDS);
     }
 }
