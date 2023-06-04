@@ -22,27 +22,38 @@ public class ChessPanel extends JPanel {
     private boolean[][] availableMoves;
     private int selectedRow = -1;
     private int selectedCol = -1;
+    private Player player1;
+    private Player player2;
+    private Player currentPlayer;
     
 
-    public ChessPanel() {
+    public ChessPanel() 
+    {
        setPreferredSize(new Dimension(BOARD_SIZE * CELL_SIZE, BOARD_SIZE * CELL_SIZE));
        board = new PiecesOnBoard();
        availableMoves = new boolean[8][8];
+       
 
        addMouseListener(new MouseAdapter() {
            
            Piece selectedPiece = null;
+           boolean whiteTurn = true;
+            
            @Override
            public void mousePressed(MouseEvent e) {
                int col = e.getX() / CELL_SIZE;
                int row = (BOARD_SIZE - 1) - e.getY() / CELL_SIZE;
-
+               currentPlayer = player1;
+               if(!whiteTurn)
+               {
+                    currentPlayer = player2;
+               }
                if (col >= 0 && col < BOARD_SIZE && row >= 0 && row < BOARD_SIZE) {
                    Piece clickedPiece = board.getBoard()[col][row];
-
+                   
                    if (selectedPiece == null) 
                    {
-                       if (clickedPiece != null) 
+                       if (clickedPiece != null && clickedPiece.getColour() == currentPlayer.getColourPiece()) 
                        {
                            selectedPiece = clickedPiece;
                            selectedRow = row;
@@ -54,7 +65,11 @@ public class ChessPanel extends JPanel {
                    {
                        if (availableMoves[col][row]) 
                        {
-                           board.movePiece(selectedCol, selectedRow, col, row);
+                           if(selectedPiece.getColour() == currentPlayer.getColourPiece())
+                           {
+                                board.movePiece(selectedCol, selectedRow, col, row);
+                                whiteTurn = !whiteTurn;
+                           }
                        }
 
                        selectedPiece = null;
@@ -85,7 +100,7 @@ public class ChessPanel extends JPanel {
 
     private void drawChessBoard(Graphics g) 
     {
-        int currentRow = 7;  // white turn
+        int currentRow = 7;  
         for (int row = 0; row < 8; row++) 
         {
             for (int col = 0; col < 8; col++) 
@@ -123,7 +138,7 @@ public class ChessPanel extends JPanel {
                     g.drawString(String.valueOf(BOARD_SIZE - row), x + 5, y + CELL_SIZE / 2 + 5);
                 }
             }
-            currentRow--; // white 
+            currentRow--; 
         }
     }
     
@@ -146,6 +161,20 @@ public class ChessPanel extends JPanel {
                 }
             }
         }
+    }
+
+    /**
+     * @param player1 the player1 to set
+     */
+    public void setPlayer1(Player player1) {
+        this.player1 = player1;
+    }
+
+    /**
+     * @param player2 the player2 to set
+     */
+    public void setPlayer2(Player player2) {
+        this.player2 = player2;
     }
 }
 

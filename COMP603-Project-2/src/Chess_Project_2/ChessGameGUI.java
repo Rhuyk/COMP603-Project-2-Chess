@@ -16,6 +16,10 @@ public class ChessGameGUI {
     {
         JFrame frame = new JFrame("Chess Game");
         ChessPanel chessPanel = new ChessPanel();
+        Player player1 = new Player(PieceColour.WHITE,"PJ");
+        Player player2 = new Player(PieceColour.BLACK,"Jamar");
+        chessPanel.setPlayer1(player1);
+        chessPanel.setPlayer2(player2);
         frame.getContentPane().add(chessPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
