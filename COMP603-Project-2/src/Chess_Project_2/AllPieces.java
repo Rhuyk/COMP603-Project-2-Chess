@@ -19,7 +19,7 @@ public class AllPieces {
     public AllPieces()
     {
         pieces.clear();
-        pieces.add(new King(PieceColour.WHITE, 4, 0));
+	pieces.add(new King(PieceColour.WHITE, 4, 0));
         pieces.add(new Queen(PieceColour.WHITE, 3, 0));
         pieces.add(new Bishop(PieceColour.WHITE, 2, 0));
         pieces.add(new Bishop(PieceColour.WHITE, 5, 0));
@@ -35,8 +35,8 @@ public class AllPieces {
         pieces.add(new Pawn(PieceColour.WHITE, 5, 1));
         pieces.add(new Pawn(PieceColour.WHITE, 6, 1));
         pieces.add(new Pawn(PieceColour.WHITE, 7, 1));
-        
-        pieces.add(new King(PieceColour.BLACK, 4, 7));
+
+	pieces.add(new King(PieceColour.BLACK, 4, 7));
         pieces.add(new Queen(PieceColour.BLACK, 3, 7));
         pieces.add(new Bishop(PieceColour.BLACK, 2, 7));
         pieces.add(new Bishop(PieceColour.BLACK, 5, 7));

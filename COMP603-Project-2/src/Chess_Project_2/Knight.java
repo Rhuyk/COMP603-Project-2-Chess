@@ -86,11 +86,11 @@ public class Knight extends Piece {
         setAvailableMoves(col, row);
         
         col = super.getColumn() - 2;
-        row = super.getRow() + 2;
+        row = super.getRow() + 1;
         setAvailableMoves(col, row);
         
         col = super.getColumn() - 2;
-        row = super.getRow() - 2;
+        row = super.getRow() - 1;
         setAvailableMoves(col, row);
         
         //if knight is under pin, then there is no available move for knight

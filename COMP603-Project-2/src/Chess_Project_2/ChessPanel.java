@@ -7,6 +7,8 @@ package Chess_Project_2;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
 
 /**
@@ -17,11 +19,56 @@ public class ChessPanel extends JPanel {
     private static final int BOARD_SIZE = 8;
     private static final int CELL_SIZE = 70;
     private PiecesOnBoard board;
+    private boolean[][] availableMoves;
+    private int selectedRow = -1;
+    private int selectedCol = -1;
+    
 
     public ChessPanel() {
-        setPreferredSize(new Dimension(BOARD_SIZE * CELL_SIZE, BOARD_SIZE * CELL_SIZE));
-        board = new PiecesOnBoard();
-    }
+       setPreferredSize(new Dimension(BOARD_SIZE * CELL_SIZE, BOARD_SIZE * CELL_SIZE));
+       board = new PiecesOnBoard();
+       availableMoves = new boolean[8][8];
+
+       addMouseListener(new MouseAdapter() {
+           
+           Piece selectedPiece = null;
+           @Override
+           public void mousePressed(MouseEvent e) {
+               int col = e.getX() / CELL_SIZE;
+               int row = (BOARD_SIZE - 1) - e.getY() / CELL_SIZE;
+
+               if (col >= 0 && col < BOARD_SIZE && row >= 0 && row < BOARD_SIZE) {
+                   Piece clickedPiece = board.getBoard()[col][row];
+
+                   if (selectedPiece == null) 
+                   {
+                       if (clickedPiece != null) 
+                       {
+                           selectedPiece = clickedPiece;
+                           selectedRow = row;
+                           selectedCol = col;
+                           availableMoves = selectedPiece.getAvailableMoves();
+                       }
+                   } 
+                   else 
+                   {
+                       if (availableMoves[col][row]) 
+                       {
+                           board.movePiece(selectedCol, selectedRow, col, row);
+                       }
+
+                       selectedPiece = null;
+                       selectedRow = -1;
+                       selectedCol = -1;
+                       availableMoves = new boolean[8][8];
+                   }
+
+                   repaint();
+               }
+           }
+       });
+   }
+    
 
     @Override
     protected void paintComponent(Graphics g) 
@@ -29,12 +76,16 @@ public class ChessPanel extends JPanel {
         super.paintComponent(g);
         
         drawChessBoard(g);
+        if(availableMoves != null)
+        {
+            drawAvailableMoves(g);
+        }
         
     }
 
     private void drawChessBoard(Graphics g) 
     {
-        int currentRow = 7;
+        int currentRow = 7;  // white turn
         for (int row = 0; row < 8; row++) 
         {
             for (int col = 0; col < 8; col++) 
@@ -72,7 +123,28 @@ public class ChessPanel extends JPanel {
                     g.drawString(String.valueOf(BOARD_SIZE - row), x + 5, y + CELL_SIZE / 2 + 5);
                 }
             }
-            currentRow--;
+            currentRow--; // white 
+        }
+    }
+    
+    private void drawAvailableMoves(Graphics g) 
+    {
+        if (selectedRow != -1 && selectedCol != -1) 
+        {
+            g.setColor(new Color(0, 0, 0, 50));
+
+            for (int row = 0; row < 8; row++) 
+            {
+                for (int col = 0; col < 8; col++) 
+                {
+                    if (availableMoves[col][row]) 
+                    {
+                        int x = col * CELL_SIZE;
+                        int y = (BOARD_SIZE - 1 - row) * CELL_SIZE; 
+                        g.fillOval(x + 22, y + 22, 25, 25);
+                    }
+                }
+            }
         }
     }
 }
