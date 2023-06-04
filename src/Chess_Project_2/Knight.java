@@ -51,7 +51,8 @@ public class Knight extends Piece {
     public boolean[][] getAvailableMoves()
     {
         pieces = new PiecesOnBoard();
-        int col, row;
+        int col = super.getColumn();
+        int row = super.getRow();
         
         for(int i = 0; i < 8; i++)
         {
@@ -61,37 +62,14 @@ public class Knight extends Piece {
             }
         }
         
-        col = super.getColumn() + 2;
-        row = super.getRow() + 1;
-        setAvailableMoves(col, row);
-                
-        col = super.getColumn() + 2;
-        row = super.getRow() - 1;
-        setAvailableMoves(col, row);
-        
-        col = super.getColumn() + 1;
-        row = super.getRow() + 2;
-        setAvailableMoves(col, row);
-        
-        col = super.getColumn() + 1;
-        row = super.getRow() - 2;
-        setAvailableMoves(col, row);
-        
-        col = super.getColumn() - 1;
-        row = super.getRow() + 2;
-        setAvailableMoves(col, row);
-        
-        col = super.getColumn() - 1;
-        row = super.getRow() - 2;
-        setAvailableMoves(col, row);
-        
-        col = super.getColumn() - 2;
-        row = super.getRow() + 1;
-        setAvailableMoves(col, row);
-        
-        col = super.getColumn() - 2;
-        row = super.getRow() - 1;
-        setAvailableMoves(col, row);
+        setAvailableMoves(col+2, row+1);
+        setAvailableMoves(col+2, row-1);
+        setAvailableMoves(col+1, row+2);
+        setAvailableMoves(col+1, row-2);
+        setAvailableMoves(col-1, row+2);
+        setAvailableMoves(col-1, row-2);
+        setAvailableMoves(col-2, row+1);
+        setAvailableMoves(col-2, row-1);
         
         //if knight is under pin, then there is no available move for knight
         if(super.isUnderPin())
@@ -117,7 +95,8 @@ public class Knight extends Piece {
     public boolean[][] getTargetArea()
     {
         pieces = new PiecesOnBoard();
-        int col, row;
+        int col = super.getColumn();
+        int row = super.getRow();
         
         for(int i = 0; i < 8; i++)
         {
@@ -127,37 +106,14 @@ public class Knight extends Piece {
             }
         }
         
-        col = super.getColumn() + 2;
-        row = super.getRow() + 1;
-        setTargetArea(col, row);
-                
-        col = super.getColumn() + 2;
-        row = super.getRow() - 1;
-        setTargetArea(col, row);
-        
-        col = super.getColumn() + 1;
-        row = super.getRow() + 2;
-        setTargetArea(col, row);
-        
-        col = super.getColumn() + 1;
-        row = super.getRow() - 2;
-        setTargetArea(col, row);
-        
-        col = super.getColumn() - 1;
-        row = super.getRow() + 2;
-        setTargetArea(col, row);
-        
-        col = super.getColumn() - 1;
-        row = super.getRow() - 2;
-        setTargetArea(col, row);
-        
-        col = super.getColumn() - 2;
-        row = super.getRow() + 2;
-        setTargetArea(col, row);
-        
-        col = super.getColumn() - 2;
-        row = super.getRow() - 2;
-        setTargetArea(col, row);
+        setTargetArea(col+2, row+1);
+        setTargetArea(col+2, row-1);
+        setTargetArea(col+1, row+2);
+        setTargetArea(col+1, row-2);
+        setTargetArea(col-1, row+2);
+        setTargetArea(col-1, row-2);
+        setTargetArea(col-2, row+1);
+        setTargetArea(col-2, row-1);
         
         return targetArea;
     }

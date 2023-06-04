@@ -325,7 +325,7 @@ public class PiecesOnBoard {
     }
     
     //return true if en passant move is available, else false
-    private boolean isEnPassant(Piece pawn, int toCol)
+    public boolean isEnPassant(Piece pawn, int toCol)
     {
         boolean availability = false;
         //if the target square if not empty

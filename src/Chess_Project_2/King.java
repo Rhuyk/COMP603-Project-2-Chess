@@ -49,8 +49,8 @@ public class King extends Piece {
     public boolean[][] getAvailableMoves()
     {
         pieces = new PiecesOnBoard();
-        int col;
-        int row;
+        int col = super.getColumn();
+        int row = super.getRow();
 
         for(int i = 0; i < 8; i++)
         {
@@ -60,37 +60,14 @@ public class King extends Piece {
             }
         }
         
-        col = super.getColumn() +1;
-        row = super.getRow();
-        setAvailableMoves(col, row);
-                
-        col = super.getColumn() -1;
-        row = super.getRow();
-        setAvailableMoves(col, row);
-        
-        col = super.getColumn();
-        row = super.getRow() +1;
-        setAvailableMoves(col, row);
-        
-        col = super.getColumn();
-        row = super.getRow() -1;
-        setAvailableMoves(col, row);
-        
-        col = super.getColumn() +1;
-        row = super.getRow() +1;
-        setAvailableMoves(col, row);
-        
-        col = super.getColumn() +1;
-        row = super.getRow() -1;
-        setAvailableMoves(col, row);
-        
-        col = super.getColumn() -1;
-        row = super.getRow() +1;
-        setAvailableMoves(col, row);
-        
-        col = super.getColumn() -1;
-        row = super.getRow() -1;
-        setAvailableMoves(col, row);
+        setAvailableMoves(col+1, row);
+        setAvailableMoves(col-1, row);
+        setAvailableMoves(col, row+1);
+        setAvailableMoves(col, row-1);
+        setAvailableMoves(col+1, row+1);
+        setAvailableMoves(col+1, row-1);
+        setAvailableMoves(col-1, row+1);
+        setAvailableMoves(col-1, row-1);
         
         if(super.getColour() == PieceColour.WHITE && pieces.whiteIsInCheck())
         {
@@ -109,7 +86,8 @@ public class King extends Piece {
     public boolean[][] getTargetArea()
     {
         pieces = new PiecesOnBoard();
-        int col, row;
+        int col = super.getColumn();
+        int row = super.getRow();
         
         for(int i = 0; i < 8; i++)
         {
@@ -119,37 +97,14 @@ public class King extends Piece {
             }
         }
         
-        col = super.getColumn() +1;
-        row = super.getRow();
-        setTargetArea(col, row);
-                
-        col = super.getColumn() -1;
-        row = super.getRow();
-        setTargetArea(col, row);
-        
-        col = super.getColumn();
-        row = super.getRow() +1;
-        setTargetArea(col, row);
-        
-        col = super.getColumn();
-        row = super.getRow() -1;
-        setTargetArea(col, row);
-        
-        col = super.getColumn() +1;
-        row = super.getRow() +1;
-        setTargetArea(col, row);
-        
-        col = super.getColumn() +1;
-        row = super.getRow() -1;
-        setTargetArea(col, row);
-        
-        col = super.getColumn() -1;
-        row = super.getRow() +1;
-        setTargetArea(col, row);
-        
-        col = super.getColumn() -1;
-        row = super.getRow() -1;
-        setTargetArea(col, row);
+        setTargetArea(col+1, row);
+        setTargetArea(col-1, row);
+        setTargetArea(col, row+1);
+        setTargetArea(col, row-1);
+        setTargetArea(col+1, row+1);
+        setTargetArea(col+1, row-1);
+        setTargetArea(col-1, row+1);
+        setTargetArea(col-1, row-1);
         
         return targetArea;
     }
@@ -182,72 +137,48 @@ public class King extends Piece {
         }
     }
     
-    //set the square behind the king while being checked as unavailable square
-    private void setUnavailableMove(int col, int row)
-    {
-        if(col <= 7 && col >= 0 && row <= 7 && row >= 0)
-        {
-            if(pieces.getCheckPath()[col][row])
-            {
-                if((col - super.getColumn()) > 0)
-                {
-                    col = super.getColumn() - 1;
-                }
-                else if((col - super.getColumn()) < 0)
-                {
-                    col = super.getColumn() + 1;
-                }
-                if((row - super.getRow()) > 0)
-                {
-                    row = super.getRow() - 1;
-                }
-                else if((row - super.getRow()) < 0)
-                {
-                    row = super.getRow() + 1;
-                }
-                if(col <= 7 && col >= 0 && row <= 7 && row >= 0)
-                {
-                    availableMoves[col][row] = false;
-                }
-            }
-        }
-    }
-    
     //set the square behind the king while being checked as unavailable square (from any direction)
     private void setUnavailableMoves()
     {
-        int col, row;
+        int col = super.getColumn();
+        int row = super.getRow();
 
-        col = super.getColumn()+1;
-        row = super.getRow();
-        setUnavailableMove(col, row);
-
-        col = super.getColumn()-1;
-        row = super.getRow();
-        setUnavailableMove(col, row);
-
-        col = super.getColumn();
-        row = super.getRow()+1;
-        setUnavailableMove(col, row);
-
-        col = super.getColumn();
-        row = super.getRow()-1;
-        setUnavailableMove(col, row);
-
-        col = super.getColumn()+1;
-        row = super.getRow()+1;
-        setUnavailableMove(col, row);
-
-        col = super.getColumn()-1;
-        row = super.getRow()+1;
-        setUnavailableMove(col, row);
-
-        col = super.getColumn()+1;
-        row = super.getRow()-1;
-        setUnavailableMove(col, row);
-
-        col = super.getColumn()-1;
-        row = super.getRow()-1;
-        setUnavailableMove(col, row);
+        setUnavailableMove(col+1, row);
+        setUnavailableMove(col-1, row);
+        setUnavailableMove(col, row+1);
+        setUnavailableMove(col, row-1);
+        setUnavailableMove(col+1, row+1);
+        setUnavailableMove(col+1, row-1);
+        setUnavailableMove(col-1, row+1);
+        setUnavailableMove(col-1, row-1);
+    }
+    
+    //set the square behind the king while being checked as unavailable square
+    private void setUnavailableMove(int col, int row)
+    {
+        if((col <= 7 && col >= 0 && row <= 7 && row >= 0) && pieces.getCheckPath()[col][row])
+        {
+            if((col - super.getColumn()) > 0)
+            {
+                col = super.getColumn() - 1;
+            }
+            else if((col - super.getColumn()) < 0)
+            {
+                col = super.getColumn() + 1;
+            }
+            if((row - super.getRow()) > 0)
+            {
+                row = super.getRow() - 1;
+            }
+            else if((row - super.getRow()) < 0)
+            {
+                row = super.getRow() + 1;
+            }
+            
+            if(col <= 7 && col >= 0 && row <= 7 && row >= 0)
+            {
+                availableMoves[col][row] = false;
+            }
+        }
     }
 }
