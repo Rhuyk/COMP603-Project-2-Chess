@@ -12,10 +12,14 @@ public enum PieceColour {
     BLACK,
     WHITE;
     
-    public PieceColour getOppColour() {
-        if (this == BLACK) {
+    public PieceColour getOppColour() 
+    {
+        if (this == BLACK) 
+        {
             return WHITE;
-        } else {
+        } 
+        else 
+        {
             return BLACK;
         }
     }

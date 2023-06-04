@@ -4,6 +4,9 @@
  */
 package Chess_Project_2;
 
+import java.awt.Image;
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author rh200
@@ -32,6 +35,15 @@ public class Rook extends Piece {
             return "bR";
         }
     }
+    
+    @Override
+    public Image getImage()
+    {
+        String path = "chessPiece/" + getSymbol() + ".png";
+        ImageIcon icon = new ImageIcon(path);
+        
+        return icon.getImage();
+    } 
     
     //return rook's available moves (horizontally and vertically)
     //move can be unavailable due to the board boundary, the same colour pieces, or under pin.

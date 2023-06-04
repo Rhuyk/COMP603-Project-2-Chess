@@ -4,6 +4,9 @@
  */
 package Chess_Project_2;
 
+import java.awt.Image;
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author rh200
@@ -31,6 +34,15 @@ public class King extends Piece {
             return "bK";
         }
     }
+    
+    @Override
+    public Image getImage()
+    {
+        String path = "chessPiece/" + getSymbol() + ".png";
+        ImageIcon icon = new ImageIcon(path);
+        
+        return icon.getImage();
+    } 
     
     //return king's available moves (the 8 squares around the king)
     @Override

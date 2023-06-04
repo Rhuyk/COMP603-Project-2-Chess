@@ -4,6 +4,9 @@
  */
 package Chess_Project_2;
 
+import java.awt.Image;
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author rh200
@@ -31,6 +34,15 @@ public class Bishop extends Piece{
         {
             return "bB";
         }
+    }
+    
+    @Override
+    public Image getImage()
+    {
+        String path = "chessPiece/" + getSymbol() + ".png";
+        ImageIcon icon = new ImageIcon(path);
+        
+        return icon.getImage();
     }
     
     //return bishop's available moves (diagonally)

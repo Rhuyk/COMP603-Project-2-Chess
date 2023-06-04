@@ -4,11 +4,15 @@
  */
 package Chess_Project_2;
 
+import java.awt.Image;
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author rh200
  */
-public abstract class Piece {
+public abstract class Piece
+{
     
     private int row;
     private int column;
@@ -28,6 +32,13 @@ public abstract class Piece {
         this.hasNotMoved = true;
         this.hasMovedOnce = false;
         this.lastmoveNum = 0;
+    }
+    
+    public Image getImage()
+    {
+        ImageIcon icon = new ImageIcon(getSymbol() + ".png");
+        
+        return icon.getImage();
     }
     
     //return piece's column
