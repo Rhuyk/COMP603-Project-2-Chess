@@ -131,10 +131,10 @@ public class ChessGame {
                 Player whiteTemp = player1;
                 Player blackTemp = player2;
                 
-                if(ChessBoardFileIO.saveGameForUser(currentPlayer.getPlayerName(),whiteTemp,blackTemp,board))
-                {
-                    ChessBoardFileIO.saveMovesToText(moveHistory);
-                }
+//                if(ChessBoardFileIO.saveGameForUser(currentPlayer.getPlayerName(),whiteTemp,blackTemp,board))
+//                {
+//                    ChessBoardFileIO.saveMovesToText(moveHistory);
+//                }
             }
             
             else if(chessMove.equalsIgnoreCase("resign"))
@@ -189,7 +189,7 @@ public class ChessGame {
                     
             else if(chessMove.equalsIgnoreCase("load"))
             {
-                board = ChessBoardFileIO.loadGame(currentPlayer.getPlayerName(),currentPlayer);
+                //board = ChessBoardFileIO.loadGame(currentPlayer.getPlayerName(),currentPlayer);
                 
                 System.out.println("Welcome back! " + currentPlayer.getPlayerName());
             }

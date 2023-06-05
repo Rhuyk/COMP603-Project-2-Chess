@@ -7,22 +7,12 @@ package Chess_Project_2;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 /**
  *
@@ -38,34 +28,20 @@ public class ChessPanel extends JPanel {
     private Player player1;
     private Player player2;
     private Player currentPlayer;
-    private boolean whiteTurn = true;
+    private boolean whiteTurn;
     private Image backgroundImage;
     
-    private JTextField player1NameField;
-    private JTextField player2NameField;
-    private JButton startButton;
 
     public ChessPanel() 
     {
         setLayout(new BorderLayout());
-        setPreferredSize(new Dimension(820, 623));
+        setPreferredSize(new Dimension(513, 514));
         board = new PiecesOnBoard();
         availableMoves = new boolean[8][8];
-        createPlayerLoginScreen();
-        
+        whiteTurn = true;
         addMouseListener();
-        loadBackgroundImage();
     }
-    
-    private void loadBackgroundImage() {
-        try {
-            backgroundImage = ImageIO.read(new File("b2.png"));
-        } catch (IOException e) 
-        {
-            System.out.println("File Error! IOException");
-        } 
-    }
-    
+
     private void addMouseListener() {
         addMouseListener(new MouseAdapter() {
             Piece selectedPiece = null;
@@ -76,11 +52,17 @@ public class ChessPanel extends JPanel {
                     int col = e.getX() / CELL_SIZE;
                     int row = (BOARD_SIZE - 1) - e.getY() / CELL_SIZE;
                    // currentPlayer = player1; // REMOVE
-                    if (col >= 0 && col < BOARD_SIZE && row >= 0 && row < BOARD_SIZE) {
+                    if (col >= 0 && col < BOARD_SIZE && row >= 0 && row < BOARD_SIZE) 
+                    {
                         Piece clickedPiece = board.getBoard()[col][row];
+                        setCurrentPlayer(player1);
+                        if(!isWhiteTurn()) 
+                        {
+                            setCurrentPlayer(player2);
+                        }
                         
                         if (selectedPiece == null) {
-                            if (clickedPiece != null && clickedPiece.getColour() == currentPlayer.getColourPiece()) {
+                            if (clickedPiece != null && clickedPiece.getColour() == getCurrentPlayer().getColourPiece()) {
                                 selectedPiece = clickedPiece;
                                 selectedRow = row;
                                 selectedCol = col;
@@ -88,12 +70,12 @@ public class ChessPanel extends JPanel {
                             }
                         } else {
                             if (availableMoves[col][row]) {
-                                if (selectedPiece.getColour() == currentPlayer.getColourPiece() && board.movePiece(selectedCol, selectedRow, col, row)) {
-                                    whiteTurn = !whiteTurn;
+                                if (selectedPiece.getColour() == getCurrentPlayer().getColourPiece() && board.movePiece(selectedCol, selectedRow, col, row)) {
+                                    setWhiteTurn(!isWhiteTurn());
                                 } 
                                 else
                                 {
-                                    JOptionPane.showMessageDialog(null, "Illegal move, " + currentPlayer.getColourPiece() + " King is under attack.");
+                                    JOptionPane.showMessageDialog(null, "Illegal move, " + getCurrentPlayer().getColourPiece() + " King is under attack.");
                                 }
                             }
 
@@ -105,66 +87,13 @@ public class ChessPanel extends JPanel {
 
                         repaint();
                     }
-                    if(!whiteTurn) 
-                    {
-                        currentPlayer = player2;
-                    }
-                    else
-                    {
-                        currentPlayer = player1;
-                    }
+                    
                 }
             }
         });
     }
     
-    private void createPlayerLoginScreen() 
-    {
-        JLabel player1Label = new JLabel("Player 1 Name:");
-        JLabel player2Label = new JLabel("Player 2 Name:");
-        player1NameField = new JTextField(10);
-        player2NameField = new JTextField(10);
-        startButton = new JButton("Start Game");
-        
-        // Set font for labels and button
-        Font labelFont = new Font(Font.SANS_SERIF, Font.BOLD, 13);
-        player1Label.setFont(labelFont);
-        player2Label.setFont(labelFont);
-        startButton.setFont(labelFont);
 
-        startButton.addActionListener((ActionEvent e) -> {
-            String player1Name = player1NameField.getText().trim();
-            String player2Name = player2NameField.getText().trim();
-            
-            if (player1Name.isEmpty() || player2Name.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Please enter both player names.", "Invalid Input", JOptionPane.WARNING_MESSAGE);
-            } 
-            else 
-            {
-                player1 = new Player(PieceColour.WHITE, player1Name);
-                player2 = new Player(PieceColour.BLACK, player2Name);
-                currentPlayer = player1;
-                startButton.setEnabled(false);
-                startButton.setVisible(false);
-                player1NameField.setVisible(false);
-                player2NameField.setVisible(false);
-                player1Label.setVisible(false);
-                player2Label.setVisible(false);
-                createGameButtons();
-                repaint();
-            }
-        });
-        JPanel loginPanel = new JPanel();
-        loginPanel.setLayout(new BoxLayout(loginPanel, BoxLayout.Y_AXIS));
-        
-        // Add player login components to the panel
-        loginPanel.add(player1Label);
-        loginPanel.add(player1NameField);
-        loginPanel.add(player2Label);
-        loginPanel.add(player2NameField);
-        loginPanel.add(startButton);
-        add(loginPanel, BorderLayout.SOUTH);
-    }
 
     @Override
     protected void paintComponent(Graphics g) 
@@ -185,11 +114,11 @@ public class ChessPanel extends JPanel {
         g.fillRect(CELL_SIZE - frameWidth - 59, CELL_SIZE - frameWidth - 58, boardWidth + 2 * frameWidth, frameWidth); // TOP
         g.fillRect(CELL_SIZE - frameWidth - 59, CELL_SIZE + boardHeight  - 58, boardWidth + 2 * frameWidth, frameWidth);
         g.fillRect(CELL_SIZE + boardWidth - 59, CELL_SIZE - frameWidth - 58, frameWidth, boardHeight + 2 * frameWidth);
-        if (player1 == null || player2 == null) // Check if player has logged in
-        {
-            g.setColor(new Color(0, 0, 0, 200));
-            g.fillRect(CELL_SIZE - 59, CELL_SIZE - 58, BOARD_SIZE * CELL_SIZE, BOARD_SIZE * CELL_SIZE);
-        }
+//        if (player1 == null || player2 == null) // Check if player has logged in
+//        {
+//            g.setColor(new Color(0, 0, 0, 200));
+//            g.fillRect(CELL_SIZE - 59, CELL_SIZE - 58, BOARD_SIZE * CELL_SIZE, BOARD_SIZE * CELL_SIZE);
+//        }
         
         if(availableMoves != null)
         {
@@ -293,49 +222,7 @@ public class ChessPanel extends JPanel {
         this.player2 = player2;
     }
 
-private void createGameButtons() {
-    JButton resignButton = new JButton("Resign");
-    JButton drawButton = new JButton("Draw");
-    JButton restartButton = new JButton("Restart");
-    JButton quitButton = new JButton("Quit");
 
-    resignButton.addActionListener((ActionEvent e) -> {
-        int response = JOptionPane.showConfirmDialog(null, currentPlayer.getPlayerName() + ", do you wish to resign?", "Resign", JOptionPane.YES_NO_OPTION);
-        if (response == JOptionPane.YES_OPTION) {
-            JOptionPane.showMessageDialog(null, currentPlayer.getPlayerName() + " has resigned. This game has ended via resignation");
-        }
-    });
-
-    drawButton.addActionListener((ActionEvent e) -> {
-        Player otherPlayer = (currentPlayer == player1) ? player2 : player1;
-        int response = JOptionPane.showConfirmDialog(null, currentPlayer.getPlayerName() + " asks for a draw. " + otherPlayer.getPlayerName() + ", do you accept the draw?", "Draw Proposal", JOptionPane.YES_NO_OPTION);
-
-        if (response == JOptionPane.YES_OPTION) {
-            JOptionPane.showMessageDialog(null, "The game has ended via draw.");
-        } else {
-            JOptionPane.showMessageDialog(null, "Player 2 declined the draw.");
-        }
-    });
-
-    restartButton.addActionListener((ActionEvent e) -> {
-        resetGame();
-    });
-
-    quitButton.addActionListener((ActionEvent e) -> {
-        System.out.println("Thank you for playing");
-        System.exit(0);
-    });
-
-    JPanel buttonPanel = new JPanel();
-    buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
-    buttonPanel.add(Box.createVerticalGlue());
-    buttonPanel.add(resignButton);
-    buttonPanel.add(drawButton);
-    buttonPanel.add(restartButton);
-    buttonPanel.add(quitButton);
-    buttonPanel.add(Box.createVerticalGlue());
-    add(buttonPanel, BorderLayout.EAST);
-}
     
     private void resetGame() 
     {
@@ -345,8 +232,36 @@ private void createGameButtons() {
         selectedRow = -1;
         selectedCol = -1;
         availableMoves = new boolean[8][8];
-        whiteTurn = true;
-        currentPlayer = player1;
+        setWhiteTurn(true);
+        setCurrentPlayer(player1);
         repaint();
+    }
+
+    /**
+     * @return the currentPlayer
+     */
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    /**
+     * @param currentPlayer the currentPlayer to set
+     */
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+
+    /**
+     * @return the whiteTurn
+     */
+    public boolean isWhiteTurn() {
+        return whiteTurn;
+    }
+
+    /**
+     * @param whiteTurn the whiteTurn to set
+     */
+    public void setWhiteTurn(boolean whiteTurn) {
+        this.whiteTurn = whiteTurn;
     }
 }
