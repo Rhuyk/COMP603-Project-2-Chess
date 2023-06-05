@@ -21,7 +21,7 @@ import javax.swing.JPanel;
 public class ChessPanel extends JPanel {
     private static final int BOARD_SIZE = 8;
     private static final int CELL_SIZE = 63;
-    private final PiecesOnBoard board;
+    private PiecesOnBoard board;
     private boolean[][] availableMoves;
     private int selectedRow = -1;
     private int selectedCol = -1;
@@ -31,7 +31,10 @@ public class ChessPanel extends JPanel {
     private boolean whiteTurn;
     private Image backgroundImage;
     
-
+    private int currentRow;
+    private int rowChange;
+    private boolean flipFlag = false;
+    
     public ChessPanel() 
     {
         setLayout(new BorderLayout());
@@ -39,6 +42,7 @@ public class ChessPanel extends JPanel {
         board = new PiecesOnBoard();
         availableMoves = new boolean[8][8];
         whiteTurn = true;
+        
         addMouseListener();
     }
 
@@ -46,31 +50,32 @@ public class ChessPanel extends JPanel {
         addMouseListener(new MouseAdapter() {
             Piece selectedPiece = null;
             @Override
-            public void mousePressed(MouseEvent e) {
-                if (player1 != null && player2 != null) 
+            public void mousePressed(MouseEvent e) 
+            {
+                if (getPlayer1() != null && getPlayer2() != null) 
                 {
                     int col = e.getX() / CELL_SIZE;
                     int row = (BOARD_SIZE - 1) - e.getY() / CELL_SIZE;
-                   // currentPlayer = player1; // REMOVE
+                    if (flipFlag) 
+                    {
+                        row = (BOARD_SIZE - 1) - row;
+                    }
                     if (col >= 0 && col < BOARD_SIZE && row >= 0 && row < BOARD_SIZE) 
                     {
-                        Piece clickedPiece = board.getBoard()[col][row];
-                        setCurrentPlayer(player1);
-                        if(!isWhiteTurn()) 
-                        {
-                            setCurrentPlayer(player2);
-                        }
-                        
+                        Piece clickedPiece = getBoard().getBoard()[col][row];
                         if (selectedPiece == null) {
-                            if (clickedPiece != null && clickedPiece.getColour() == getCurrentPlayer().getColourPiece()) {
+                            if (clickedPiece != null && clickedPiece.getColour() == getCurrentPlayer().getColourPiece()) 
+                            {
                                 selectedPiece = clickedPiece;
                                 selectedRow = row;
                                 selectedCol = col;
                                 availableMoves = selectedPiece.getAvailableMoves();
                             }
                         } else {
-                            if (availableMoves[col][row]) {
-                                if (selectedPiece.getColour() == getCurrentPlayer().getColourPiece() && board.movePiece(selectedCol, selectedRow, col, row)) {
+                            if (availableMoves[col][row]) 
+                            {
+                                if (selectedPiece.getColour() == getCurrentPlayer().getColourPiece() && getBoard().movePiece(selectedCol, selectedRow, col, row)) 
+                                {
                                     setWhiteTurn(!isWhiteTurn());
                                 } 
                                 else
@@ -87,7 +92,14 @@ public class ChessPanel extends JPanel {
 
                         repaint();
                     }
-                    
+                    if(!whiteTurn) 
+                    {
+                        currentPlayer = player2;
+                    }
+                    else
+                    {
+                        currentPlayer = player1;
+                    }
                 }
             }
         });
@@ -118,20 +130,25 @@ public class ChessPanel extends JPanel {
 //        {
 //            g.setColor(new Color(0, 0, 0, 200));
 //            g.fillRect(CELL_SIZE - 59, CELL_SIZE - 58, BOARD_SIZE * CELL_SIZE, BOARD_SIZE * CELL_SIZE);
+//            
 //        }
         
         if(availableMoves != null)
         {
             drawAvailableMoves(g);
-            
         }
-        
         
     }
 
     private void drawChessBoard(Graphics g) 
     {
-        int currentRow = 7;  
+        currentRow = 7;
+        rowChange = -1;
+        if(flipFlag)
+        {
+            currentRow = 0;
+            rowChange = 1;
+        }
         boolean flag = true;
         for (int row = 0; row < 8; row++) 
         {
@@ -141,7 +158,7 @@ public class ChessPanel extends JPanel {
                 int y = row * CELL_SIZE;
                 x += 4;
                 y += 5;
-                Piece piece = board.getBoard()[col][currentRow];
+                Piece piece = getBoard().getBoard()[col][currentRow];
 
                 if ((row + col) % 2 == 0) 
                 {
@@ -181,8 +198,13 @@ public class ChessPanel extends JPanel {
                     g.drawString(String.valueOf(BOARD_SIZE - row), x + 3, y + CELL_SIZE / 2 - 16);
                 }
             }
-            currentRow--; 
+            currentRow += rowChange; 
         }
+    }
+    
+    public void flipBoard()
+    {
+        flipFlag = !flipFlag;
     }
     
     private void drawAvailableMoves(Graphics g) 
@@ -199,6 +221,10 @@ public class ChessPanel extends JPanel {
                     {
                         int x = col * CELL_SIZE;
                         int y = (BOARD_SIZE - 1 - row) * CELL_SIZE; 
+                        if (flipFlag) {
+                        y = row * CELL_SIZE;
+                        } 
+                        
                         g.fillOval(x + 22, y + 20, 25, 25);
                     }
                 }
@@ -224,7 +250,7 @@ public class ChessPanel extends JPanel {
 
 
     
-    private void resetGame() 
+    public void resetGame(PiecesOnBoard board) 
     {
         board.clearAllPieces();
         board.resetBoardAndPieces();
@@ -233,7 +259,7 @@ public class ChessPanel extends JPanel {
         selectedCol = -1;
         availableMoves = new boolean[8][8];
         setWhiteTurn(true);
-        setCurrentPlayer(player1);
+        setCurrentPlayer(getPlayer1());
         repaint();
     }
 
@@ -263,5 +289,33 @@ public class ChessPanel extends JPanel {
      */
     public void setWhiteTurn(boolean whiteTurn) {
         this.whiteTurn = whiteTurn;
+    }
+
+    /**
+     * @return the board
+     */
+    public PiecesOnBoard getBoard() {
+        return board;
+    }
+
+    /**
+     * @param board the board to set
+     */
+    public void setBoard(PiecesOnBoard board) {
+        this.board = board;
+    }
+
+    /**
+     * @return the player1
+     */
+    public Player getPlayer1() {
+        return player1;
+    }
+
+    /**
+     * @return the player2
+     */
+    public Player getPlayer2() {
+        return player2;
     }
 }
