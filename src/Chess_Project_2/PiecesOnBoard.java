@@ -32,46 +32,33 @@ public class PiecesOnBoard {
         {
             refreshPiecesStatus();
             
-            //king move
-            if(selectedPiece.getSymbol().contains("K"))
+            //castle move
+            if(isCastling(selectedPiece, toCol, toRow))
             {
-                //normal move
-                if(!allPieces.getTargetAreas(selectedPiece.getOppColour())[toCol][toRow] 
-                        && selectedPiece.getAvailableMoves()[toCol][toRow])
-                {
-                    move(fromCol, fromRow, toCol, toRow);
-                }
-                //castle move
-                else if(isCastling(selectedPiece, toCol) && (toRow == 0 || toRow == 7))
-                {
-                    castle(selectedPiece, toCol);
-                }
-                //unavailable move
-                else
-                {
-                    System.out.println("That was a Illegal move. Please enter a new one!");
-                    return false;
-                }
+                castle(selectedPiece, toCol);
             }
             //en passant move
-            else if(isEnPassant(selectedPiece, toCol) && (toRow == 5 || toRow == 2))
+            else if(isEnPassant(selectedPiece, toCol, toRow))
             {
                 enPassant(selectedPiece, toCol);
             }
+            //king move
+            else if(selectedPiece.getSymbol().contains("K") && selectedPiece.getAvailableMoves()[toCol][toRow])
+            {
+                move(fromCol, fromRow, toCol, toRow);
+            }
             //other moves
+            else if(selectedPiece.getAvailableMoves()[toCol][toRow] && checkPath[toCol][toRow])
+            {
+                move(fromCol, fromRow, toCol, toRow);
+            }
+            //unavailable move
             else
             {
-                if(selectedPiece.getAvailableMoves()[toCol][toRow] && checkPath[toCol][toRow])
-                {
-                    move(fromCol, fromRow, toCol, toRow);
-                }
-                //unavailable move
-                else
-                {
-                    System.out.println("That was a Illegal move. Please enter a new one!");
-                    return false;
-                }
+                System.out.println("That was a Illegal move. Please enter a new one!");
+                return false;
             }
+            
             //pawn promotion
             if(board[toCol][toRow] != null)
             {
@@ -91,6 +78,11 @@ public class PiecesOnBoard {
     public Piece getPiece(int col, int row)
     {
         return allPieces.getPiece(col, row);
+    }
+    
+    public AllPieces getPieces()
+    {
+        return this.allPieces;
     }
     
     //add a piece to white or black pieces list
@@ -236,11 +228,11 @@ public class PiecesOnBoard {
     }
     
     //return true is castling is avaialable, else false
-    private boolean isCastling(Piece king, int toCol)
+    public boolean isCastling(Piece king, int toCol, int toRow)
     {
         boolean availability = false;
         //if king has not moved yet
-        if(king.hasNotMoved())
+        if(king.getSymbol().contains("K") && king.hasNotMoved() && (toRow == 0 || toRow == 7))
         {
             //long castle: if the rook has not moved yet and the castle path has no other pieces
             if(toCol == 2 && board[0][king.getRow()].hasNotMoved() 
@@ -307,11 +299,11 @@ public class PiecesOnBoard {
     }
     
     //return true if en passant move is available, else false
-    public boolean isEnPassant(Piece pawn, int toCol)
+    public boolean isEnPassant(Piece pawn, int toCol, int toRow)
     {
         boolean availability = false;
         //if the target square if not empty
-        if(board[toCol][pawn.getRow()] != null)
+        if(board[toCol][pawn.getRow()] != null && (toRow == 5 || toRow == 2))
         {
             /* if selected piece is white pawn at row 5
              * and the target piece is black pawn

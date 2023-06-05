@@ -69,6 +69,10 @@ public class King extends Piece {
         setAvailableMoves(col-1, row+1);
         setAvailableMoves(col-1, row-1);
         
+        //castle moves
+        setAvailableMoves(col+2, row);
+        setAvailableMoves(col-2, row);
+        
         if(super.getColour() == PieceColour.WHITE && pieces.isInCheck(PieceColour.WHITE))
         {
             setUnavailableMoves();
@@ -77,7 +81,7 @@ public class King extends Piece {
         {
             setUnavailableMoves();
         }
-        
+
         return availableMoves;
     }
     
@@ -105,7 +109,6 @@ public class King extends Piece {
         setTargetArea(col+1, row-1);
         setTargetArea(col-1, row+1);
         setTargetArea(col-1, row-1);
-        
         return targetArea;
     }
     
@@ -114,16 +117,15 @@ public class King extends Piece {
     {
         if(col <= 7 && col >= 0 && row <= 7 && row >= 0)
         {
-            if(pieces.getPiece(col, row) == null)
+            if (pieces.isCastling(this, col, row))
             {
                 availableMoves[col][row] = true;
             }
-            else
+            else if (Math.abs(col-this.getColumn()) < 2
+                    && (pieces.getPiece(col, row) == null || pieces.getPiece(col, row).getColour() != this.getColour()) 
+                    && !pieces.getPieces().getTargetAreas(this.getColour().getOppColour())[col][row])
             {
-                if(pieces.getPiece(col, row).getColour() != super.getColour())
-                {
-                    availableMoves[col][row] = true;
-                }
+                availableMoves[col][row] = true;
             }
         }
     }

@@ -121,18 +121,15 @@ public class Knight extends Piece {
     //set knight's available squares
     private void setAvailableMoves(int col, int row)
     {
-        if(col <= 7 && col >= 0 && row <= 7 && row >= 0)
+        if(col <= 7 && col >= 0 && row <= 7 && row >= 0 && pieces.getCheckPath()[col][row])
         {
             if(pieces.getPiece(col, row) == null)
             {
                 availableMoves[col][row] = true;
             }
-            else
+            else if(pieces.getPiece(col, row).getColour() != super.getColour())
             {
-                if(pieces.getPiece(col, row).getColour() != super.getColour())
-                {
-                    availableMoves[col][row] = true;
-                }
+                availableMoves[col][row] = true;
             }
         }
     }

@@ -108,17 +108,16 @@ public class Pawn extends Piece {
         {
             if((col == super.getColumn() && pieces.getPiece(col, row) == null) 
                     || (col != super.getColumn() && pieces.getPiece(col, row) != null && pieces.getPiece(col, row).getColour() != super.getColour()) 
-                    || pieces.isEnPassant(this, col))
+                    || pieces.isEnPassant(this, col, row))
             {
-                availableMoves[col][row] = true;
+                if (pieces.getCheckPath()[col][row]) {
+                    availableMoves[col][row] = true;
+                }
 
                 //two squares advance
-                if(super.hasNotMoved())
+                if(super.hasNotMoved() && pieces.getPiece(super.getColumn(), row+forwardValue) == null && pieces.getCheckPath()[col][row+forwardValue])
                 {
-                    if(pieces.getPiece(super.getColumn(), row+forwardValue) == null)
-                    {
-                        availableMoves[super.getColumn()][row+forwardValue] = true;
-                    }
+                    availableMoves[super.getColumn()][row+forwardValue] = true;
                 }
             }
         }

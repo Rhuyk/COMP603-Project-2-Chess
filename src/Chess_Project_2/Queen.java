@@ -164,15 +164,16 @@ public class Queen extends Piece {
     {
         while(col <= 7 && col >= 0 && row <= 7 && row >= 0)
         {
-            if(pieces.getPiece(col, row) == null)
+            if (pieces.getCheckPath()[col][row])
             {
-                availableMoves[col][row] = true;
-                col = setColUpOrDown(col);
-                row = setRowUpOrDown(row);
-            }
-            else
-            {
-                if(pieces.getPiece(col, row).getColour() != super.getColour())
+                if(pieces.getPiece(col, row) == null)
+                {
+                    availableMoves[col][row] = true;
+                    col = setColUpOrDown(col);
+                    row = setRowUpOrDown(row);
+                    continue;
+                }
+                else if(pieces.getPiece(col, row).getColour() != super.getColour())
                 {
                     availableMoves[col][row] = true;
                 }
