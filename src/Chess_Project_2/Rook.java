@@ -12,6 +12,7 @@ import javax.swing.ImageIcon;
  * @author rh200
  */
 public class Rook extends Piece {
+    
     private boolean[][] availableMoves = new boolean[8][8];
     private boolean[][] targetArea = new boolean[8][8];
     private PiecesOnBoard pieces;
@@ -35,15 +36,6 @@ public class Rook extends Piece {
             return "bR";
         }
     }
-    
-    @Override
-    public Image getImage()
-    {
-        String path = "chessPiece/" + getSymbol() + ".png";
-        ImageIcon icon = new ImageIcon(path);
-        
-        return icon.getImage();
-    } 
     
     //return rook's available moves (horizontally and vertically)
     //move can be unavailable due to the board boundary, the same colour pieces, or under pin.

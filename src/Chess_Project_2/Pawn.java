@@ -12,6 +12,7 @@ import javax.swing.ImageIcon;
  * @author rh200
  */
 public class Pawn extends Piece {
+    
     private boolean[][] availableMoves = new boolean[8][8];
     private boolean[][] targetArea = new boolean[8][8];
     private PiecesOnBoard pieces;
@@ -32,15 +33,6 @@ public class Pawn extends Piece {
             return "bP";
         }
     }
-    
-    @Override
-    public Image getImage()
-    {
-        String path = "chessPiece/" + getSymbol() + ".png";
-        ImageIcon icon = new ImageIcon(path);
-        
-        return icon.getImage();
-    } 
     
     //return pawn's available moves (one square forward, early two squares advance, or one square diagonally forward for capturing)
     //move can be unavailable due to occupied square by any piece infront, or under pin.

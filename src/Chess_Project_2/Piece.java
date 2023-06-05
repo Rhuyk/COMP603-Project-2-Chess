@@ -11,8 +11,7 @@ import javax.swing.ImageIcon;
  *
  * @author rh200
  */
-public abstract class Piece
-{
+public abstract class Piece {
     
     private int row;
     private int column;
@@ -36,7 +35,8 @@ public abstract class Piece
     
     public Image getImage()
     {
-        ImageIcon icon = new ImageIcon(getSymbol() + ".png");
+        String path = "chessPiece/" + getSymbol() + ".png";
+        ImageIcon icon = new ImageIcon(path);
         
         return icon.getImage();
     }
@@ -73,10 +73,7 @@ public abstract class Piece
     }
     
     //return the piece's symbol
-    public String getSymbol()
-    {
-        return "?";
-    }
+    public abstract String getSymbol();
     
     //return the last move number of the piece
     public int getLastMoveNum()

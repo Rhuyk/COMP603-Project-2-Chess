@@ -1,0 +1,109 @@
+Mon Jun 05 18:06:09 NZST 2023 : Apache Derby Network Server - 10.14.2.0 - (1828579) started and ready to accept connections on port 1527
+----------------------------------------------------------------
+Mon Jun 05 18:06:10 NZST 2023:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0188-8a29-b75a-00005cbce2dc 
+on database directory C:\Users\rh200\Documents\NetBeansProjects\COMP603-Project-2\ChessProject with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
+Loaded from file:/C:/Users/rh200/Desktop/COMP603/db-derby-10.14.2.0-bin/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_361-b09
+user.dir=C:\Users\rh200\Desktop\COMP603\db-derby-10.14.2.0-bin
+os.name=Windows 11
+os.arch=amd64
+os.version=10.0
+derby.system.home=C:\Users\rh200\Documents\NetBeansProjects\COMP603-Project-2
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Mon Jun 05 18:06:10 NZST 2023:
+Shutting down instance a816c00e-0188-8a29-b75a-00005cbce2dc on database directory C:\Users\rh200\Documents\NetBeansProjects\COMP603-Project-2\ChessProject with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
+Mon Jun 05 18:06:10 NZST 2023 Thread[DRDAConnThread_3,5,main] (DATABASE = ChessProject), (DRDAID = {2}), Database 'ChessProject' shutdown.
+----------------------------------------------------------------
+Mon Jun 05 19:07:51 NZST 2023:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance 6ede40af-0188-8a29-b75a-00005cbce2dc 
+on database directory C:\Users\rh200\Documents\NetBeansProjects\COMP603-Project-2\ChessProject with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
+Loaded from file:/C:/Users/rh200/Desktop/COMP603/db-derby-10.14.2.0-bin/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_361-b09
+user.dir=C:\Users\rh200\Desktop\COMP603\db-derby-10.14.2.0-bin
+os.name=Windows 11
+os.arch=amd64
+os.version=10.0
+derby.system.home=C:\Users\rh200\Documents\NetBeansProjects\COMP603-Project-2
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Mon Jun 05 19:09:19 NZST 2023:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance 4b6f00c8-0188-8a29-b75a-00005cbce2dc 
+on database directory C:\Users\rh200\Documents\NetBeansProjects\COMP603-Project-2\ChessDB with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
+Loaded from file:/C:/Users/rh200/Desktop/COMP603/db-derby-10.14.2.0-bin/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_361-b09
+user.dir=C:\Users\rh200\Desktop\COMP603\db-derby-10.14.2.0-bin
+os.name=Windows 11
+os.arch=amd64
+os.version=10.0
+derby.system.home=C:\Users\rh200\Documents\NetBeansProjects\COMP603-Project-2
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Mon Jun 05 19:09:19 NZST 2023:
+Shutting down instance 4b6f00c8-0188-8a29-b75a-00005cbce2dc on database directory C:\Users\rh200\Documents\NetBeansProjects\COMP603-Project-2\ChessDB with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
+Mon Jun 05 19:09:19 NZST 2023 Thread[DRDAConnThread_2,5,main] (DATABASE = ChessDB), (DRDAID = {5}), Database 'ChessDB' shutdown.
+Mon Jun 05 19:09:25 NZST 2023 Thread[DRDAConnThread_3,5,main] (XID = 220), (SESSIONID = 2), (DATABASE = ChessProject), (DRDAID = {6}), Cleanup action starting
+java.sql.SQLNonTransientConnectionException: Connection authentication failure occurred.  Reason: Invalid authentication..
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.newSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.checkUserCredentials(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.<init>(Unknown Source)
+	at org.apache.derby.jdbc.InternalDriver$1.run(Unknown Source)
+	at org.apache.derby.jdbc.InternalDriver$1.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at org.apache.derby.jdbc.InternalDriver.getNewEmbedConnection(Unknown Source)
+	at org.apache.derby.jdbc.InternalDriver.connect(Unknown Source)
+	at org.apache.derby.jdbc.InternalDriver.connect(Unknown Source)
+	at org.apache.derby.jdbc.EmbeddedDriver.connect(Unknown Source)
+	at org.apache.derby.impl.drda.Database.makeConnection(Unknown Source)
+	at org.apache.derby.impl.drda.DRDAConnThread.getConnFromDatabaseName(Unknown Source)
+	at org.apache.derby.impl.drda.DRDAConnThread.verifyUserIdPassword(Unknown Source)
+	at org.apache.derby.impl.drda.DRDAConnThread.parseSECCHK(Unknown Source)
+	at org.apache.derby.impl.drda.DRDAConnThread.parseDRDAConnection(Unknown Source)
+	at org.apache.derby.impl.drda.DRDAConnThread.processCommands(Unknown Source)
+	at org.apache.derby.impl.drda.DRDAConnThread.run(Unknown Source)
+Caused by: ERROR 08004: Connection authentication failure occurred.  Reason: Invalid authentication..
+	at org.apache.derby.iapi.error.StandardException.newException(Unknown Source)
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.wrapArgsForTransportAcrossDRDA(Unknown Source)
+	... 21 more
+============= begin nested exception, level (1) ===========
+ERROR 08004: Connection authentication failure occurred.  Reason: Invalid authentication..
+	at org.apache.derby.iapi.error.StandardException.newException(Unknown Source)
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.wrapArgsForTransportAcrossDRDA(Unknown Source)
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.newSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.checkUserCredentials(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.<init>(Unknown Source)
+	at org.apache.derby.jdbc.InternalDriver$1.run(Unknown Source)
+	at org.apache.derby.jdbc.InternalDriver$1.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at org.apache.derby.jdbc.InternalDriver.getNewEmbedConnection(Unknown Source)
+	at org.apache.derby.jdbc.InternalDriver.connect(Unknown Source)
+	at org.apache.derby.jdbc.InternalDriver.connect(Unknown Source)
+	at org.apache.derby.jdbc.EmbeddedDriver.connect(Unknown Source)
+	at org.apache.derby.impl.drda.Database.makeConnection(Unknown Source)
+	at org.apache.derby.impl.drda.DRDAConnThread.getConnFromDatabaseName(Unknown Source)
+	at org.apache.derby.impl.drda.DRDAConnThread.verifyUserIdPassword(Unknown Source)
+	at org.apache.derby.impl.drda.DRDAConnThread.parseSECCHK(Unknown Source)
+	at org.apache.derby.impl.drda.DRDAConnThread.parseDRDAConnection(Unknown Source)
+	at org.apache.derby.impl.drda.DRDAConnThread.processCommands(Unknown Source)
+	at org.apache.derby.impl.drda.DRDAConnThread.run(Unknown Source)
+============= end nested exception, level (1) ===========
+Cleanup action completed
+Mon Jun 05 19:09:25 NZST 2023 Thread[DRDAConnThread_3,5,main] (DATABASE = ChessProject), (DRDAID = {6}), Connection authentication failure occurred.  Reason: Invalid authentication..
+----------------------------------------------------------------
+Mon Jun 05 19:10:20 NZST 2023: Shutting down Derby engine
+----------------------------------------------------------------
+Mon Jun 05 19:10:20 NZST 2023:
+Shutting down instance 6ede40af-0188-8a29-b75a-00005cbce2dc on database directory C:\Users\rh200\Documents\NetBeansProjects\COMP603-Project-2\ChessProject with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
+----------------------------------------------------------------

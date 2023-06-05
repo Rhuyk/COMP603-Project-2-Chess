@@ -12,6 +12,7 @@ import javax.swing.ImageIcon;
  * @author rh200
  */
 public class Queen extends Piece {
+    
     private boolean[][] availableMoves = new boolean[8][8];
     private boolean[][] targetArea = new boolean[8][8];
     private PiecesOnBoard pieces;
@@ -35,15 +36,6 @@ public class Queen extends Piece {
             return "bQ";
         }
     }
-    
-    @Override
-    public Image getImage()
-    {
-        String path = "chessPiece/" + getSymbol() + ".png";
-        ImageIcon icon = new ImageIcon(path);
-        
-        return icon.getImage();
-    } 
     
     //return queen's available moves (horizontally, vertically, and diagonally)
     //move can be unavailable due to the board boundary, the same colour pieces, or under pin.

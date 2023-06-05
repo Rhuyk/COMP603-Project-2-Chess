@@ -26,7 +26,6 @@ public class Player {
     * 
     * @return 
     */ 
-    
     public PieceColour getColourPiece() 
     {
         return colourPiece;
@@ -39,7 +38,6 @@ public class Player {
     * 
     * @param colourPiece
     */ 
-    
     public void setColourPiece(PieceColour colourPiece) 
     {
         this.colourPiece = colourPiece;
@@ -52,20 +50,18 @@ public class Player {
     * 
     * @return 
     */     
-    
     public String getPlayerName() 
     {
         return playerName;
     }
  
     /**
-    * Method: getColourPiece
+    * Method: setPlayerName
     * 
     * This method will modify the player name.
     * 
     * @param playerName
     */    
-    
     public void setPlayerName(String playerName) 
     {
         this.playerName = playerName;

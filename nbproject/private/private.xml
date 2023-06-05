@@ -3,9 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/rh200/Documents/NetBeansProjects/COMP603-Project-2/src/Chess_Project_2/Piece.java</file>
+            <file>file:/C:/Users/rh200/Documents/NetBeansProjects/COMP603-Project-2/src/Chess_Project_2/GameHistoryReplay.java</file>
             <file>file:/C:/Users/rh200/Documents/NetBeansProjects/COMP603-Project-2/src/Chess_Project_2/ChessGameGUI.java</file>
+            <file>file:/C:/Users/rh200/Documents/NetBeansProjects/COMP603-Project-2/src/Chess_Project_2/DBManager.java</file>
+            <file>file:/C:/Users/rh200/Documents/NetBeansProjects/COMP603-Project-2/src/Chess_Project_2/GameHistery.java</file>
             <file>file:/C:/Users/rh200/Documents/NetBeansProjects/COMP603-Project-2/src/Chess_Project_2/PiecesOnBoard.java</file>
-            <file>file:/C:/Users/rh200/Documents/NetBeansProjects/COMP603-Project-2/src/Chess_Project_2/AllPieces.java</file>
+            <file>file:/C:/Users/rh200/Documents/NetBeansProjects/COMP603-Project-2/src/Chess_Project_2/GameSaver.java</file>
         </group>
     </open-files>
 </project-private>

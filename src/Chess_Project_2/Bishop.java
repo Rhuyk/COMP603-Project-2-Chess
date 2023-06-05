@@ -11,7 +11,8 @@ import javax.swing.ImageIcon;
  *
  * @author rh200
  */
-public class Bishop extends Piece{
+public class Bishop extends Piece {
+    
     private boolean[][] availableMoves = new boolean[8][8];
     private boolean[][] targetArea = new boolean[8][8];
     private PiecesOnBoard pieces;
@@ -34,15 +35,6 @@ public class Bishop extends Piece{
         {
             return "bB";
         }
-    }
-    
-    @Override
-    public Image getImage()
-    {
-        String path = "chessPiece/" + getSymbol() + ".png";
-        ImageIcon icon = new ImageIcon(path);
-        
-        return icon.getImage();
     }
     
     //return bishop's available moves (diagonally)

@@ -12,9 +12,10 @@ import javax.swing.ImageIcon;
  * @author rh200
  */
 public class King extends Piece {
-    boolean[][] availableMoves = new boolean[8][8];
-    boolean[][] targetArea = new boolean[8][8];
-    PiecesOnBoard pieces;
+    
+    private boolean[][] availableMoves = new boolean[8][8];
+    private boolean[][] targetArea = new boolean[8][8];
+    private PiecesOnBoard pieces;
     //king piece constructor
     public King(PieceColour colour, int col, int row)
     {
@@ -34,15 +35,6 @@ public class King extends Piece {
             return "bK";
         }
     }
-    
-    @Override
-    public Image getImage()
-    {
-        String path = "chessPiece/" + getSymbol() + ".png";
-        ImageIcon icon = new ImageIcon(path);
-        
-        return icon.getImage();
-    } 
     
     //return king's available moves (the 8 squares around the king)
     @Override

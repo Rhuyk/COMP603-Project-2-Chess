@@ -13,7 +13,7 @@ import java.util.Scanner;
 public class PiecesOnBoard {
     private static Piece[][] board = new Piece[8][8]; // Piece[column][row]
     private static AllPieces allPieces = new AllPieces();
-    private static int moveCounter = 0;
+    private static int moveNum = 0;
     private static boolean[][] checkPath = new boolean[8][8];
     private static boolean whiteIsInCheck = false;
     private static boolean blackIsInCheck = false;
@@ -48,7 +48,7 @@ public class PiecesOnBoard {
                 move(fromCol, fromRow, toCol, toRow);
             }
             //other moves
-            else if(selectedPiece.getAvailableMoves()[toCol][toRow] && checkPath[toCol][toRow])
+            else if(checkPath[toCol][toRow] && selectedPiece.getAvailableMoves()[toCol][toRow])
             {
                 move(fromCol, fromRow, toCol, toRow);
             }
@@ -100,7 +100,7 @@ public class PiecesOnBoard {
     //reset the board and the pieces lists
     public void resetBoardAndPieces()
     {
-        this.moveCounter = 0;
+        this.moveNum = 0;
         allPieces = new AllPieces();
         refreshBoard();
     }
@@ -280,8 +280,8 @@ public class PiecesOnBoard {
             toRow = 7;
         }
         
-        moveCounter++;
-        allPieces.getPiece(col, row).setLastMoveNum(moveCounter);
+        moveNum++;
+        allPieces.getPiece(col, row).setLastMoveNum(moveNum);
         allPieces.getPiece(col, row).setMove();
         allPieces.getPiece(col, row).setColAndRow(toCol, toRow);
 
@@ -311,7 +311,7 @@ public class PiecesOnBoard {
              */
             if(pawn.getSymbol().equals("wP") && pawn.getRow() == 4 
                     && board[toCol][pawn.getRow()].getSymbol().equals("bP") 
-                    && board[toCol][pawn.getRow()].getLastMoveNum() == this.moveCounter 
+                    && board[toCol][pawn.getRow()].getLastMoveNum() == this.moveNum 
                     && board[toCol][pawn.getRow()].hasMovedOnce())
             {
                 availability = true;
@@ -322,7 +322,7 @@ public class PiecesOnBoard {
              */
             else if(pawn.getSymbol().equals("bP") && pawn.getRow() == 3 
                     && board[toCol][pawn.getRow()].getSymbol().equals("wP") 
-                    && board[toCol][pawn.getRow()].getLastMoveNum() == this.moveCounter 
+                    && board[toCol][pawn.getRow()].getLastMoveNum() == this.moveNum 
                     && board[toCol][pawn.getRow()].hasMovedOnce())
             {
                 availability = true;
@@ -345,8 +345,8 @@ public class PiecesOnBoard {
             toRow = 2;
         }
         
-        moveCounter++;
-        allPieces.getPiece(col, row).setLastMoveNum(moveCounter);
+        moveNum++;
+        allPieces.getPiece(col, row).setLastMoveNum(moveNum);
         allPieces.getPiece(col, row).setMove();
         allPieces.removePiece(toCol, row);
         allPieces.getPiece(col, row).setColAndRow(toCol, toRow);
@@ -394,8 +394,8 @@ public class PiecesOnBoard {
     
     private void move(int fromCol, int fromRow, int toCol, int toRow)
     {
-        moveCounter++;
-        allPieces.getPiece(fromCol, fromRow).setLastMoveNum(moveCounter);
+        moveNum++;
+        allPieces.getPiece(fromCol, fromRow).setLastMoveNum(moveNum);
         allPieces.getPiece(fromCol, fromRow).setMove();
         allPieces.removePiece(toCol, toRow);
         allPieces.getPiece(fromCol, fromRow).setColAndRow(toCol, toRow);
