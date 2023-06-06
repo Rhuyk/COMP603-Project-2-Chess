@@ -11,6 +11,12 @@ package Chess_Project_2;
 public final class ChessGameController {
     
     private PiecesOnBoard board = new PiecesOnBoard();
+    
+    private GameDB gameSaver = new GameSaver();
+    private GameDB gameSRecorder = new GameSaverRecorder();
+    private GameDB gameHistory = new GameHistory();
+    private GameDB gameHRecorder = new GameHistoryRecorder();
+    
     private Player player1;
     private Player player2;
     
