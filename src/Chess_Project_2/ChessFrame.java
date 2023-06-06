@@ -16,9 +16,12 @@ public class ChessFrame extends JFrame {
     /**
      * Creates new form ChessFrame
      */
+    
     private ChessPanel chessPanel;
+    
     public ChessFrame() 
     {
+        chessPanel = new ChessPanel(this);
         setTitle("Chess Game");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -38,7 +41,7 @@ public class ChessFrame extends JFrame {
     private void initComponents() {
 
         jPanel3 = new javax.swing.JPanel();
-        jPanel1 = new ChessPanel();
+        jPanel1 = chessPanel;
         jPanel5 = new javax.swing.JPanel();
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jPanel4 = new javax.swing.JPanel();
@@ -76,7 +79,7 @@ public class ChessFrame extends JFrame {
         SaveGameButton2 = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
+        moveTextArea = new javax.swing.JTextArea();
         jToggleButton1 = new javax.swing.JToggleButton();
         jPanel8 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
@@ -354,9 +357,9 @@ public class ChessFrame extends JFrame {
 
         jLabel8.setText("Chess Moves:");
 
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        jScrollPane4.setViewportView(jTextArea2);
+        moveTextArea.setColumns(20);
+        moveTextArea.setRows(5);
+        jScrollPane4.setViewportView(moveTextArea);
 
         jToggleButton1.setText("Flip toggle");
         jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -369,11 +372,15 @@ public class ChessFrame extends JFrame {
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGap(68, 68, 68)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel7Layout.createSequentialGroup()
-                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -389,10 +396,6 @@ public class ChessFrame extends JFrame {
                                     .addComponent(restartButton, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
                                     .addComponent(jToggleButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addGap(53, 53, 53))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -467,10 +470,17 @@ public class ChessFrame extends JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
-    public void switchToTab(int tabIndex) 
+    public void switchTab(int tabIndex) 
     {
         jTabbedPane2.setSelectedIndex(tabIndex);
     }
+    
+    public void updateMovesTextArea() 
+    {
+        String moves = chessPanel.getMoves();
+        moveTextArea.append(moves);
+    }
+    
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
         String player1Name = jTextPane1.getText().trim();
         String player2Name = jTextPane2.getText().trim();
@@ -595,9 +605,11 @@ public class ChessFrame extends JFrame {
         
         
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+        java.awt.EventQueue.invokeLater(new Runnable() 
+        {
             public void run() {
-                new ChessFrame().setVisible(true);
+                ChessFrame chessFrame = new ChessFrame();
+                chessFrame.setVisible(true);
             }
         });
         
@@ -643,10 +655,10 @@ public class ChessFrame extends JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JTextPane jTextPane2;
     private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JTextArea moveTextArea;
     private javax.swing.JButton quitButton;
     private javax.swing.JButton resignButton;
     private javax.swing.JButton restartButton;

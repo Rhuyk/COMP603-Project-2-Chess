@@ -8,7 +8,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JOptionPane;
@@ -29,14 +28,17 @@ public class ChessPanel extends JPanel {
     private Player player2;
     private Player currentPlayer;
     private boolean whiteTurn;
-    private Image backgroundImage;
     
     private int currentRow;
     private int rowChange;
     private boolean flipFlag = false;
+    private String moves;
+    private ChessFrame chessFrame;
     
-    public ChessPanel() 
+    public ChessPanel(ChessFrame frame) 
     {
+        chessFrame = frame;
+        moves = "";
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(513, 514));
         board = new PiecesOnBoard();
@@ -78,6 +80,11 @@ public class ChessPanel extends JPanel {
                                 if(selectedPiece.getColour() == getCurrentPlayer().getColourPiece() && getBoard().movePiece(selectedCol, selectedRow, col, row)) 
                                 {
                                     setWhiteTurn(!isWhiteTurn());
+                                    moves = "(" + selectedPiece.getSymbol() + ")" + String.format(" %s%d, %s%d%n", (char)('a' + selectedCol), selectedRow + 1, (char)('a' + col), row + 1);
+                                    if(chessFrame != null)
+                                    {
+                                        chessFrame.updateMovesTextArea();
+                                    }
                                 }
                                 
                             }
@@ -113,6 +120,7 @@ public class ChessPanel extends JPanel {
         if (board.isCheckmate(getCurrentPlayer().getColourPiece())) 
         {
             JOptionPane.showMessageDialog(ChessPanel.this, "This Chess Game has ended via Checkmate! Game over.");
+            chessFrame.switchTab(4);
             return true;
         }
         return false;
@@ -130,8 +138,6 @@ public class ChessPanel extends JPanel {
     protected void paintComponent(Graphics g) 
     {
         super.paintComponent(g);
-        
-        g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
         
         drawChessBoard(g);
         
@@ -336,5 +342,26 @@ public class ChessPanel extends JPanel {
      */
     public Player getPlayer2() {
         return player2;
+    }
+
+    /**
+     * @return the moves
+     */
+    public String getMoves() {
+        return moves;
+    }
+
+    /**
+     * @return the chessFrame
+     */
+    public ChessFrame getChessFrame() {
+        return chessFrame;
+    }
+
+    /**
+     * @param chessFrame the chessFrame to set
+     */
+    public void setChessFrame(ChessFrame chessFrame) {
+        this.chessFrame = chessFrame;
     }
 }
