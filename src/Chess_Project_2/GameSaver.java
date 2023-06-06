@@ -4,7 +4,6 @@
  */
 package Chess_Project_2;
 
-import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,7 +25,8 @@ public class GameSaver extends GameDB {
     }
     
     @Override
-    public void createTable() {
+    public void createTable()
+    {
         String createStatement = "CREATE TABLE GAME_SAVER (NUMBER INT, WHITE VARCHAR(20), BLACK VARCHAR(20), DATE DATE)";
         
         try {
@@ -34,20 +34,51 @@ public class GameSaver extends GameDB {
             DatabaseMetaData metaData = getConn().getMetaData();
             ResultSet resultSet = metaData.getTables(null, null, "GAME_SAVER", null);
             if (!resultSet.next()) {
-                statement.executeUpdate(createStatement);
+                statement = getConn().createStatement();
+                statement.execute(createStatement);
+                statement.close();
             }
         } catch (SQLException ex) {
             Logger.getLogger(GameSaver.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    public void insertContent(int num, String playerWhite, String playerBlack, Date date) {
-        String insertStatement = "INSERT INTO GAME_SAVER VALUES ("+num+", '"+playerWhite+"', '"+playerBlack+"', '"+date+"')";
-    
+    public void saveGame(int slotNum, String playerWhite, String playerBlack, Date date)
+    {
+        String updateStatement = "UPDATE GAME_SAVER SET WHITE = '" + playerWhite + "', BLACK = '" + playerBlack + "', DATE = '" + date + "' WHERE NUMBER = " + slotNum;
+        
         try {
-            statement.executeUpdate(insertStatement);
-        } catch (SQLException ex) {
+            statement = getConn().createStatement();
+            statement.executeUpdate(updateStatement);
+            int rowsAffected = statement.getUpdateCount();
+
+            if (rowsAffected == 0)
+            {
+                // If no rows were affected by the update, insert a new row
+                String insertStatement = "INSERT INTO GAME_SAVER VALUES (" + slotNum + ", '" + playerWhite + "', '" + playerBlack + "', '" + date + "')";
+                statement.executeUpdate(insertStatement);
+            }
+            statement.close();
+        }
+        catch (SQLException ex) {
             Logger.getLogger(GameSaver.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public ResultSet getSavedGameInfo(int slotNum)
+    {
+        ResultSet resultSet = null;
+        String queryStatement = "SELECT WHITE, BLACK, DATE FROM GAME_SAVER WHERE NUMBER=" + slotNum;
+        
+        try {
+            statement = getConn().createStatement();
+            resultSet = statement.executeQuery(queryStatement);
+            statement.close();
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(GameSaver.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return resultSet;
     }
 }
