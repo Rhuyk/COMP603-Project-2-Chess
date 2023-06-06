@@ -11,7 +11,7 @@ package Chess_Project_2;
 public class Player {
     
     private PieceColour colourPiece;
-    private String playerName;
+    private String playerName = "player";
     
     public Player(PieceColour colourPiece,String playerName)
     {

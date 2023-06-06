@@ -16,17 +16,17 @@ import java.util.logging.Logger;
  *
  * @author rh200
  */
-public class GameSaverRecorder extends GameDB {
+public final class GameSaverRecorder extends GameDB {
     
     private Statement statement;
     private int currentGameMoveNum;
     
     public GameSaverRecorder() {
         super();
+        createTable();
         currentGameMoveNum = 0;
     }
     
-    @Override
     public void createTable()
     {
         String createStatement = "CREATE TABLE GAME_SAVER_RECORDER (NUMBER INT, MOVE_NUM INT, PIECE_TYPE VARCHAR(2), LOCATION INT, LMN INT, HNM INT, HMO INT)";

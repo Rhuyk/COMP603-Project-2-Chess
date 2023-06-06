@@ -8,19 +8,30 @@ package Chess_Project_2;
  *
  * @author rh200
  */
-public final class ChessGameController {
+public class ChessGameController {
     
-    private PiecesOnBoard board = new PiecesOnBoard();
+    private static PiecesOnBoard board = new PiecesOnBoard();
     
-    private GameDB gameSaver = new GameSaver();
-    private GameDB gameSRecorder = new GameSaverRecorder();
-    private GameDB gameHistory = new GameHistory();
-    private GameDB gameHRecorder = new GameHistoryRecorder();
+    private static GameDB gameSaver = new GameSaver();
+    private static GameDB gameSRecorder = new GameSaverRecorder();
+    private static GameDB gameHistory = new GameHistory();
+    private static GameDB gameHRecorder = new GameHistoryRecorder();
     
-    private Player player1;
-    private Player player2;
+    private static Player player1;
+    private static Player player2;
     
-    //starts a new match
+    public void resetChessGame()
+    {
+        
+    }
+    
+    public void setPlayers(String player1Name, String player2Name)
+    {
+        this.player1 = new Player(PieceColour.WHITE, player1Name);
+        this.player2 = new Player(PieceColour.BLACK, player2Name);
+    }
+    
+    
     
     
 }

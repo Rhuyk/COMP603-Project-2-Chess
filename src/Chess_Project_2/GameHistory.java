@@ -16,15 +16,15 @@ import java.util.logging.Logger;
  *
  * @author rh200
  */
-public class GameHistory extends GameDB {
+public final class GameHistory extends GameDB {
     
     private Statement statement;
     
     public GameHistory() {
         super();
+        createTable();
     }
     
-    @Override
     public void createTable()
     {
         String createStatement = "CREATE TABLE GAME_HISTORY (NUMBER INT, WHITE VARCHAR(20), BLACK VARCHAR(20), RESULT VARCHAR(2), MOVES INT, DATE DATE)";

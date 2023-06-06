@@ -14,7 +14,7 @@ import java.sql.Statement;
  *
  * @author rh200
  */
-public abstract class GameDB {
+public class GameDB {
     
     private static final String USER_NAME = "chess"; //DB username
     private static final String PASSWORD = "chess"; //DB password
@@ -26,15 +26,14 @@ public abstract class GameDB {
         dbSetup();
     }
     
-    public abstract void createTable();
-    
     //Establish connection
     private void dbSetup() {
         //Establish a connection to Database
         try {
-            conn = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
-            System.out.println(URL + " get CONNECTED...");
-            createTable();
+            if (conn == null) {
+                conn = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
+                System.out.println(URL + " get CONNECTED...");
+            }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
@@ -54,34 +53,34 @@ public abstract class GameDB {
         }
     }
     
-    private ResultSet queryDB(String sql) {
-
-        Connection connection = this.conn;
-        Statement statement = null;
-        ResultSet resultSet = null;
-
-        try {
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(sql);
-
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
-        return resultSet;
-    }
-
-    private void updateDB(String sql) {
-
-        Connection connection = this.conn;
-        Statement statement = null;
-        ResultSet resultSet = null;
-
-        try {
-            statement = connection.createStatement();
-            statement.executeUpdate(sql);
-
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
-    }
+//    private ResultSet queryDB(String sql) {
+//
+//        Connection connection = this.conn;
+//        Statement statement = null;
+//        ResultSet resultSet = null;
+//
+//        try {
+//            statement = connection.createStatement();
+//            resultSet = statement.executeQuery(sql);
+//
+//        } catch (SQLException ex) {
+//            System.out.println(ex.getMessage());
+//        }
+//        return resultSet;
+//    }
+//
+//    private void updateDB(String sql) {
+//
+//        Connection connection = this.conn;
+//        Statement statement = null;
+//        ResultSet resultSet = null;
+//
+//        try {
+//            statement = connection.createStatement();
+//            statement.executeUpdate(sql);
+//
+//        } catch (SQLException ex) {
+//            System.out.println(ex.getMessage());
+//        }
+//    }
 }
