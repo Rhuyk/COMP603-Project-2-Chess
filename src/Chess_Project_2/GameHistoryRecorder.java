@@ -43,9 +43,40 @@ public class GameHistoryRecorder extends GameDB {
         }
     }
     
-//    public void insertContent(int num, int moveNum, String pieceType, int location) {
-//        
-//        String insertStatement = "INSERT INTO GAME_HISTORY_RECORDER VALUES ("+num+", "+moveNum+", '"+pieceType+"', "+location+")";
-//        updateDB(insertStatement);
-//    }
+    public void uploadCompletedGame()
+    {
+        String insertStatement = "INSERT INTO GAME_HISTORY_RECORDER (NUMBER, MOVE_NUM, PIECE_TYPE, LOCATION) " +
+                                 "SELECT NUMBER, MOVE_NUM, PIECE_TYPE, LOCATION " +
+                                 "FROM GAME_SAVER_RECORDER " +
+                                 "WHERE NUMBER = 0";
+        try {
+            if (statement == null) {
+                statement = getConn().createStatement();
+            }
+            statement.executeUpdate(insertStatement);
+            statement.close();
+
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(GameHistoryRecorder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public ResultSet getHistoryGameBoard(int slotNum)
+    {
+        ResultSet resultset = null;
+        String queryStatement = "SELECT MOVE_NUM, PIECE_TYPE, LOCATION FROM GAME_SAVER_RECORDER WHERE NUMBER=" + slotNum + " ORDER BY MOVE_NUM ASC";
+        
+        try {
+            if (statement == null) {
+                statement = getConn().createStatement();
+            }
+            resultset = statement.executeQuery(queryStatement);
+            statement.close();
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(GameSaverRecorder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resultset;
+    }
 }

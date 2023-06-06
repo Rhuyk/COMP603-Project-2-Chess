@@ -1,0 +1,105 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package Chess_Project_2;
+
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ *
+ * @author rh200
+ */
+public class GameHistory extends GameDB {
+    
+    private Statement statement;
+    
+    public GameHistory() {
+        super();
+    }
+    
+    @Override
+    public void createTable()
+    {
+        String createStatement = "CREATE TABLE GAME_HISTORY (NUMBER INT, WHITE VARCHAR(20), BLACK VARCHAR(20), RESULT VARCHAR(2), MOVES INT, DATE DATE)";
+        
+        try {
+            // Check if the table already exists
+            DatabaseMetaData metaData = getConn().getMetaData();
+            ResultSet resultSet = metaData.getTables(null, null, "GAME_HISTORY", null);
+            if (!resultSet.next()) {
+                statement = getConn().createStatement();
+                statement.execute(createStatement);
+                statement.close();
+            }
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(GameHistory.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+//    public void uploadCompletedGame(String playerWhite, String playerBlack, String result, int moves, Date date) {
+//        
+//        String insertStatement = "INSERT INTO GAME_HISTORY VALUES (" + playerWhite + "', '" + playerBlack + "', '" + result + "', " + moves + ", '" + date + "')";
+//        updateDB(insertStatement);
+//    }
+    
+    public void uploadCompletedGame(String playerWhite, String playerBlack, String result, int moves, Date date)
+    {
+        try {
+            updateGameHistoryTable();
+            String insertStatement = "INSERT INTO GAME_HISTORY VALUES (1, '" + playerWhite + "', '" + playerBlack + "', '" + result + "', " + moves + ", '" + date + "')";
+            if (statement == null) {
+                statement = getConn().createStatement();
+            }
+            statement.executeUpdate(insertStatement);
+            statement.close();
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(GameHistory.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public ResultSet getHistoryGameInfo(int slotNum)
+    {
+        ResultSet resultSet = null;
+        String queryStatement = "SELECT WHITE, BLACK, RESULT, MOVES, DATE FROM GAME_HISTORY WHERE NUMBER=" + slotNum;
+        
+        try {
+            if (statement == null) {
+                statement = getConn().createStatement();
+            }
+            resultSet = statement.executeQuery(queryStatement);
+            statement.close();
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(GameHistory.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return resultSet;
+    }
+
+    private void updateGameHistoryTable()
+    {
+        try {
+            if (statement == null) {
+                statement = getConn().createStatement();
+            }
+            String updateStatement = "UPDATE GAME_HISTORY SET NUMBER = NUMBER + 1";
+            statement.executeUpdate(updateStatement);
+            String deleteStatement = "DELETE FROM GAME_HISTORY WHERE NUMBER > 4";
+            statement.executeUpdate(deleteStatement);
+            statement.close();
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(GameHistory.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+}

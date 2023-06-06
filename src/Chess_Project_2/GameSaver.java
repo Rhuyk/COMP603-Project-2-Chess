@@ -48,7 +48,9 @@ public class GameSaver extends GameDB {
         String updateStatement = "UPDATE GAME_SAVER SET WHITE = '" + playerWhite + "', BLACK = '" + playerBlack + "', DATE = '" + date + "' WHERE NUMBER = " + slotNum;
         
         try {
-            statement = getConn().createStatement();
+            if (statement == null) {
+                statement = getConn().createStatement();
+            }
             statement.executeUpdate(updateStatement);
             int rowsAffected = statement.getUpdateCount();
 
@@ -71,7 +73,9 @@ public class GameSaver extends GameDB {
         String queryStatement = "SELECT WHITE, BLACK, DATE FROM GAME_SAVER WHERE NUMBER=" + slotNum;
         
         try {
-            statement = getConn().createStatement();
+            if (statement == null) {
+                statement = getConn().createStatement();
+            }
             resultSet = statement.executeQuery(queryStatement);
             statement.close();
         }
