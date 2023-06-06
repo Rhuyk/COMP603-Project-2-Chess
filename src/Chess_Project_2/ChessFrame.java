@@ -17,7 +17,8 @@ public class ChessFrame extends JFrame {
      * Creates new form ChessFrame
      */
     private ChessPanel chessPanel;
-    public ChessFrame() {
+    public ChessFrame() 
+    {
         setTitle("Chess Game");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -59,6 +60,8 @@ public class ChessFrame extends JFrame {
         jLabel3 = new javax.swing.JLabel();
         startButton = new javax.swing.JButton();
         backButton = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
+        guestLogin = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
         restartButton = new javax.swing.JButton();
         drawButton = new javax.swing.JButton();
@@ -234,7 +237,7 @@ public class ChessFrame extends JFrame {
                 startButtonActionPerformed(evt);
             }
         });
-        jPanel2.add(startButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 182, -1, -1));
+        jPanel2.add(startButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, -1, -1));
 
         backButton.setText("Back");
         backButton.addActionListener(new java.awt.event.ActionListener() {
@@ -243,6 +246,17 @@ public class ChessFrame extends JFrame {
             }
         });
         jPanel2.add(backButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 480, 70, -1));
+
+        jLabel9.setText("OR");
+        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 190, 30, 20));
+
+        guestLogin.setText("Guest Login");
+        guestLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guestLoginActionPerformed(evt);
+            }
+        });
+        jPanel2.add(guestLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 190, -1, -1));
 
         jTabbedPane2.addTab("tab2", jPanel2);
 
@@ -369,7 +383,11 @@ public class ChessFrame extends JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    public void switchToTab(int tabIndex) 
+    {
+        jTabbedPane2.setSelectedIndex(tabIndex);
+    }
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
         String player1Name = jTextPane1.getText().trim();
         String player2Name = jTextPane2.getText().trim();
@@ -381,19 +399,11 @@ public class ChessFrame extends JFrame {
         {
             Player player1 = new Player(PieceColour.WHITE,player1Name);
             Player player2 = new Player(PieceColour.BLACK,player2Name);
-            chessPanel = (ChessPanel) jPanel1;
-            chessPanel.setPlayer1(player1);
-            chessPanel.setPlayer2(player2);
-            chessPanel.setCurrentPlayer(player1);
+            setChessPanel((ChessPanel) jPanel1);
+            getChessPanel().setPlayer1(player1);
+            getChessPanel().setPlayer2(player2);
+            getChessPanel().setCurrentPlayer(player1);
             
-//            jLabel1.setVisible(false);
-//            jLabel2.setVisible(false);
-//            jLabel3.setVisible(false);
-//            jTextPane1.setVisible(false);
-//            jTextPane2.setVisible(false);
-//            jButton1.setVisible(false);
-//            jScrollPane2.setVisible(false);
-//            jScrollPane3.setVisible(false);
             jTabbedPane2.setSelectedIndex(3);
             repaint();
         }
@@ -409,7 +419,7 @@ public class ChessFrame extends JFrame {
 
     private void restartButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_restartButtonActionPerformed
         // Restart
-        chessPanel.resetGame(chessPanel.getBoard());
+        getChessPanel().resetGame(getChessPanel().getBoard());
     }//GEN-LAST:event_restartButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
@@ -422,8 +432,8 @@ public class ChessFrame extends JFrame {
 
     private void drawButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drawButtonActionPerformed
         // Draw
-        Player otherPlayer = (chessPanel.getCurrentPlayer() == chessPanel.getPlayer1()) ? chessPanel.getPlayer2() : chessPanel.getPlayer1();
-        int response = JOptionPane.showConfirmDialog(null, chessPanel.getCurrentPlayer().getPlayerName() + " asks for a draw. " + otherPlayer.getPlayerName() + ", do you accept the draw?", "Draw Proposal", JOptionPane.YES_NO_OPTION);
+        Player otherPlayer = (getChessPanel().getCurrentPlayer() == getChessPanel().getPlayer1()) ? getChessPanel().getPlayer2() : getChessPanel().getPlayer1();
+        int response = JOptionPane.showConfirmDialog(null, getChessPanel().getCurrentPlayer().getPlayerName() + " asks for a draw. " + otherPlayer.getPlayerName() + ", do you accept the draw?", "Draw Proposal", JOptionPane.YES_NO_OPTION);
 
         if (response == JOptionPane.YES_OPTION) {
             JOptionPane.showMessageDialog(null, "The game has ended via draw.");
@@ -437,10 +447,10 @@ public class ChessFrame extends JFrame {
     }//GEN-LAST:event_quitButtonActionPerformed
 
     private void resignButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resignButtonActionPerformed
-        int response = JOptionPane.showConfirmDialog(null, chessPanel.getCurrentPlayer().getPlayerName()+", do you wish to resign?", "Resign", JOptionPane.YES_NO_OPTION);
+        int response = JOptionPane.showConfirmDialog(null, getChessPanel().getCurrentPlayer().getPlayerName()+", do you wish to resign?", "Resign", JOptionPane.YES_NO_OPTION);
             if(response == JOptionPane.YES_OPTION)
             {
-                JOptionPane.showMessageDialog(null, chessPanel.getCurrentPlayer().getPlayerName() + " has resigned. This game has ended via resignation");
+                JOptionPane.showMessageDialog(null, getChessPanel().getCurrentPlayer().getPlayerName() + " has resigned. This game has ended via resignation");
             }
     }//GEN-LAST:event_resignButtonActionPerformed
 
@@ -450,13 +460,25 @@ public class ChessFrame extends JFrame {
 
     private void flipButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flipButtonActionPerformed
         //chessPanel
-        chessPanel.flipBoard();
-        chessPanel.repaint();
+        getChessPanel().flipBoard();
+        getChessPanel().repaint();
     }//GEN-LAST:event_flipButtonActionPerformed
 
     private void SaveGameButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveGameButton2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_SaveGameButton2ActionPerformed
+
+    private void guestLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guestLoginActionPerformed
+        Player player1 = new Player(PieceColour.WHITE,"Player 1");
+        Player player2 = new Player(PieceColour.BLACK,"Player 2");
+        setChessPanel((ChessPanel) jPanel1);
+        getChessPanel().setPlayer1(player1);
+        getChessPanel().setPlayer2(player2);
+        getChessPanel().setCurrentPlayer(player1);
+            
+        jTabbedPane2.setSelectedIndex(3);
+        repaint();
+    }//GEN-LAST:event_guestLoginActionPerformed
 
     /**
      * @param args the command line arguments
@@ -500,6 +522,7 @@ public class ChessFrame extends JFrame {
     private javax.swing.JButton backButton;
     private javax.swing.JButton drawButton;
     private javax.swing.JButton flipButton;
+    private javax.swing.JButton guestLogin;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -512,6 +535,7 @@ public class ChessFrame extends JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
@@ -534,4 +558,18 @@ public class ChessFrame extends JFrame {
     private javax.swing.JButton restartButton;
     private javax.swing.JButton startButton;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * @return the chessPanel
+     */
+    public ChessPanel getChessPanel() {
+        return chessPanel;
+    }
+
+    /**
+     * @param chessPanel the chessPanel to set
+     */
+    public void setChessPanel(ChessPanel chessPanel) {
+        this.chessPanel = chessPanel;
+    }
 }

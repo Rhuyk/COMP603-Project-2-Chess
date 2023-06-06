@@ -13,6 +13,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -63,7 +64,8 @@ public class ChessPanel extends JPanel {
                     if (col >= 0 && col < BOARD_SIZE && row >= 0 && row < BOARD_SIZE) 
                     {
                         Piece clickedPiece = getBoard().getBoard()[col][row];
-                        if (selectedPiece == null) {
+                        if(selectedPiece == null) 
+                        {
                             if (clickedPiece != null && clickedPiece.getColour() == getCurrentPlayer().getColourPiece()) 
                             {
                                 selectedPiece = clickedPiece;
@@ -72,16 +74,13 @@ public class ChessPanel extends JPanel {
                                 availableMoves = selectedPiece.getAvailableMoves();
                             }
                         } else {
-                            if (availableMoves[col][row]) 
+                            if(availableMoves[col][row]) 
                             {
-                                if (selectedPiece.getColour() == getCurrentPlayer().getColourPiece() && getBoard().movePiece(selectedCol, selectedRow, col, row)) 
+                                if(selectedPiece.getColour() == getCurrentPlayer().getColourPiece() && getBoard().movePiece(selectedCol, selectedRow, col, row)) 
                                 {
                                     setWhiteTurn(!isWhiteTurn());
-                                } 
-                                else
-                                {
-                                    JOptionPane.showMessageDialog(null, "Illegal move, " + getCurrentPlayer().getColourPiece() + " King is under attack.");
                                 }
+                                
                             }
 
                             selectedPiece = null;
@@ -100,12 +99,33 @@ public class ChessPanel extends JPanel {
                     {
                         currentPlayer = player1;
                     }
+                    
+                    if(!checkForCheckmate())
+                    {
+                        checkForStalement();
+                    }
                 }
             }
         });
     }
     
-
+    public boolean checkForCheckmate() 
+    {
+        if (board.isCheckmate(getCurrentPlayer().getColourPiece())) 
+        {
+            JOptionPane.showMessageDialog(ChessPanel.this, "This Chess Game has ended via Checkmate! Game over.");
+            return true;
+        }
+        return false;
+    }
+    
+    public void checkForStalement()
+    {
+        if(board.isStalemate(getCurrentPlayer().getColourPiece()))
+        {
+            JOptionPane.showMessageDialog(ChessPanel.this, "This Chess Game is a Stalement! Game over.");
+        }
+    }
 
     @Override
     protected void paintComponent(Graphics g) 
