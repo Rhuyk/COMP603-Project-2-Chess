@@ -12,10 +12,10 @@ public class ChessGameController {
     
     private static PiecesOnBoard board = new PiecesOnBoard();
     
-    private static GameDB gameSaver = new GameSaver();
-    private static GameDB gameSRecorder = new GameSaverRecorder();
-    private static GameDB gameHistory = new GameHistory();
-    private static GameDB gameHRecorder = new GameHistoryRecorder();
+    private static GameDB gameSaver;
+    private static GameDB gameSRecorder;
+    private static GameDB gameHistory;
+    private static GameDB gameHRecorder;
     
     private static Player player1;
     private static Player player2;
@@ -31,6 +31,14 @@ public class ChessGameController {
         this.player2 = new Player(PieceColour.BLACK, player2Name);
     }
     
+    public static void main(String[] args) 
+    {
+        gameSaver = new GameSaver();
+        gameSRecorder = new GameSaverRecorder();
+        gameHistory = new GameHistory();
+        gameHRecorder = new GameHistoryRecorder();
+        
+    }
     
     
     
