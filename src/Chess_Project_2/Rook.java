@@ -179,6 +179,9 @@ public class Rook extends Piece {
                 && pieces.getPiece(col, row).getSymbol().contains("K"))
                 {
                     pieces.setInCheck(pieces.getPiece(col, row).getColour(), getPath(col, row));
+                    col = setColUpOrDown(col);
+                    row = setRowUpOrDown(row);
+                    continue;
                 }
                 
                 //if rook pin the opponemt king, send the pin path to the piece that is under pin and set its isUnderPin to true.

@@ -183,14 +183,16 @@ public class Queen extends Piece {
                 targetArea[col][row] = true;
                 
                 //if queen check the opponent king, send the check path to the PiecesOnBoard class for movement restriction.
-                if(pieces.getPiece(col, row).getColour() != super.getColour() 
+                if (pieces.getPiece(col, row).getColour() != super.getColour() 
                 && pieces.getPiece(col, row).getSymbol().contains("K"))
                 {
                     pieces.setInCheck(pieces.getPiece(col, row).getColour(), getPath(col, row));
+                    col = setColUpOrDown(col);
+                    row = setRowUpOrDown(row);
+                    continue;
                 }
-                
                 //if queen pin the opponemt king, send the pin path to the piece that is under pin and set its isUnderPin to true.
-                else if(pieces.getPiece(col, row).getColour() != super.getColour())
+                else if (pieces.getPiece(col, row).getColour() != super.getColour())
                 {
                     int pinnedCol = col;
                     int pinnedRow = row;

@@ -131,7 +131,18 @@ public class PiecesOnBoard {
     //set white or black in check to true, and save the check path.
     public void setInCheck(PieceColour colour, boolean[][] checkPath)
     {
-        this.checkPath = checkPath;
+        for(int col = 0; col < 8; col++)
+        {
+            for(int row = 0; row < 8; row++)
+            {
+                if(this.checkPath[col][row] && checkPath[col][row]) {
+                    this.checkPath[col][row] = true;
+                } else {
+                    this.checkPath[col][row] = false;
+                }
+            }
+        }
+        
         if(colour == PieceColour.WHITE)
         {
             this.whiteIsInCheck = true;
@@ -235,7 +246,7 @@ public class PiecesOnBoard {
         if(king.getSymbol().contains("K") && king.hasNotMoved() && (toRow == 0 || toRow == 7))
         {
             //long castle: if the rook has not moved yet and the castle path has no other pieces
-            if(toCol == 2 && board[0][king.getRow()].hasNotMoved() 
+            if(toCol == 2 && board[0][king.getRow()] != null && board[0][king.getRow()].hasNotMoved() 
                     && board[1][king.getRow()] == null && board[2][king.getRow()] == null && board[3][king.getRow()] == null)
             {
                 availability = true;
@@ -250,7 +261,7 @@ public class PiecesOnBoard {
                 }
             }
             //short castle: if the rook has not moved yet and the castle path has no other pieces
-            else if(toCol == 6 && board[7][king.getRow()].hasNotMoved() 
+            else if(toCol == 6 && board[7][king.getRow()] != null && board[7][king.getRow()].hasNotMoved() 
                     && board[5][king.getRow()] == null && board[6][king.getRow()] == null)
             {
                 availability = true;
