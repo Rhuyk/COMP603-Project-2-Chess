@@ -119,8 +119,8 @@ public class ChessPanel extends JPanel {
     {
         if (board.isCheckmate(getCurrentPlayer().getColourPiece())) 
         {
-            JOptionPane.showMessageDialog(ChessPanel.this, "This Chess Game has ended via Checkmate! Game over.");
             chessFrame.switchTab(4);
+            JOptionPane.showMessageDialog(ChessPanel.this, "This Chess Game has ended via Checkmate! Game over.");
             return true;
         }
         return false;
@@ -151,12 +151,12 @@ public class ChessPanel extends JPanel {
         g.fillRect(CELL_SIZE - frameWidth - 59, CELL_SIZE - frameWidth - 58, boardWidth + 2 * frameWidth, frameWidth); // TOP
         g.fillRect(CELL_SIZE - frameWidth - 59, CELL_SIZE + boardHeight  - 58, boardWidth + 2 * frameWidth, frameWidth);
         g.fillRect(CELL_SIZE + boardWidth - 59, CELL_SIZE - frameWidth - 58, frameWidth, boardHeight + 2 * frameWidth);
-//        if (player1 == null || player2 == null) // Check if player has logged in
-//        {
-//            g.setColor(new Color(0, 0, 0, 200));
-//            g.fillRect(CELL_SIZE - 59, CELL_SIZE - 58, BOARD_SIZE * CELL_SIZE, BOARD_SIZE * CELL_SIZE);
-//            
-//        }
+        if (player1 == null || player2 == null) // Check if player has logged in
+        {
+            g.setColor(new Color(0, 0, 0, 100));
+            g.fillRect(CELL_SIZE - 59, CELL_SIZE - 58, BOARD_SIZE * CELL_SIZE, BOARD_SIZE * CELL_SIZE);
+            
+        }
         
         if(availableMoves != null)
         {
