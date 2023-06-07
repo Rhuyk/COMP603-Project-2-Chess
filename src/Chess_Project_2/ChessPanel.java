@@ -24,6 +24,7 @@ public class ChessPanel extends JPanel {
     private boolean[][] availableMoves;
     private int selectedRow = -1;
     private int selectedCol = -1;
+
     private Player player1;
     private Player player2;
     private Player currentPlayer;
@@ -32,11 +33,14 @@ public class ChessPanel extends JPanel {
     private int currentRow;
     private int rowChange;
     private boolean flipFlag = false;
+    private boolean toggleSwitch = false;
     private String moves;
     private ChessFrame chessFrame;
+    //private ChessGameController gameController;
     
     public ChessPanel(ChessFrame frame) 
     {
+        //gameController = new ChessGameController();
         chessFrame = frame;
         moves = "";
         setLayout(new BorderLayout());
@@ -58,13 +62,13 @@ public class ChessPanel extends JPanel {
                 {
                     int col = e.getX() / CELL_SIZE;
                     int row = (BOARD_SIZE - 1) - e.getY() / CELL_SIZE;
-                    if (flipFlag) 
+                    if (isFlipFlag()) 
                     {
                         row = (BOARD_SIZE - 1) - row;
                     }
                     if (col >= 0 && col < BOARD_SIZE && row >= 0 && row < BOARD_SIZE) 
                     {
-                        Piece clickedPiece = getBoard().getBoard()[col][row];
+                        Piece clickedPiece = board.getBoard()[col][row];
                         if(selectedPiece == null) 
                         {
                             if (clickedPiece != null && clickedPiece.getColour() == getCurrentPlayer().getColourPiece()) 
@@ -77,14 +81,16 @@ public class ChessPanel extends JPanel {
                         } else {
                             if(availableMoves[col][row]) 
                             {
-                                if(selectedPiece.getColour() == getCurrentPlayer().getColourPiece() && getBoard().movePiece(selectedCol, selectedRow, col, row)) 
+                                if(selectedPiece.getColour() == getCurrentPlayer().getColourPiece() && board.movePiece(selectedCol, selectedRow, col, row)) 
                                 {
                                     setWhiteTurn(!isWhiteTurn());
+                                    flipBoard();
                                     moves = "(" + selectedPiece.getSymbol() + ")" + String.format(" %s%d, %s%d%n", (char)('a' + selectedCol), selectedRow + 1, (char)('a' + col), row + 1);
                                     if(chessFrame != null)
                                     {
                                         chessFrame.updateMovesTextArea();
                                     }
+                                   
                                 }
                                 
                             }
@@ -169,7 +175,7 @@ public class ChessPanel extends JPanel {
     {
         currentRow = 7;
         rowChange = -1;
-        if(flipFlag)
+        if(isFlipFlag())
         {
             currentRow = 0;
             rowChange = 1;
@@ -222,6 +228,17 @@ public class ChessPanel extends JPanel {
                     g.setColor(Color.BLACK);
                     g.drawString(String.valueOf(BOARD_SIZE - row), x + 3, y + CELL_SIZE / 2 - 16);
                 }
+                
+                if (piece != null && piece.getSymbol().contains("K") && board.isInCheck(piece.getColour())) {
+                    g.setColor(Color.RED);
+                    g.drawRect(x, y, CELL_SIZE - 1, CELL_SIZE - 1);
+                }
+                
+                // Add yellow overlay on the square where the piece was
+                if (selectedCol == col && selectedRow == currentRow) {
+                    g.setColor(new Color(255, 255, 0, 100));
+                    g.fillRect(x, y, CELL_SIZE, CELL_SIZE);
+                }
             }
             currentRow += rowChange; 
         }
@@ -229,7 +246,10 @@ public class ChessPanel extends JPanel {
     
     public void flipBoard()
     {
-        flipFlag = !flipFlag;
+        if(isToggleSwitch())
+        {
+            setFlipFlag(!isFlipFlag());
+        }
     }
     
     private void drawAvailableMoves(Graphics g) 
@@ -246,7 +266,7 @@ public class ChessPanel extends JPanel {
                     {
                         int x = col * CELL_SIZE;
                         int y = (BOARD_SIZE - 1 - row) * CELL_SIZE; 
-                        if (flipFlag) {
+                        if (isFlipFlag()) {
                         y = row * CELL_SIZE;
                         } 
                         
@@ -277,9 +297,8 @@ public class ChessPanel extends JPanel {
     
     public void resetGame(PiecesOnBoard board) 
     {
-        board.clearAllPieces();
+        //gameController.startNewGame();
         board.resetBoardAndPieces();
-        board.refreshBoard();
         selectedRow = -1;
         selectedCol = -1;
         availableMoves = new boolean[8][8];
@@ -363,5 +382,33 @@ public class ChessPanel extends JPanel {
      */
     public void setChessFrame(ChessFrame chessFrame) {
         this.chessFrame = chessFrame;
+    }
+
+    /**
+     * @return the flipFlag
+     */
+    public boolean isFlipFlag() {
+        return flipFlag;
+    }
+
+    /**
+     * @param flipFlag the flipFlag to set
+     */
+    public void setFlipFlag(boolean flipFlag) {
+        this.flipFlag = flipFlag;
+    }
+
+    /**
+     * @return the toggleSwitch
+     */
+    public boolean isToggleSwitch() {
+        return toggleSwitch;
+    }
+
+    /**
+     * @param toggleSwitch the toggleSwitch to set
+     */
+    public void setToggleSwitch(boolean toggleSwitch) {
+        this.toggleSwitch = toggleSwitch;
     }
 }
