@@ -64,11 +64,6 @@ public class King extends Piece {
         //castle moves
         setAvailableMoves(col+2, row);
         setAvailableMoves(col-2, row);
-        
-        if(pieces.isInCheck(this.getColour()))
-        {
-            setUnavailableMoves();
-        }
 
         return availableMoves;
     }
@@ -124,51 +119,6 @@ public class King extends Piece {
         if(col <= 7 && col >= 0 && row <= 7 && row >= 0)
         {
             targetArea[col][row] = true;
-        }
-    }
-    
-    //set the square behind the king while being checked as unavailable square (from any direction)
-    private void setUnavailableMoves()
-    {
-        int col = super.getColumn();
-        int row = super.getRow();
-
-        setUnavailableMove(col+1, row);
-        setUnavailableMove(col-1, row);
-        setUnavailableMove(col, row+1);
-        setUnavailableMove(col, row-1);
-        setUnavailableMove(col+1, row+1);
-        setUnavailableMove(col+1, row-1);
-        setUnavailableMove(col-1, row+1);
-        setUnavailableMove(col-1, row-1);
-    }
-    
-    //set the square behind the king while being checked as unavailable square
-    private void setUnavailableMove(int col, int row)
-    {
-        if((col <= 7 && col >= 0 && row <= 7 && row >= 0) && pieces.getCheckPath()[col][row])
-        {
-            if((col - super.getColumn()) > 0)
-            {
-                col = super.getColumn() - 1;
-            }
-            else if((col - super.getColumn()) < 0)
-            {
-                col = super.getColumn() + 1;
-            }
-            if((row - super.getRow()) > 0)
-            {
-                row = super.getRow() - 1;
-            }
-            else if((row - super.getRow()) < 0)
-            {
-                row = super.getRow() + 1;
-            }
-            
-            if(col <= 7 && col >= 0 && row <= 7 && row >= 0)
-            {
-                availableMoves[col][row] = false;
-            }
         }
     }
 }
