@@ -26,7 +26,7 @@ public final class GameHistoryRecorder extends GameDB {
     
     public void createTable() {
         
-        String createStatement = "CREATE TABLE GAME_HISTORY_RECORDER (NUMBER INT, MOVE_NUM INT, PIECE_TYPE VARCHAR(2), LOCATION INT)";
+        String createStatement = "CREATE TABLE GAME_HISTORY_RECORDER (NUMBER INT, MOVE_NUM INT, PIECE_TYPE VARCHAR(2), col INT, row INT)";
         
         try {
             // Check if the table already exists
@@ -44,8 +44,8 @@ public final class GameHistoryRecorder extends GameDB {
     
     public void uploadCompletedGame()
     {
-        String insertStatement = "INSERT INTO GAME_HISTORY_RECORDER (NUMBER, MOVE_NUM, PIECE_TYPE, LOCATION) " +
-                                 "SELECT NUMBER, MOVE_NUM, PIECE_TYPE, LOCATION " +
+        String insertStatement = "INSERT INTO GAME_HISTORY_RECORDER (NUMBER, MOVE_NUM, PIECE_TYPE, col, row) " +
+                                 "SELECT NUMBER, MOVE_NUM, PIECE_TYPE, col, row " +
                                  "FROM GAME_SAVER_RECORDER " +
                                  "WHERE NUMBER = 0";
         try {
@@ -64,7 +64,7 @@ public final class GameHistoryRecorder extends GameDB {
     public ResultSet getHistoryGameBoard(int slotNum)
     {
         ResultSet resultset = null;
-        String queryStatement = "SELECT MOVE_NUM, PIECE_TYPE, LOCATION FROM GAME_SAVER_RECORDER WHERE NUMBER=" + slotNum + " ORDER BY MOVE_NUM ASC";
+        String queryStatement = "SELECT MOVE_NUM, PIECE_TYPE, col, row FROM GAME_SAVER_RECORDER WHERE NUMBER=" + slotNum + " ORDER BY MOVE_NUM ASC";
         
         try {
             if (statement == null) {

@@ -10,13 +10,13 @@ import java.util.Scanner;
  *
  * @author rh200
  */
-public class PiecesOnBoard {
-    private static Piece[][] board = new Piece[8][8]; // Piece[column][row]
+public final class PiecesOnBoard {
+    private static final Piece[][] board = new Piece[8][8]; // Piece[column][row]
+    private static final boolean[][] checkPath = new boolean[8][8];
     private static AllPieces allPieces = new AllPieces();
-    private static int moveNum = 0;
-    private static boolean[][] checkPath = new boolean[8][8];
     private static boolean whiteIsInCheck = false;
     private static boolean blackIsInCheck = false;
+    private static int moveNum = 0;
     
     //Board Constructor
     public PiecesOnBoard()
@@ -71,7 +71,17 @@ public class PiecesOnBoard {
     //return the board
     public Piece[][] getBoard()
     {
-        return this.board;
+        return board;
+    }
+    
+    public int getMoveNum()
+    {
+        return moveNum;
+    }
+    
+    public void setMoveNum(int moveNum)
+    {
+        this.moveNum = moveNum;
     }
     
     //return piece from a selected square on the board
@@ -82,7 +92,7 @@ public class PiecesOnBoard {
     
     public AllPieces getPieces()
     {
-        return this.allPieces;
+        return allPieces;
     }
     
     //add a piece to white or black pieces list

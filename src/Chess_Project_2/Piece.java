@@ -107,10 +107,20 @@ public abstract class Piece {
         return this.hasNotMoved;
     }
     
+    public void setHasNotMoved(boolean TorF)
+    {
+        hasNotMoved = TorF;
+    }
+    
     //return true if the piece only moved once
     public boolean hasMovedOnce()
     {
         return this.hasMovedOnce;
+    }
+    
+    public void setHasMovedOnce(boolean TorF)
+    {
+        hasMovedOnce = TorF;
     }
     
     //return the path of pin area on the board

@@ -1,13 +1,14 @@
+Wed Jun 07 22:43:20 NZST 2023 : Apache Derby Network Server - 10.14.2.0 - (1828579) started and ready to accept connections on port 1527
 ----------------------------------------------------------------
-Wed Jun 07 00:07:01 NZST 2023:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0188-909a-754c-00000ec70178 
-on database directory C:\Users\User\Documents\NetBeansProjects\COMP603-Project-2\ChessDB with class loader sun.misc.Launcher$AppClassLoader@55f96302 
-Loaded from file:/C:/Users/User/Documents/NetBeansProjects/COMP603-Project-2/lib/derby.jar
+Wed Jun 07 22:43:20 NZST 2023:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0188-9574-336a-ffffe69158af 
+on database directory C:\Users\rh200\Documents\NetBeansProjects\COMP603-Project-2-Chess\ChessDB with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
+Loaded from file:/C:/Users/rh200/Desktop/COMP603/db-derby-10.14.2.0-bin/lib/derby.jar
 java.vendor=Oracle Corporation
 java.runtime.version=1.8.0_361-b09
-user.dir=C:\Users\User\Documents\NetBeansProjects\COMP603-Project-2
-os.name=Windows 10
+user.dir=C:\Users\rh200\Desktop\COMP603\db-derby-10.14.2.0-bin
+os.name=Windows 11
 os.arch=amd64
 os.version=10.0
-derby.system.home=null
+derby.system.home=C:\Users\rh200\Documents\NetBeansProjects\COMP603-Project-2-Chess
 Database Class Loader started - derby.database.classpath=''

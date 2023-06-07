@@ -6,9 +6,7 @@ package Chess_Project_2;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 /**
  *
@@ -21,7 +19,6 @@ public class GameDB {
     private static final String URL = "jdbc:derby:ChessDB; create=true";  //url of the DB host
     private static Connection conn = null;
     
-    
     public GameDB() {
         dbSetup();
     }
@@ -33,6 +30,7 @@ public class GameDB {
             if (conn == null) {
                 conn = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
                 System.out.println(URL + " get CONNECTED...");
+                System.out.println(getConn());
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());

@@ -4,9 +4,6 @@
  */
 package Chess_Project_2;
 
-import java.awt.Image;
-import javax.swing.ImageIcon;
-
 /**
  *
  * @author rh200
