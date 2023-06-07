@@ -13,10 +13,15 @@ public class King extends Piece {
     private boolean[][] availableMoves = new boolean[8][8];
     private boolean[][] targetArea = new boolean[8][8];
     private PiecesOnBoard pieces;
-    //king piece constructor
+
     public King(PieceColour colour, int col, int row)
     {
         super(colour, col, row);
+    }
+    
+    public King(PieceColour colour, int col, int row, int LMN, boolean HNM, boolean HMO)
+    {
+        super(colour, col, row, LMN, HNM, HMO);
     }
     
     //return white king or black king symbol

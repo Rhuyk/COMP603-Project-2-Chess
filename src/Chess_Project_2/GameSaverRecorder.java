@@ -111,9 +111,9 @@ public final class GameSaverRecorder extends GameDB {
             }
             statement.executeUpdate(deleteStatement);
             statement.close();
-            if (slotNum == 0) {
-                currentGameMoveNum = 0;
-            }
+//            if (slotNum == 0) {
+//                currentGameMoveNum = 0;
+//            }
         }
         catch (SQLException ex) {
             Logger.getLogger(GameSaverRecorder.class.getName()).log(Level.SEVERE, null, ex);

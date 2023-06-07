@@ -28,9 +28,20 @@ public abstract class Piece {
         this.colour = colour;
         this.column = col;
         this.row = row;
+        this.lastmoveNum = 0;
         this.hasNotMoved = true;
         this.hasMovedOnce = false;
-        this.lastmoveNum = 0;
+    }
+    
+    //a piece constructor
+    public Piece(PieceColour colour, int col, int row, int LMN, boolean HNM, boolean HMO)
+    {
+        this.colour = colour;
+        this.column = col;
+        this.row = row;
+        this.lastmoveNum = LMN;
+        this.hasNotMoved = HNM;
+        this.hasMovedOnce = HMO;
     }
     
     public Image getImage()
@@ -81,10 +92,9 @@ public abstract class Piece {
         return this.lastmoveNum;
     }
     
-    //set the move number to the piece
-    public void setLastMoveNum(int num)
+    public void setLastMoveNum(int LMN)
     {
-        this.lastmoveNum = num;
+        lastmoveNum = LMN;
     }
     
     //set move has being done
@@ -107,20 +117,10 @@ public abstract class Piece {
         return this.hasNotMoved;
     }
     
-    public void setHasNotMoved(boolean TorF)
-    {
-        hasNotMoved = TorF;
-    }
-    
     //return true if the piece only moved once
     public boolean hasMovedOnce()
     {
         return this.hasMovedOnce;
-    }
-    
-    public void setHasMovedOnce(boolean TorF)
-    {
-        hasMovedOnce = TorF;
     }
     
     //return the path of pin area on the board
@@ -136,9 +136,9 @@ public abstract class Piece {
     }
     
     //set this piece as under pin
-    public void setUnderPin(boolean is)
+    public void setUnderPin(boolean TorF)
     {
-        this.isUnderPin = is;
+        this.isUnderPin = TorF;
     }
     
     //return true is the piece is under pin, else false

@@ -14,10 +14,14 @@ public class Rook extends Piece {
     private boolean[][] targetArea = new boolean[8][8];
     private PiecesOnBoard pieces;
     
-    //rook piece constructor
     public Rook(PieceColour colour,int col, int row)
     {
         super(colour, col, row);
+    }
+    
+    public Rook(PieceColour colour, int col, int row, int LMN, boolean HNM, boolean HMO)
+    {
+        super(colour, col, row, LMN, HNM, HMO);
     }
     
     //return white rook or black rook symbol

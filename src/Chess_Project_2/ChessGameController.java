@@ -26,6 +26,8 @@ public class ChessGameController {
     private static Player player1;
     private static Player player2;
     
+    private PieceColour colourTurn;
+    
     public static void main(String[] args) {
         
     }
@@ -39,7 +41,26 @@ public class ChessGameController {
     public void movePiece(int fromCol, int fromRow, int toCol, int toRow)
     {
         board.movePiece(fromCol, fromRow, toCol, toRow);
+        //if promote...
         recordCurrentBoard();
+        colourTurn = colourTurn.getOppColour();
+    }
+    
+    public Piece[][] getBoard()
+    {
+        return board.getBoard();
+    }
+    
+    public PieceColour getCurrentColourTurn()
+    {
+        return colourTurn;
+    }
+    
+    public void startNewGame()
+    {
+        board.resetBoardAndPieces();
+        gameSRecorder.deleteGame(0);
+        colourTurn = PieceColour.WHITE;
     }
     
     public void saveGame(int slotNum) //1 to 5
@@ -81,6 +102,7 @@ public class ChessGameController {
                 board.addPiece(piece);
             }
             board.refreshBoard();
+            colourTurn = board.getPieces().getCurrentColourTurn();
         } catch (SQLException ex) {
             Logger.getLogger(ChessGameController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -99,20 +121,6 @@ public class ChessGameController {
             colour = PieceColour.BLACK;
         }
         
-        if (pieceType.contains("P")) {
-            piece = new Pawn(colour, col, row);
-        } else if (pieceType.contains("Q")) {
-            piece = new Queen(colour, col, row);
-        } else if (pieceType.contains("B")) {
-            piece = new Bishop(colour, col, row);
-        } else if (pieceType.contains("R")) {
-            piece = new Rook(colour, col, row);
-        } else if (pieceType.contains("N")) {
-            piece = new Knight(colour, col, row);
-        } else {
-            piece = new King(colour, col, row);
-        }
-        
         if (HNM == 1) {
             HNMboolean = true;
         } else {
@@ -124,9 +132,20 @@ public class ChessGameController {
             HMOboolean = false;
         }
         
-        piece.setLastMoveNum(LMN);
-        piece.setHasNotMoved(HNMboolean);
-        piece.setHasMovedOnce(HMOboolean);
+        if (pieceType.contains("P")) {
+            piece = new Pawn(colour, col, row, LMN, HNMboolean, HMOboolean);
+        } else if (pieceType.contains("Q")) {
+            piece = new Queen(colour, col, row, LMN, HNMboolean, HMOboolean);
+        } else if (pieceType.contains("B")) {
+            piece = new Bishop(colour, col, row, LMN, HNMboolean, HMOboolean);
+        } else if (pieceType.contains("R")) {
+            piece = new Rook(colour, col, row, LMN, HNMboolean, HMOboolean);
+        } else if (pieceType.contains("N")) {
+            piece = new Knight(colour, col, row, LMN, HNMboolean, HMOboolean);
+        } else {
+            piece = new King(colour, col, row, LMN, HNMboolean, HMOboolean);
+        }
+        
         return piece;
     }
     

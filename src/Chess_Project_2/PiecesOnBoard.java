@@ -17,6 +17,7 @@ public final class PiecesOnBoard {
     private static boolean whiteIsInCheck = false;
     private static boolean blackIsInCheck = false;
     private static int moveNum = 0;
+    private static Piece promotionPawn;
     
     //Board Constructor
     public PiecesOnBoard()
@@ -62,7 +63,7 @@ public final class PiecesOnBoard {
             //pawn promotion
             if(board[toCol][toRow] != null)
             {
-                promote(board[toCol][toRow]);
+                //promote(board[toCol][toRow]);
             }
         }
         return true;
@@ -374,44 +375,58 @@ public final class PiecesOnBoard {
         refreshBoard();
     }
     
-    //promote pawn to other piece
-    private void promote(Piece pawn)
-    {
-        int col = pawn.getColumn();
-        int row = pawn.getRow();
-        Scanner scanner = new Scanner(System.in);
-        
-        //if white pawn reach the end of the board
-        if(pawn.getSymbol().contains("P") && (pawn.getRow() == 7 || pawn.getRow() == 0))
-        {
-            Piece promotion;
-            System.out.println("Please enter your promotion: ");
-            String userInput = scanner.nextLine();
-            
-            //player select promotion piece
-            if(userInput.equalsIgnoreCase("queen"))
-            {
-                promotion = new Queen(pawn.getColour(), col, row);
-                allPieces.replacePiece(promotion, col, row);
-            }
-            else if(userInput.equalsIgnoreCase("bishop"))
-            {
-                promotion = new Bishop(pawn.getColour(), col, row);
-                allPieces.replacePiece(promotion, col, row);
-            }
-            else if(userInput.equalsIgnoreCase("knight"))
-            {
-                promotion = new Knight(pawn.getColour(), col, row);
-                allPieces.replacePiece(promotion, col, row);
-            }
-            else if(userInput.equalsIgnoreCase("rook"))
-            {
-                promotion = new Rook(pawn.getColour(), col, row);
-                allPieces.replacePiece(promotion, col, row);
-            }   
-        }
-        refreshBoard();
-    }
+//    private void promote(Piece pawn)
+//    {
+//        boolean availability = false;
+//        int col = pawn.getColumn();
+//        int row = pawn.getRow();
+//        
+//        if(pawn.getSymbol().contains("P") && (pawn.getRow() == 7 || pawn.getRow() == 0))
+//        {
+//            
+//        }
+//        
+//        return availability;
+//    }
+//    
+//    //promote pawn to other piece
+//    public void promote(Piece pawn)
+//    {
+//        int col = pawn.getColumn();
+//        int row = pawn.getRow();
+//        Scanner scanner = new Scanner(System.in);
+//        
+//        //if white pawn reach the end of the board
+//        if(pawn.getSymbol().contains("P") && (pawn.getRow() == 7 || pawn.getRow() == 0))
+//        {
+//            Piece promotion;
+//            System.out.println("Please enter your promotion: ");
+//            String userInput = scanner.nextLine();
+//            
+//            //player select promotion piece
+//            if(userInput.equalsIgnoreCase("queen"))
+//            {
+//                promotion = new Queen(pawn.getColour(), col, row);
+//                allPieces.replacePiece(promotion, col, row);
+//            }
+//            else if(userInput.equalsIgnoreCase("bishop"))
+//            {
+//                promotion = new Bishop(pawn.getColour(), col, row);
+//                allPieces.replacePiece(promotion, col, row);
+//            }
+//            else if(userInput.equalsIgnoreCase("knight"))
+//            {
+//                promotion = new Knight(pawn.getColour(), col, row);
+//                allPieces.replacePiece(promotion, col, row);
+//            }
+//            else if(userInput.equalsIgnoreCase("rook"))
+//            {
+//                promotion = new Rook(pawn.getColour(), col, row);
+//                allPieces.replacePiece(promotion, col, row);
+//            }   
+//        }
+//        refreshBoard();
+//    }
     
     private void move(int fromCol, int fromRow, int toCol, int toRow)
     {

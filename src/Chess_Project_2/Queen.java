@@ -14,10 +14,14 @@ public class Queen extends Piece {
     private boolean[][] targetArea = new boolean[8][8];
     private PiecesOnBoard pieces;
     
-    //queen piece constructor
     public Queen(PieceColour colour,int col, int row)
     {
         super(colour, col, row);
+    }
+    
+    public Queen(PieceColour colour, int col, int row, int LMN, boolean HNM, boolean HMO)
+    {
+        super(colour, col, row, LMN, HNM, HMO);
     }
     
     //return white queen or black queen symbol

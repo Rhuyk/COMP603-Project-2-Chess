@@ -164,4 +164,20 @@ public class AllPieces {
             i.setUnderPin(false);
         }
     }
+    
+    public PieceColour getCurrentColourTurn()
+    {
+        int moveNum = 0;
+        PieceColour lastMovedColour = PieceColour.BLACK;
+        for(Piece i : pieces)
+        {
+            if(i.getLastMoveNum() > moveNum)
+            {
+                moveNum = i.getLastMoveNum();
+                lastMovedColour = i.getColour();
+            }
+        }
+        
+        return lastMovedColour.getOppColour();
+    }
 }
