@@ -16,8 +16,9 @@ public final class PiecesOnBoard {
     private static AllPieces allPieces = new AllPieces();
     private static boolean whiteIsInCheck = false;
     private static boolean blackIsInCheck = false;
-    private static int moveNum = 0;
+    private static boolean isPromoting = false;
     private static Piece promotionPawn;
+    private static int moveNum = 0;
     
     //Board Constructor
     public PiecesOnBoard()
@@ -60,11 +61,7 @@ public final class PiecesOnBoard {
                 return false;
             }
             
-            //pawn promotion
-            if(board[toCol][toRow] != null)
-            {
-                //promote(board[toCol][toRow]);
-            }
+            checkPromotion(board[toCol][toRow]);
         }
         return true;
     }
@@ -94,6 +91,11 @@ public final class PiecesOnBoard {
     public AllPieces getPieces()
     {
         return allPieces;
+    }
+    
+    public boolean isPromoting()
+    {
+        return isPromoting;
     }
     
     //add a piece to white or black pieces list
@@ -375,58 +377,47 @@ public final class PiecesOnBoard {
         refreshBoard();
     }
     
-//    private void promote(Piece pawn)
-//    {
-//        boolean availability = false;
-//        int col = pawn.getColumn();
-//        int row = pawn.getRow();
-//        
-//        if(pawn.getSymbol().contains("P") && (pawn.getRow() == 7 || pawn.getRow() == 0))
-//        {
-//            
-//        }
-//        
-//        return availability;
-//    }
-//    
-//    //promote pawn to other piece
-//    public void promote(Piece pawn)
-//    {
-//        int col = pawn.getColumn();
-//        int row = pawn.getRow();
-//        Scanner scanner = new Scanner(System.in);
-//        
-//        //if white pawn reach the end of the board
-//        if(pawn.getSymbol().contains("P") && (pawn.getRow() == 7 || pawn.getRow() == 0))
-//        {
-//            Piece promotion;
-//            System.out.println("Please enter your promotion: ");
-//            String userInput = scanner.nextLine();
-//            
-//            //player select promotion piece
-//            if(userInput.equalsIgnoreCase("queen"))
-//            {
-//                promotion = new Queen(pawn.getColour(), col, row);
-//                allPieces.replacePiece(promotion, col, row);
-//            }
-//            else if(userInput.equalsIgnoreCase("bishop"))
-//            {
-//                promotion = new Bishop(pawn.getColour(), col, row);
-//                allPieces.replacePiece(promotion, col, row);
-//            }
-//            else if(userInput.equalsIgnoreCase("knight"))
-//            {
-//                promotion = new Knight(pawn.getColour(), col, row);
-//                allPieces.replacePiece(promotion, col, row);
-//            }
-//            else if(userInput.equalsIgnoreCase("rook"))
-//            {
-//                promotion = new Rook(pawn.getColour(), col, row);
-//                allPieces.replacePiece(promotion, col, row);
-//            }   
-//        }
-//        refreshBoard();
-//    }
+    private void checkPromotion(Piece pawn)
+    {
+        if(pawn.getSymbol().contains("P") && (pawn.getRow() == 7 || pawn.getRow() == 0))
+        {
+            promotionPawn = pawn;
+            isPromoting = true;
+        }
+    }
+    
+    //promote pawn to other piece
+    public void promote(String pieceType)
+    {
+        int col = promotionPawn.getColumn();
+        int row = promotionPawn.getRow();
+        Piece promotion;
+        
+        //player select promotion piece
+        if(pieceType.contains("Q"))
+        {
+            promotion = new Queen(promotionPawn.getColour(), col, row);
+            allPieces.replacePiece(promotion, col, row);
+        }
+        else if(pieceType.contains("B"))
+        {
+            promotion = new Bishop(promotionPawn.getColour(), col, row);
+            allPieces.replacePiece(promotion, col, row);
+        }
+        else if(pieceType.contains("N"))
+        {
+            promotion = new Knight(promotionPawn.getColour(), col, row);
+            allPieces.replacePiece(promotion, col, row);
+        }
+        else if(pieceType.contains("R"))
+        {
+            promotion = new Rook(promotionPawn.getColour(), col, row);
+            allPieces.replacePiece(promotion, col, row);
+        }   
+        
+        isPromoting = false;
+        refreshBoard();
+    }
     
     private void move(int fromCol, int fromRow, int toCol, int toRow)
     {

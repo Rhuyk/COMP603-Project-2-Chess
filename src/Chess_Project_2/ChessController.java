@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  *
  * @author rh200
  */
-public class ChessGameController {
+public class ChessController {
     
     private static PiecesOnBoard board = new PiecesOnBoard();
     
@@ -26,7 +26,7 @@ public class ChessGameController {
     private static Player player1;
     private static Player player2;
     
-    private PieceColour colourTurn;
+    private PieceColour colourTurn = PieceColour.WHITE;
     
     public static void main(String[] args) {
         
@@ -44,6 +44,16 @@ public class ChessGameController {
         //if promote...
         recordCurrentBoard();
         colourTurn = colourTurn.getOppColour();
+    }
+    
+    public boolean isPromoting()
+    {
+        return board.isPromoting();
+    }
+    
+    public void promote(String pieceType)
+    {
+        board.promote(pieceType);
     }
     
     public Piece[][] getBoard()
@@ -104,7 +114,7 @@ public class ChessGameController {
             board.refreshBoard();
             colourTurn = board.getPieces().getCurrentColourTurn();
         } catch (SQLException ex) {
-            Logger.getLogger(ChessGameController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ChessController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
