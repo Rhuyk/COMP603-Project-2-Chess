@@ -36,11 +36,11 @@ public class ChessPanel extends JPanel {
     private boolean toggleSwitch = false;
     private String moves;
     private ChessFrame chessFrame;
-    //private ChessGameController gameController;
+    private ChessController chessController;
     
     public ChessPanel(ChessFrame frame) 
     {
-        //gameController = new ChessGameController();
+        chessController = new ChessController();
         chessFrame = frame;
         moves = "";
         setLayout(new BorderLayout());
@@ -114,11 +114,22 @@ public class ChessPanel extends JPanel {
                     
                     if(!checkForCheckmate())
                     {
+                        checkForPromotion();
                         checkForStalement();
                     }
                 }
             }
         });
+    }
+    
+    public boolean checkForPromotion()
+    {
+        if(chessController.canPromote())
+        {
+            chessFrame.switchTab(5);
+            return true;
+        }
+        return false;
     }
     
     public boolean checkForCheckmate() 
@@ -410,5 +421,19 @@ public class ChessPanel extends JPanel {
      */
     public void setToggleSwitch(boolean toggleSwitch) {
         this.toggleSwitch = toggleSwitch;
+    }
+
+    /**
+     * @return the chessController
+     */
+    public ChessController getChessController() {
+        return chessController;
+    }
+
+    /**
+     * @param chessController the chessController to set
+     */
+    public void setChessController(ChessController chessController) {
+        this.chessController = chessController;
     }
 }

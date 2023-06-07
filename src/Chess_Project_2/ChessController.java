@@ -46,9 +46,9 @@ public class ChessController {
         colourTurn = colourTurn.getOppColour();
     }
     
-    public boolean isPromoting()
+    public boolean canPromote()
     {
-        return board.isPromoting();
+        return board.canPromote();
     }
     
     public void promote(String pieceType)

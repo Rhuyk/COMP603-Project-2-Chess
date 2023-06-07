@@ -93,7 +93,7 @@ public final class PiecesOnBoard {
         return allPieces;
     }
     
-    public boolean isPromoting()
+    public boolean canPromote()
     {
         return isPromoting;
     }
