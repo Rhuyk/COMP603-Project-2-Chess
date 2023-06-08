@@ -23,7 +23,7 @@ public class ChessController {
     private static GameHistoryRecorder gameHRecorder;
     private static Player player1;
     private static Player player2;
-    private PieceColour colourTurn;
+    private static PieceColour colourTurn;
 
     // Constructs ChessController class
     public ChessController()
