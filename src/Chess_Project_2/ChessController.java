@@ -25,6 +25,7 @@ public class ChessController {
     private static Player player2;
     private PieceColour colourTurn;
 
+    // Constructs ChessController class
     public ChessController()
     {
         board = new PiecesOnBoard();
@@ -35,22 +36,26 @@ public class ChessController {
         colourTurn = PieceColour.WHITE;
     }
     
+    // Returns current chess board
     public Piece[][] getBoard()
     {
         return board.getBoard();
     }
     
+    // Returns current player turn (black or white)
     public PieceColour getCurrentColourTurn()
     {
         return colourTurn;
     }
     
+    // Sets players' name
     public void setPlayers(String playerWhite, String playerBlack)
     {
         player1 = new Player(PieceColour.WHITE, playerWhite);
         player2 = new Player(PieceColour.BLACK, playerBlack);
     }
     
+    // Moves a chess piece and updates the board
     public void movePiece(int fromCol, int fromRow, int toCol, int toRow)
     {
         board.movePiece(fromCol, fromRow, toCol, toRow);
@@ -58,16 +63,27 @@ public class ChessController {
         colourTurn = colourTurn.getOppColour();
     }
     
+    // Returns true or false if a pawn promotion is available
     public boolean canPromote()
     {
         return board.canPromote();
     }
     
+    /**
+     * Promotes the pawn to a pieceType
+     * 
+     * @param pieceType ("Q", "B", "R", "N")
+     */
     public void promote(String pieceType)
     {
         board.promote(pieceType);
     }
     
+    /**
+     * Uploads the chess game into the database if the game ended
+     * 
+     * @return true or false if the game has ended
+     */
     public boolean gameEnded()
     {
         if (board.isCheckmate(colourTurn) || board.isStalemate(colourTurn))
@@ -79,24 +95,38 @@ public class ChessController {
         return false;
     }
     
+    // Uploads the resigned chess game into the database
     public void resignGame()
     {
         gameHistory.uploadCompletedGame(player1.getName(), player2.getName(), getGameResult(colourTurn, true), board.getMoveNum(), getCurrentDate());
         gameHRecorder.uploadCompletedGame();
     }
     
+    // Uploads the draw chess game into the database
     public void drawGame()
     {
         gameHistory.uploadCompletedGame(player1.getName(), player2.getName(), "DD", board.getMoveNum(), getCurrentDate());
         gameHRecorder.uploadCompletedGame();
     }
     
+    /**
+     * Gets a history game info at a certain slot
+     * 
+     * @param slotNum (1, 2, 3, 4, 5)
+     * @return a result set, where col 1: (white player name), col 2: (black player name), col 3: (game outcome), col 4: (# of moves), col 5: (date)
+     */
     public ResultSet getGameHistoryInfo(int slotNum)
     {
         return gameHistory.getHistoryGameInfo(slotNum);
     }
     
-    public void setHistoryGameBoard(int slotNum, int moveNum)
+    /**
+     * Loads a game board of a history game and updates the board
+     * 
+     * @param slotNum (1, 2, 3, 4, 5)
+     * @param boardNum (from 0 to max board number), max board number can be obtained from getGameHistoryInfo(slotNum) column 4
+     */
+    public void loadHistoryGameBoard(int slotNum, int boardNum)
     {
         ResultSet resultSet = gameHRecorder.getHistoryGameBoard(slotNum);
         
@@ -104,7 +134,7 @@ public class ChessController {
             board.clearAllPieces();
             while(resultSet.next())
             {
-                if (resultSet.getInt("MOVE_NUM") == moveNum)
+                if (resultSet.getInt("MOVE_NUM") == boardNum)
                 {
                     Piece piece = createPiece(resultSet.getString(3), resultSet.getInt(4), resultSet.getInt(5), 0, 0, 0);
                     board.addPiece(piece);
@@ -117,6 +147,7 @@ public class ChessController {
         }
     }
     
+    // Resets the chess game board and pieces
     public void startNewGame()
     {
         board.resetBoardAndPieces();
@@ -125,7 +156,12 @@ public class ChessController {
         colourTurn = PieceColour.WHITE;
     }
     
-    public void saveGame(int slotNum) //1 to 5
+    /**
+     * Saves the current game into a slot in the database
+     * 
+     * @param slotNum (1, 2, 3, 4, 5)
+     */
+    public void saveGame(int slotNum)
     {
         gameSaver.saveGame(slotNum, player1.getName(), player2.getName(), getCurrentDate());
         gameSRecorder.saveCurrentGame(slotNum);
@@ -136,7 +172,12 @@ public class ChessController {
         return gameSaver.getSavedGameInfo(slotNum);
     }
     
-    public void loadSavedGame(int slotNum) //1 to 5
+    /**
+     * Loads a saved game from a slot into the current game board
+     * 
+     * @param slotNum (1, 2, 3, 4, 5)
+     */
+    public void loadSavedGame(int slotNum)
     {
         gameSRecorder.loadSavedGame(slotNum);
         ResultSet resultset = gameSRecorder.getCurrentGameBoard();
@@ -157,6 +198,7 @@ public class ChessController {
         }
     }
     
+    // Shuts down the database connection
     public void quit()
     {
         gameSaver.closeConnections();
@@ -165,6 +207,7 @@ public class ChessController {
         gameHRecorder.closeConnections();
     }
     
+    // Returns the current date
     private java.sql.Date getCurrentDate()
     {
         Date currentDate = new Date();
@@ -172,6 +215,7 @@ public class ChessController {
         return sqlDate;
     }
     
+    // Saves the current chess board info into the database
     private void recordCurrentBoard()
     {
         for(Piece i : board.getPieces().getAllPieces())
@@ -189,6 +233,7 @@ public class ChessController {
         }
     }
     
+    // Returns the game outcome if the game has ended. Can resign manually
     private String getGameResult(PieceColour colourTurn, boolean manual)
     {
         String gameResult = "";
@@ -207,6 +252,17 @@ public class ChessController {
         return gameResult;
     }
     
+    /**
+     * Creates and returns a chess piece based on the statuses provided
+     * 
+     * @param pieceType, or piece symbol (e.g. wQ, wP, bK, bR)
+     * @param col
+     * @param row
+     * @param LMN (last move number) 1=true, 0=false
+     * @param HNM (has not moved) 1=true, 0=false
+     * @param HMO (has moved once) 1=true, 0=false
+     * @return a chess piece
+     */
     private Piece createPiece(String pieceType, int col, int row, int LMN, int HNM, int HMO)
     {
         Piece piece;
@@ -247,5 +303,4 @@ public class ChessController {
         
         return piece;
     }
-    
 }

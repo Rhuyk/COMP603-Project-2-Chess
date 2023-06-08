@@ -12,8 +12,8 @@ import java.util.Scanner;
  */
 public final class PiecesOnBoard {
     private static final Piece[][] board = new Piece[8][8]; // Piece[column][row]
-    private static final boolean[][] checkPath = new boolean[8][8];
     private static AllPieces allPieces = new AllPieces();
+    private static final boolean[][] checkPath = new boolean[8][8];
     private static boolean whiteIsInCheck = false;
     private static boolean blackIsInCheck = false;
     private static boolean isPromoting = false;
