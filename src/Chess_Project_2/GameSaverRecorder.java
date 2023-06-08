@@ -117,7 +117,7 @@ public final class GameSaverRecorder extends GameDB {
     public ResultSet getCurrentGameBoard()
     {
         ResultSet resultset = null;
-        String queryStatement = "SELECT MOVE_NUM, PIECE_TYPE, col, row, LMN, HNM, HMO FROM GAME_SAVER_RECORDER WHERE NUMBER = 0 AND MOVE_NUM = MAX(MOVE_NUM)";
+       String queryStatement = "SELECT MOVE_NUM, PIECE_TYPE, col, row, LMN, HNM, HMO FROM GAME_SAVER_RECORDER WHERE NUMBER = 0 AND MOVE_NUM = (SELECT MAX(MOVE_NUM) FROM GAME_SAVER_RECORDER)";
         
         try {
             if (statement == null) {

@@ -167,23 +167,22 @@ public class ChessController {
      * 
      * @param slotNum (1, 2, 3, 4, 5)
      */
-    public void loadSavedGame(int slotNum)
-    {
+    public void loadSavedGame(int slotNum) {
         gameSRecorder.loadSavedGame(slotNum);
         ResultSet resultset = gameSRecorder.getCurrentGameBoard();
-        
+
         try {
-            board.setMoveNum(resultset.getInt(1));
             board.clearAllPieces();
-            while (resultset.next())
-            {
-                Piece piece = createPiece(resultset.getString(2), resultset.getInt(3), resultset.getInt(4), resultset.getInt(5), resultset.getInt(6), resultset.getInt(7));
-                board.getPieces().addPiece(piece);
+            if (resultset.next()) { // Move the cursor to the first row
+                board.setMoveNum(resultset.getInt(1));
+                do {
+                    Piece piece = createPiece(resultset.getString(2), resultset.getInt(3), resultset.getInt(4), resultset.getInt(5), resultset.getInt(6), resultset.getInt(7));
+                    board.getPieces().addPiece(piece);
+                } while (resultset.next());
             }
             board.refreshBoard();
             colourTurn = board.getPieces().getCurrentColourTurn();
-        }
-        catch (SQLException ex) {
+        } catch (SQLException ex) {
             Logger.getLogger(ChessController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
