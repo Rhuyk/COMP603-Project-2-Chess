@@ -18,8 +18,6 @@ import java.util.logging.Logger;
  */
 public final class GameHistory extends GameDB {
     
-    private Statement statement;
-    
     public GameHistory() {
         super();
         createTable();
@@ -34,9 +32,9 @@ public final class GameHistory extends GameDB {
             DatabaseMetaData metaData = getConn().getMetaData();
             ResultSet resultSet = metaData.getTables(null, null, "GAME_HISTORY", null);
             if (!resultSet.next()) {
-                statement = getConn().createStatement();
+                Statement statement = getConn().createStatement();
                 statement.execute(createStatement);
-                //statement.close();
+                statement.close();
             }
         }
         catch (SQLException ex) {
@@ -46,14 +44,12 @@ public final class GameHistory extends GameDB {
     
     public void uploadCompletedGame(String playerWhite, String playerBlack, String result, int moves, Date date)
     {
-        String insertStatement = "INSERT INTO GAME_HISTORY VALUES (1, '" + playerWhite + "', '" + playerBlack + "', '" + result + "', " + moves + ", '" + date + "')";
+        String insertStatement = "INSERT INTO GAME_HISTORY VALUES (0, '" + playerWhite + "', '" + playerBlack + "', '" + result + "', " + moves + ", '" + date + "')";
         try {
             updateGameHistoryTable();
-            if (statement == null) {
-                statement = getConn().createStatement();
-            }
+            Statement statement = getConn().createStatement();
             statement.executeUpdate(insertStatement);
-            //statement.close();
+            statement.close();
         }
         catch (SQLException ex) {
             Logger.getLogger(GameHistory.class.getName()).log(Level.SEVERE, null, ex);
@@ -63,14 +59,11 @@ public final class GameHistory extends GameDB {
     public ResultSet getHistoryGameInfo(int slotNum)
     {
         ResultSet resultSet = null;
-        String queryStatement = "SELECT WHITE, BLACK, RESULT, MOVES, DATE FROM GAME_HISTORY WHERE NUMBER = " + slotNum;
+        String queryStatement = "SELECT WHITE, BLACK, RESULT, MOVES, DATE FROM GAME_HISTORY WHERE NUMBER = " + (slotNum-1);
         
         try {
-            if (statement == null) {
-                statement = getConn().createStatement();
-            }
+            Statement statement = getConn().createStatement();
             resultSet = statement.executeQuery(queryStatement);
-            //statement.close();
         }
         catch (SQLException ex) {
             Logger.getLogger(GameHistory.class.getName()).log(Level.SEVERE, null, ex);
@@ -82,14 +75,12 @@ public final class GameHistory extends GameDB {
     private void updateGameHistoryTable()
     {
         try {
-            if (statement == null) {
-                statement = getConn().createStatement();
-            }
+            Statement statement = getConn().createStatement();
             String updateStatement = "UPDATE GAME_HISTORY SET NUMBER = NUMBER + 1";
             statement.executeUpdate(updateStatement);
             String deleteStatement = "DELETE FROM GAME_HISTORY WHERE NUMBER > 4";
             statement.executeUpdate(deleteStatement);
-            //statement.close();
+            statement.close();
         }
         catch (SQLException ex) {
             Logger.getLogger(GameHistory.class.getName()).log(Level.SEVERE, null, ex);

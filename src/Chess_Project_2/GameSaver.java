@@ -18,8 +18,6 @@ import java.util.logging.Logger;
  */
 public final class GameSaver extends GameDB {
     
-    private Statement statement;
-    
     public GameSaver() {
         super();
         createTable();
@@ -34,9 +32,9 @@ public final class GameSaver extends GameDB {
             DatabaseMetaData metaData = getConn().getMetaData();
             ResultSet resultSet = metaData.getTables(null, null, "GAME_SAVER", null);
             if (!resultSet.next()) {
-                statement = getConn().createStatement();
+                Statement statement = getConn().createStatement();
                 statement.execute(createStatement);
-                //statement.close();
+                statement.close();
             }
         } catch (SQLException ex) {
             Logger.getLogger(GameSaver.class.getName()).log(Level.SEVERE, null, ex);
@@ -48,9 +46,7 @@ public final class GameSaver extends GameDB {
         String updateStatement = "UPDATE GAME_SAVER SET WHITE = '" + playerWhite + "', BLACK = '" + playerBlack + "', DATE = '" + date + "' WHERE NUMBER = " + slotNum;
         
         try {
-            if (statement == null) {
-                statement = getConn().createStatement();
-            }
+            Statement statement = getConn().createStatement();
             statement.executeUpdate(updateStatement);
             int rowsAffected = statement.getUpdateCount();
 
@@ -59,8 +55,8 @@ public final class GameSaver extends GameDB {
                 // If no rows were affected by the update, insert a new row
                 String insertStatement = "INSERT INTO GAME_SAVER VALUES (" + slotNum + ", '" + playerWhite + "', '" + playerBlack + "', '" + date + "')";
                 statement.executeUpdate(insertStatement);
+                statement.close();
             }
-            //statement.close();
         }
         catch (SQLException ex) {
             Logger.getLogger(GameSaver.class.getName()).log(Level.SEVERE, null, ex);
@@ -73,11 +69,8 @@ public final class GameSaver extends GameDB {
         String queryStatement = "SELECT WHITE, BLACK, DATE FROM GAME_SAVER WHERE NUMBER = " + slotNum;
         
         try {
-            if (statement == null) {
-                statement = getConn().createStatement();
-            }
+            Statement statement = getConn().createStatement();
             resultSet = statement.executeQuery(queryStatement);
-            //statement.close();
         }
         catch (SQLException ex) {
             Logger.getLogger(GameSaver.class.getName()).log(Level.SEVERE, null, ex);

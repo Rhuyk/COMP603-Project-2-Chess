@@ -17,8 +17,6 @@ import java.util.logging.Logger;
  */
 public final class GameHistoryRecorder extends GameDB {
     
-    private Statement statement;
-    
     public GameHistoryRecorder() {
         super();
         createTable();
@@ -33,9 +31,8 @@ public final class GameHistoryRecorder extends GameDB {
             DatabaseMetaData metaData = getConn().getMetaData();
             ResultSet resultSet = metaData.getTables(null, null, "GAME_HISTORY_RECORDER", null);
             if (!resultSet.next()) {
-                statement = getConn().createStatement();
+                Statement statement = getConn().createStatement();
                 statement.execute(createStatement);
-                //statement.close();
             }
         } catch (SQLException ex) {
             Logger.getLogger(GameHistoryRecorder.class.getName()).log(Level.SEVERE, null, ex);
@@ -49,33 +46,42 @@ public final class GameHistoryRecorder extends GameDB {
                                  "FROM GAME_SAVER_RECORDER " +
                                  "WHERE NUMBER = 0";
         try {
-            if (statement == null) {
-                statement = getConn().createStatement();
-            }
+            updateGameHRecorderTable();
+            Statement statement = getConn().createStatement();
             statement.executeUpdate(insertStatement);
-            //statement.close();
-
         }
         catch (SQLException ex) {
             Logger.getLogger(GameHistoryRecorder.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public ResultSet getHistoryGameBoard(int slotNum)
+    public ResultSet getHistoryGameBoard(int slotNum, int moveNum)
     {
         ResultSet resultset = null;
-        String queryStatement = "SELECT MOVE_NUM, PIECE_TYPE, col, row FROM GAME_HISTORY_RECORDER WHERE NUMBER=" + slotNum + " ORDER BY MOVE_NUM ASC";
+        String queryStatement = "SELECT PIECE_TYPE, col, row FROM GAME_HISTORY_RECORDER WHERE NUMBER = " + (slotNum-1) + " AND MOVE_NUM = " + moveNum;
         
         try {
-            if (statement == null) {
-                statement = getConn().createStatement();
-            }
+            Statement statement = getConn().createStatement();
             resultset = statement.executeQuery(queryStatement);
-            //statement.close();
         }
         catch (SQLException ex) {
             Logger.getLogger(GameHistoryRecorder.class.getName()).log(Level.SEVERE, null, ex);
         }
         return resultset;
+    }
+    
+    private void updateGameHRecorderTable()
+    {
+        try {
+            Statement statement = getConn().createStatement();
+            String updateStatement = "UPDATE GAME_HISTORY_RECORDER SET NUMBER = NUMBER + 1";
+            statement.executeUpdate(updateStatement);
+            String deleteStatement = "DELETE FROM GAME_HISTORY_RECORDER WHERE NUMBER > 4";
+            statement.executeUpdate(deleteStatement);
+            statement.close();
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(GameHistoryRecorder.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

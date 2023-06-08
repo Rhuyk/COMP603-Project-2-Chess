@@ -102,6 +102,7 @@ public final class GameSaverRecorder extends GameDB {
         try {
             Statement statement = getConn().createStatement();
             statement.executeUpdate(deleteStatement);
+            statement.close();
         }
         catch (SQLException ex) {
             Logger.getLogger(GameSaverRecorder.class.getName()).log(Level.SEVERE, null, ex);

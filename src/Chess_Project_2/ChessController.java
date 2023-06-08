@@ -196,11 +196,12 @@ public class ChessController {
      */
     public ResultSet getGameHistoryInfo(int slotNum)
     {
-        ResultSet resultSet = getGameHistoryInfo(slotNum);
+        ResultSet resultSet = gameHistory.getHistoryGameInfo(slotNum);
         try {
             if(resultSet.next())
             {
                 maxMoves = resultSet.getInt(4);
+                System.out.println("max move is = "+maxMoves);
             }
         } catch (SQLException ex) {
             Logger.getLogger(ChessFrame.class.getName()).log(Level.SEVERE, null, ex);
@@ -217,19 +218,24 @@ public class ChessController {
      */
     public void loadHistoryGameBoard(int slotNum, int boardNum)
     {
-        ResultSet resultSet = gameHRecorder.getHistoryGameBoard(slotNum);
+        ResultSet resultSet = gameHRecorder.getHistoryGameBoard(slotNum, boardNum);
         
         try {
             board.clearAllPieces();
-            while(resultSet.next())
+            if (resultSet.next()) // Move the cursor to the first row
             {
-                if (resultSet.getInt("MOVE_NUM") == boardNum)
-                {
-                    Piece piece = createPiece(resultSet.getString(3), resultSet.getInt(4), resultSet.getInt(5), 0, 0, 0);
+                System.out.println("Yessssssssssss");
+                do {
+                    Piece piece = createPiece(resultSet.getString(1), resultSet.getInt(2), resultSet.getInt(3), 0, 0, 0);
                     board.addPiece(piece);
-                }
+                } while(resultSet.next());
+            }
+            else
+            {
+                System.out.println("Noooooooooooooo");
             }
             board.refreshBoard();
+            //resultSet.close();
         }
         catch (SQLException ex) {
             Logger.getLogger(ChessController.class.getName()).log(Level.SEVERE, null, ex);

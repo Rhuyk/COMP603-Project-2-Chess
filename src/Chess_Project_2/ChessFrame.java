@@ -23,6 +23,7 @@ public class ChessFrame extends JFrame {
     
     private ChessPanel chessPanel;
     private ChessController chessController;
+    private int historyNum;
     private int boardNum;
     
     public ChessFrame() 
@@ -788,10 +789,11 @@ public class ChessFrame extends JFrame {
     }//GEN-LAST:event_restartButtonActionPerformed
 
     private void loadHistoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadHistoryButtonActionPerformed
-        int selectedGameIndex = gameList.getSelectedIndex();
-        ++selectedGameIndex;
         this.boardNum = 0;
-        chessController.loadHistoryGameBoard(selectedGameIndex, boardNum);
+        this.historyNum = gameList.getSelectedIndex()+1;
+        chessController.getGameHistoryInfo(historyNum);
+        chessController.loadHistoryGameBoard(historyNum, boardNum);
+        chessPanel.repaint();
     }//GEN-LAST:event_loadHistoryButtonActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -894,19 +896,19 @@ public class ChessFrame extends JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void prevButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevButtonActionPerformed
+        this.boardNum--;
         if(chessController.getMaxMoves() >= this.boardNum && this.boardNum >= 0)
         {
-            this.boardNum--;
-            chessController.loadHistoryGameBoard(gameList.getSelectedIndex(), boardNum);
+            chessController.loadHistoryGameBoard(historyNum, boardNum);
             chessPanel.repaint();
         }
     }//GEN-LAST:event_prevButtonActionPerformed
 
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
+        this.boardNum++;
         if(chessController.getMaxMoves() >= this.boardNum && this.boardNum >= 0)
         {
-            this.boardNum++;
-            chessController.loadHistoryGameBoard(gameList.getSelectedIndex(), boardNum);
+            chessController.loadHistoryGameBoard(historyNum, boardNum);
             chessPanel.repaint();
         }
     }//GEN-LAST:event_nextButtonActionPerformed
