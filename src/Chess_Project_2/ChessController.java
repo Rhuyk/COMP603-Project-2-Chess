@@ -24,6 +24,7 @@ public class ChessController {
     private static Player player1;
     private static Player player2;
     private static PieceColour colourTurn;
+    private static int maxMoves;
     
 
     // Constructs ChessController class
@@ -195,6 +196,16 @@ public class ChessController {
      */
     public ResultSet getGameHistoryInfo(int slotNum)
     {
+        ResultSet resultSet = getGameHistoryInfo(slotNum);
+        try {
+            if(resultSet.next())
+            {
+                maxMoves = resultSet.getInt(4);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ChessFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         return gameHistory.getHistoryGameInfo(slotNum);
     }
     
@@ -357,5 +368,12 @@ public class ChessController {
      */
     public void setPlayer2(Player aPlayer2) {
         player2 = aPlayer2;
+    }
+
+    /**
+     * @return the maxMoves
+     */
+    public int getMaxMoves() {
+        return maxMoves;
     }
 }

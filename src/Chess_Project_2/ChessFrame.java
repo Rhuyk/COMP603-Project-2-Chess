@@ -4,6 +4,10 @@
  */
 package Chess_Project_2;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -19,6 +23,7 @@ public class ChessFrame extends JFrame {
     
     private ChessPanel chessPanel;
     private ChessController chessController;
+    private int boardNum;
     
     public ChessFrame() 
     {
@@ -43,7 +48,6 @@ public class ChessFrame extends JFrame {
 
         jPanel3 = new javax.swing.JPanel();
         jPanel1 = chessPanel;
-        jPanel5 = new javax.swing.JPanel();
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jPanel4 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -65,9 +69,9 @@ public class ChessFrame extends JFrame {
         jButton6 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         gameList = new javax.swing.JList<>();
-        jButton7 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        loadHistoryButton = new javax.swing.JButton();
+        nextButton = new javax.swing.JButton();
+        prevButton = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -104,6 +108,7 @@ public class ChessFrame extends JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         gameList2 = new javax.swing.JList<>();
         loadGame = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -133,20 +138,7 @@ public class ChessFrame extends JFrame {
             .addGap(0, 550, Short.MAX_VALUE)
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 550, 550));
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 21, Short.MAX_VALUE)
-        );
-
-        getContentPane().add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, 550, 550));
 
         jLabel4.setText("              Welcome to our Chess Game!");
 
@@ -221,7 +213,7 @@ public class ChessFrame extends JFrame {
                                 .addComponent(loadButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
                                 .addComponent(jButton2)))))
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -249,12 +241,12 @@ public class ChessFrame extends JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(loadButton)
                     .addComponent(jButton2))
-                .addContainerGap(169, Short.MAX_VALUE))
+                .addContainerGap(139, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("tab1", jPanel4);
 
-        jLabel7.setText("Saved game files:");
+        jLabel7.setText("History games");
 
         jButton6.setText("Back");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
@@ -263,70 +255,77 @@ public class ChessFrame extends JFrame {
             }
         });
 
-        gameList.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         gameList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            String[] strings = { "Game 1", "Game 2", "Game 3", "Game 4", "Game 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
         jScrollPane1.setViewportView(gameList);
 
-        jButton7.setText("Load Game");
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
+        loadHistoryButton.setText("Load Game");
+        loadHistoryButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
+                loadHistoryButtonActionPerformed(evt);
             }
         });
 
-        jButton4.setText("Next move");
+        nextButton.setText("Next move");
+        nextButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nextButtonActionPerformed(evt);
+            }
+        });
 
-        jButton5.setText("Previous Move");
+        prevButton.setText("Previous Move");
+        prevButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                prevButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addGap(96, 96, 96)
-                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addGap(120, 120, 120)
-                                .addComponent(jButton7))
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addGap(71, 71, 71)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(nextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(prevButton, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(57, 57, 57))
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(73, 73, 73)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(102, 102, 102)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(121, 121, 121)
+                        .addComponent(loadHistoryButton)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(loadHistoryButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(nextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(prevButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(49, 49, 49)
                 .addComponent(jButton6)
-                .addContainerGap(130, Short.MAX_VALUE))
+                .addContainerGap(90, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("tab2", jPanel6);
@@ -336,7 +335,6 @@ public class ChessFrame extends JFrame {
         jLabel2.setText("Save Game");
         jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 30, 80, 30));
 
-        gameList1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         gameList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Game 1", "Game 2", "Game 3", "Game 4", "Game 5" };
             public int getSize() { return strings.length; }
@@ -435,7 +433,7 @@ public class ChessFrame extends JFrame {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                             .addGroup(jPanel7Layout.createSequentialGroup()
                                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(resignButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -443,8 +441,8 @@ public class ChessFrame extends JFrame {
                                     .addComponent(SaveGameButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(quitButton, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
-                                    .addComponent(restartButton, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+                                    .addComponent(quitButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(restartButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(flipToggleButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addGap(53, 53, 53))))
         );
@@ -471,7 +469,7 @@ public class ChessFrame extends JFrame {
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton3))
-                .addContainerGap(116, Short.MAX_VALUE))
+                .addContainerGap(86, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("tab4", jPanel7);
@@ -523,11 +521,11 @@ public class ChessFrame extends JFrame {
                 .addGap(21, 21, 21)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(rematchButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(loadGameButton, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                    .addComponent(loadGameButton, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(startNewGameButton, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
-                    .addComponent(forceQuitButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(forceQuitButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(startNewGameButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(69, 69, 69))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -540,7 +538,7 @@ public class ChessFrame extends JFrame {
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addGap(55, 55, 55)
                         .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(106, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -557,7 +555,7 @@ public class ChessFrame extends JFrame {
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(loadGameButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(forceQuitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 228, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 198, Short.MAX_VALUE)
                 .addComponent(jButton8)
                 .addGap(113, 113, 113))
         );
@@ -631,14 +629,13 @@ public class ChessFrame extends JFrame {
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bishopButton, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(knightButton, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(311, Short.MAX_VALUE))
+                .addContainerGap(281, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("tab6", jPanel9);
 
         loadLabel.setText("Load Game");
 
-        gameList2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         gameList2.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Game 1", "Game 2", "Game 3", "Game 4", "Game 5" };
             public int getSize() { return strings.length; }
@@ -678,10 +675,23 @@ public class ChessFrame extends JFrame {
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(loadGame)
-                .addContainerGap(245, Short.MAX_VALUE))
+                .addContainerGap(215, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("tab7", jPanel10);
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 360, Short.MAX_VALUE)
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 579, Short.MAX_VALUE)
+        );
+
+        jTabbedPane2.addTab("tab8", jPanel5);
 
         getContentPane().add(jTabbedPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 0, 360, 640));
 
@@ -777,9 +787,12 @@ public class ChessFrame extends JFrame {
         restartGame();
     }//GEN-LAST:event_restartButtonActionPerformed
 
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton7ActionPerformed
+    private void loadHistoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadHistoryButtonActionPerformed
+        int selectedGameIndex = gameList.getSelectedIndex();
+        ++selectedGameIndex;
+        this.boardNum = 0;
+        chessController.loadHistoryGameBoard(selectedGameIndex, boardNum);
+    }//GEN-LAST:event_loadHistoryButtonActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         jTabbedPane2.setSelectedIndex(0);
@@ -848,7 +861,6 @@ public class ChessFrame extends JFrame {
     private void saveGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveGameButtonActionPerformed
         int selectedGameIndex = gameList1.getSelectedIndex();
         ++selectedGameIndex;
-        System.out.println(selectedGameIndex);
         chessController.saveGame(selectedGameIndex);
         jTabbedPane2.setSelectedIndex(3);
     }//GEN-LAST:event_saveGameButtonActionPerformed
@@ -856,8 +868,23 @@ public class ChessFrame extends JFrame {
     private void loadGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadGameActionPerformed
         int selectedGameIndex = gameList2.getSelectedIndex();
         ++selectedGameIndex;
-        System.out.println(selectedGameIndex);
+        
         chessController.loadSavedGame(selectedGameIndex);
+        try 
+        {
+            ResultSet resultSet = chessController.getSavedGameInfo(selectedGameIndex);
+            if(resultSet.next())
+            {
+                String player1Name = resultSet.getString(1);
+                String player2Name = resultSet.getString(2);
+                chessController.setPlayers(player1Name, player2Name);
+            }
+        } 
+        catch (SQLException ex) 
+        {
+            Logger.getLogger(ChessFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         jTabbedPane2.setSelectedIndex(3);
         chessPanel.repaint();
     }//GEN-LAST:event_loadGameActionPerformed
@@ -865,6 +892,24 @@ public class ChessFrame extends JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         jTabbedPane2.setSelectedIndex(6);
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void prevButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevButtonActionPerformed
+        if(chessController.getMaxMoves() >= this.boardNum && this.boardNum >= 0)
+        {
+            this.boardNum--;
+            chessController.loadHistoryGameBoard(gameList.getSelectedIndex(), boardNum);
+            chessPanel.repaint();
+        }
+    }//GEN-LAST:event_prevButtonActionPerformed
+
+    private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
+        if(chessController.getMaxMoves() >= this.boardNum && this.boardNum >= 0)
+        {
+            this.boardNum++;
+            chessController.loadHistoryGameBoard(gameList.getSelectedIndex(), boardNum);
+            chessPanel.repaint();
+        }
+    }//GEN-LAST:event_nextButtonActionPerformed
     
     private void restartGame()
     {
@@ -938,10 +983,7 @@ public class ChessFrame extends JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -981,8 +1023,11 @@ public class ChessFrame extends JFrame {
     private javax.swing.JButton loadButton;
     private javax.swing.JButton loadGame;
     private javax.swing.JButton loadGameButton;
+    private javax.swing.JButton loadHistoryButton;
     private javax.swing.JLabel loadLabel;
     private javax.swing.JTextArea moveTextArea;
+    private javax.swing.JButton nextButton;
+    private javax.swing.JButton prevButton;
     private javax.swing.JButton queenButton;
     private javax.swing.JButton quitButton;
     private javax.swing.JButton rematchButton;
