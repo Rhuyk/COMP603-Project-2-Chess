@@ -80,7 +80,7 @@ public class ChessController {
     }
     
     /**
-     * Uploads the chess game into the database if the game ended
+     * Uploads chess game into the database if the game ended
      * 
      * @return true or false if the game has ended
      */
@@ -95,59 +95,21 @@ public class ChessController {
         return false;
     }
     
-    // Uploads the resigned chess game into the database
+    // Uploads resigned chess game into the database
     public void resignGame()
     {
         gameHistory.uploadCompletedGame(player1.getName(), player2.getName(), getGameResult(colourTurn, true), board.getMoveNum(), getCurrentDate());
         gameHRecorder.uploadCompletedGame();
     }
     
-    // Uploads the draw chess game into the database
+    // Uploads draw chess game into the database
     public void drawGame()
     {
         gameHistory.uploadCompletedGame(player1.getName(), player2.getName(), "DD", board.getMoveNum(), getCurrentDate());
         gameHRecorder.uploadCompletedGame();
     }
     
-    /**
-     * Gets a history game info at a certain slot
-     * 
-     * @param slotNum (1, 2, 3, 4, 5)
-     * @return a result set, where col 1: (white player name), col 2: (black player name), col 3: (game outcome), col 4: (# of moves), col 5: (date)
-     */
-    public ResultSet getGameHistoryInfo(int slotNum)
-    {
-        return gameHistory.getHistoryGameInfo(slotNum);
-    }
-    
-    /**
-     * Loads a game board of a history game and updates the board
-     * 
-     * @param slotNum (1, 2, 3, 4, 5)
-     * @param boardNum (from 0 to max board number), max board number can be obtained from getGameHistoryInfo(slotNum) column 4
-     */
-    public void loadHistoryGameBoard(int slotNum, int boardNum)
-    {
-        ResultSet resultSet = gameHRecorder.getHistoryGameBoard(slotNum);
-        
-        try {
-            board.clearAllPieces();
-            while(resultSet.next())
-            {
-                if (resultSet.getInt("MOVE_NUM") == boardNum)
-                {
-                    Piece piece = createPiece(resultSet.getString(3), resultSet.getInt(4), resultSet.getInt(5), 0, 0, 0);
-                    board.addPiece(piece);
-                }
-            }
-            board.refreshBoard();
-        }
-        catch (SQLException ex) {
-            Logger.getLogger(ChessController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    // Resets the chess game board and pieces
+    // Resets chess game board and pieces
     public void startNewGame()
     {
         board.resetBoardAndPieces();
@@ -157,7 +119,7 @@ public class ChessController {
     }
     
     /**
-     * Saves the current game into a slot in the database
+     * Saves current game into a slot in the database
      * 
      * @param slotNum (1, 2, 3, 4, 5)
      */
@@ -198,7 +160,45 @@ public class ChessController {
         }
     }
     
-    // Shuts down the database connection
+    /**
+     * Gets a history game info at a certain slot
+     * 
+     * @param slotNum (1, 2, 3, 4, 5)
+     * @return a result set, where col 1: (white player name), col 2: (black player name), col 3: (game outcome), col 4: (# of moves), col 5: (date)
+     */
+    public ResultSet getGameHistoryInfo(int slotNum)
+    {
+        return gameHistory.getHistoryGameInfo(slotNum);
+    }
+    
+    /**
+     * Loads a game board of a history game and updates the board
+     * 
+     * @param slotNum (1, 2, 3, 4, 5)
+     * @param boardNum (from 0 to max board number), max board number can be obtained from getGameHistoryInfo(slotNum) column 4
+     */
+    public void loadHistoryGameBoard(int slotNum, int boardNum)
+    {
+        ResultSet resultSet = gameHRecorder.getHistoryGameBoard(slotNum);
+        
+        try {
+            board.clearAllPieces();
+            while(resultSet.next())
+            {
+                if (resultSet.getInt("MOVE_NUM") == boardNum)
+                {
+                    Piece piece = createPiece(resultSet.getString(3), resultSet.getInt(4), resultSet.getInt(5), 0, 0, 0);
+                    board.addPiece(piece);
+                }
+            }
+            board.refreshBoard();
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(ChessController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    // Shuts down database connection
     public void quit()
     {
         gameSaver.closeConnections();
@@ -207,7 +207,7 @@ public class ChessController {
         gameHRecorder.closeConnections();
     }
     
-    // Returns the current date
+    // Returns current date
     private java.sql.Date getCurrentDate()
     {
         Date currentDate = new Date();
@@ -215,7 +215,7 @@ public class ChessController {
         return sqlDate;
     }
     
-    // Saves the current chess board info into the database
+    // Saves current chess board info into the database
     private void recordCurrentBoard()
     {
         for(Piece i : board.getPieces().getAllPieces())
@@ -233,7 +233,7 @@ public class ChessController {
         }
     }
     
-    // Returns the game outcome if the game has ended. Can resign manually
+    // Returns game outcome if the game has ended. Can resign manually
     private String getGameResult(PieceColour colourTurn, boolean manual)
     {
         String gameResult = "";

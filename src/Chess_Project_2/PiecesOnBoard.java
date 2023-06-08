@@ -11,22 +11,23 @@ import java.util.Scanner;
  * @author rh200
  */
 public final class PiecesOnBoard {
-    private static final Piece[][] board = new Piece[8][8]; // Piece[column][row]
+   
+    private static final Piece[][] board = new Piece[8][8]; // [column][row]
+    private static final boolean[][] checkPath = new boolean[8][8]; // [column][row]
     private static AllPieces allPieces = new AllPieces();
-    private static final boolean[][] checkPath = new boolean[8][8];
     private static boolean whiteIsInCheck = false;
     private static boolean blackIsInCheck = false;
     private static boolean isPromoting = false;
     private static Piece promotionPawn;
     private static int moveNum = 0;
     
-    //Board Constructor
+    //Contructs PiecesOnBoard class
     public PiecesOnBoard()
     {
         refreshBoard();
     }
     
-    //move a piece on the board from square to square
+    // Moves a piece from square to square on the board
     public boolean movePiece(int fromCol, int fromRow, int toCol, int toRow)
     {
         Piece selectedPiece = board[fromCol][fromRow];
@@ -60,18 +61,19 @@ public final class PiecesOnBoard {
                 System.out.println("That was a Illegal move. Please enter a new one!");
                 return false;
             }
-            
+            //check any available promotion
             checkPromotion(board[toCol][toRow]);
         }
         return true;
     }
     
-    //return the board
+    // Returns current board
     public Piece[][] getBoard()
     {
         return board;
     }
     
+    // Returns current move number
     public int getMoveNum()
     {
         return moveNum;
