@@ -42,6 +42,21 @@ public class ChessController {
         return board.getBoard();
     }
     
+    public Player getCurrentPlayer()
+    {
+        if(colourTurn == PieceColour.WHITE)
+        {
+            return player1;
+        }
+        
+        return player2;
+    }
+    
+    public boolean isInCheck(Piece piece)
+    {
+        return board.isInCheck(piece.getColour());
+    }
+    
     // Returns current player turn (black or white)
     public PieceColour getCurrentColourTurn()
     {
@@ -56,11 +71,16 @@ public class ChessController {
     }
     
     // Moves a chess piece and updates the board
-    public void movePiece(int fromCol, int fromRow, int toCol, int toRow)
+    public boolean movePiece(int fromCol, int fromRow, int toCol, int toRow)
     {
-        board.movePiece(fromCol, fromRow, toCol, toRow);
+        boolean result = board.movePiece(fromCol, fromRow, toCol, toRow);
+        if(!result)
+        {
+            return result;
+        }
         recordCurrentBoard();
         colourTurn = colourTurn.getOppColour();
+        return result;
     }
     
     // Returns true or false if a pawn promotion is available
@@ -88,7 +108,7 @@ public class ChessController {
     {
         if (board.isCheckmate(colourTurn) || board.isStalemate(colourTurn))
         {
-            gameHistory.uploadCompletedGame(player1.getName(), player2.getName(), getGameResult(colourTurn, false), board.getMoveNum(), getCurrentDate());
+            gameHistory.uploadCompletedGame(getPlayer1().getName(), getPlayer2().getName(), getGameResult(colourTurn, false), board.getMoveNum(), getCurrentDate());
             gameHRecorder.uploadCompletedGame();
             return true;
         }
@@ -98,14 +118,14 @@ public class ChessController {
     // Uploads manually resigned chess game into the database
     public void resignGame()
     {
-        gameHistory.uploadCompletedGame(player1.getName(), player2.getName(), getGameResult(colourTurn, true), board.getMoveNum(), getCurrentDate());
+        gameHistory.uploadCompletedGame(getPlayer1().getName(), getPlayer2().getName(), getGameResult(colourTurn, true), board.getMoveNum(), getCurrentDate());
         gameHRecorder.uploadCompletedGame();
     }
     
     // Uploads manually draw chess game into the database
     public void drawGame()
     {
-        gameHistory.uploadCompletedGame(player1.getName(), player2.getName(), "DD", board.getMoveNum(), getCurrentDate());
+        gameHistory.uploadCompletedGame(getPlayer1().getName(), getPlayer2().getName(), "DD", board.getMoveNum(), getCurrentDate());
         gameHRecorder.uploadCompletedGame();
     }
     
@@ -125,7 +145,7 @@ public class ChessController {
      */
     public void saveGame(int slotNum)
     {
-        gameSaver.saveGame(slotNum, player1.getName(), player2.getName(), getCurrentDate());
+        gameSaver.saveGame(slotNum, getPlayer1().getName(), getPlayer2().getName(), getCurrentDate());
         gameSRecorder.saveCurrentGame(slotNum);
     }
     
@@ -308,5 +328,19 @@ public class ChessController {
         }
         
         return piece;
+    }
+
+    /**
+     * @return the player1
+     */
+    public Player getPlayer1() {
+        return player1;
+    }
+
+    /**
+     * @return the player2
+     */
+    public Player getPlayer2() {
+        return player2;
     }
 }

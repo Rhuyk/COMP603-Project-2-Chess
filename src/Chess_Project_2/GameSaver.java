@@ -36,7 +36,7 @@ public final class GameSaver extends GameDB {
             if (!resultSet.next()) {
                 statement = getConn().createStatement();
                 statement.execute(createStatement);
-                statement.close();
+                //statement.close();
             }
         } catch (SQLException ex) {
             Logger.getLogger(GameSaver.class.getName()).log(Level.SEVERE, null, ex);
@@ -60,7 +60,7 @@ public final class GameSaver extends GameDB {
                 String insertStatement = "INSERT INTO GAME_SAVER VALUES (" + slotNum + ", '" + playerWhite + "', '" + playerBlack + "', '" + date + "')";
                 statement.executeUpdate(insertStatement);
             }
-            statement.close();
+            //statement.close();
         }
         catch (SQLException ex) {
             Logger.getLogger(GameSaver.class.getName()).log(Level.SEVERE, null, ex);
@@ -77,7 +77,7 @@ public final class GameSaver extends GameDB {
                 statement = getConn().createStatement();
             }
             resultSet = statement.executeQuery(queryStatement);
-            statement.close();
+            //statement.close();
         }
         catch (SQLException ex) {
             Logger.getLogger(GameSaver.class.getName()).log(Level.SEVERE, null, ex);

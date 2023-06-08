@@ -35,7 +35,7 @@ public final class GameHistoryRecorder extends GameDB {
             if (!resultSet.next()) {
                 statement = getConn().createStatement();
                 statement.execute(createStatement);
-                statement.close();
+                //statement.close();
             }
         } catch (SQLException ex) {
             Logger.getLogger(GameHistoryRecorder.class.getName()).log(Level.SEVERE, null, ex);
@@ -53,7 +53,7 @@ public final class GameHistoryRecorder extends GameDB {
                 statement = getConn().createStatement();
             }
             statement.executeUpdate(insertStatement);
-            statement.close();
+            //statement.close();
 
         }
         catch (SQLException ex) {
@@ -71,7 +71,7 @@ public final class GameHistoryRecorder extends GameDB {
                 statement = getConn().createStatement();
             }
             resultset = statement.executeQuery(queryStatement);
-            statement.close();
+            //statement.close();
         }
         catch (SQLException ex) {
             Logger.getLogger(GameHistoryRecorder.class.getName()).log(Level.SEVERE, null, ex);

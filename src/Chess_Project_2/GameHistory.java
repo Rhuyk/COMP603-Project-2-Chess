@@ -36,7 +36,7 @@ public final class GameHistory extends GameDB {
             if (!resultSet.next()) {
                 statement = getConn().createStatement();
                 statement.execute(createStatement);
-                statement.close();
+                //statement.close();
             }
         }
         catch (SQLException ex) {
@@ -53,7 +53,7 @@ public final class GameHistory extends GameDB {
                 statement = getConn().createStatement();
             }
             statement.executeUpdate(insertStatement);
-            statement.close();
+            //statement.close();
         }
         catch (SQLException ex) {
             Logger.getLogger(GameHistory.class.getName()).log(Level.SEVERE, null, ex);
@@ -70,7 +70,7 @@ public final class GameHistory extends GameDB {
                 statement = getConn().createStatement();
             }
             resultSet = statement.executeQuery(queryStatement);
-            statement.close();
+            //statement.close();
         }
         catch (SQLException ex) {
             Logger.getLogger(GameHistory.class.getName()).log(Level.SEVERE, null, ex);
@@ -89,7 +89,7 @@ public final class GameHistory extends GameDB {
             statement.executeUpdate(updateStatement);
             String deleteStatement = "DELETE FROM GAME_HISTORY WHERE NUMBER > 4";
             statement.executeUpdate(deleteStatement);
-            statement.close();
+            //statement.close();
         }
         catch (SQLException ex) {
             Logger.getLogger(GameHistory.class.getName()).log(Level.SEVERE, null, ex);

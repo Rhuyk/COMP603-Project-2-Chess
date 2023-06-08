@@ -10,9 +10,17 @@ package Chess_Project_2;
  */
 public class ChessMain {
     
-    public static void main(String[] args) {
+    public static void main(String[] args) 
+    {
         ChessFrame frame = new ChessFrame();
+        ChessController chessController = new ChessController();
+        frame.setChessController(chessController);
         frame.setVisible(true);
+        
+        if(!frame.isActive())
+        {
+            chessController.quit();
+        }
     }
     
 }

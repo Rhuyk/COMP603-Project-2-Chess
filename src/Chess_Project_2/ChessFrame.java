@@ -18,6 +18,7 @@ public class ChessFrame extends JFrame {
      */
     
     private ChessPanel chessPanel;
+    private ChessController chessController;
     
     public ChessFrame() 
     {
@@ -613,6 +614,7 @@ public class ChessFrame extends JFrame {
         // Restart
         startButtonActionPerformed(evt);
         restartGame();
+        repaint();
         jTabbedPane2.setSelectedIndex(3);
     }//GEN-LAST:event_rematchButtonActionPerformed
 
@@ -623,10 +625,10 @@ public class ChessFrame extends JFrame {
     private void startNewGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startNewGameButtonActionPerformed
 
         restartGame();
-        getChessPanel().setPlayer1(null);
-        getChessPanel().setPlayer2(null);
+        chessController.setPlayers(null, null);
         jTextPane1.setText("");
         jTextPane2.setText("");
+        repaint();
         jTabbedPane2.setSelectedIndex(0);
     }//GEN-LAST:event_startNewGameButtonActionPerformed
 
@@ -648,13 +650,13 @@ public class ChessFrame extends JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void resignButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resignButtonActionPerformed
-        int response = JOptionPane.showConfirmDialog(null, getChessPanel().getCurrentPlayer().getName()+", do you wish to resign?", "Resign", JOptionPane.YES_NO_OPTION);
+        int response = JOptionPane.showConfirmDialog(null, chessController.getCurrentPlayer().getName()+", do you wish to resign?", "Resign", JOptionPane.YES_NO_OPTION);
         if(response == JOptionPane.YES_OPTION)
         {
-            getChessPanel().setPlayer1(null);
-            getChessPanel().setPlayer2(null);
+            chessController.setPlayers(null, null);
             jTabbedPane2.setSelectedIndex(4);
-            JOptionPane.showMessageDialog(null, getChessPanel().getCurrentPlayer().getName() + " has resigned. This game has ended via resignation");
+            JOptionPane.showMessageDialog(null, chessController.getCurrentPlayer().getName() + " has resigned. This game has ended via resignation");
+            chessController.resignGame();
         }
     }//GEN-LAST:event_resignButtonActionPerformed
 
@@ -664,15 +666,15 @@ public class ChessFrame extends JFrame {
 
     private void drawButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drawButtonActionPerformed
         // Draw
-        Player otherPlayer = (getChessPanel().getCurrentPlayer() == getChessPanel().getPlayer1()) ? getChessPanel().getPlayer2() : getChessPanel().getPlayer1();
-        int response = JOptionPane.showConfirmDialog(null, getChessPanel().getCurrentPlayer().getName()
+        Player otherPlayer = (chessController.getCurrentPlayer() == chessController.getPlayer1()) ? chessController.getPlayer2() : chessController.getPlayer1();
+        int response = JOptionPane.showConfirmDialog(null, chessController.getCurrentPlayer().getName()
             + " asks for a draw. " + otherPlayer.getName() + ", do you accept the draw?", "Draw Proposal", JOptionPane.YES_NO_OPTION);
 
         if (response == JOptionPane.YES_OPTION) {
-            getChessPanel().setPlayer1(null);
-            getChessPanel().setPlayer2(null);
+            chessController.setPlayers(null, null);
             jTabbedPane2.setSelectedIndex(4);
             JOptionPane.showMessageDialog(null, "The game has ended via draw.");
+            chessController.drawGame();
 
         } else {
             JOptionPane.showMessageDialog(null, otherPlayer.getName() + " has declined the draw.");
@@ -695,14 +697,10 @@ public class ChessFrame extends JFrame {
     private void guestLogin1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guestLogin1ActionPerformed
         String player1Name = "Player 1";
         String player2Name = "Player 2";
-        Player player1 = new Player(PieceColour.WHITE,player1Name);
-        Player player2 = new Player(PieceColour.BLACK,player2Name);
         jTextPane1.setText(player1Name);
         jTextPane2.setText(player2Name);
-        setChessPanel((ChessPanel) jPanel1);
-        getChessPanel().setPlayer1(player1);
-        getChessPanel().setPlayer2(player2);
-        getChessPanel().setCurrentPlayer(player1);
+        setChessPanel((ChessPanel) jPanel1); // Check later
+        chessController.setPlayers(player1Name, player2Name);
 
         jTabbedPane2.setSelectedIndex(3);
         repaint();
@@ -717,13 +715,7 @@ public class ChessFrame extends JFrame {
             JOptionPane.showMessageDialog(this, "Please enter both names.", "Error", JOptionPane.ERROR_MESSAGE);
         } else
         {
-            Player player1 = new Player(PieceColour.WHITE,player1Name);
-            Player player2 = new Player(PieceColour.BLACK,player2Name);
-            setChessPanel((ChessPanel) jPanel1);
-            getChessPanel().setPlayer1(player1);
-            getChessPanel().setPlayer2(player2);
-            getChessPanel().setCurrentPlayer(player1);
-
+            chessController.setPlayers(player1Name, player2Name);
             jTabbedPane2.setSelectedIndex(3);
             repaint();
         }
@@ -738,25 +730,25 @@ public class ChessFrame extends JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void queenButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_queenButtonActionPerformed
-        chessPanel.getChessController().promote("Q");
+        chessController.promote("Q");
         jTabbedPane2.setSelectedIndex(3);
         repaint();
     }//GEN-LAST:event_queenButtonActionPerformed
 
     private void rookButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rookButtonActionPerformed
-        chessPanel.getChessController().promote("R");
+        chessController.promote("R");
         jTabbedPane2.setSelectedIndex(3);
         repaint();
     }//GEN-LAST:event_rookButtonActionPerformed
 
     private void bishopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bishopButtonActionPerformed
-        chessPanel.getChessController().promote("B");
+        chessController.promote("B");
         jTabbedPane2.setSelectedIndex(3);
         repaint();
     }//GEN-LAST:event_bishopButtonActionPerformed
 
     private void knightButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_knightButtonActionPerformed
-        chessPanel.getChessController().promote("N");
+        chessController.promote("N");
         jTabbedPane2.setSelectedIndex(3);
         repaint();
     }//GEN-LAST:event_knightButtonActionPerformed
@@ -764,7 +756,7 @@ public class ChessFrame extends JFrame {
     private void restartGame()
     {
         moveTextArea.setText("");
-        getChessPanel().resetGame(getChessPanel().getBoard());
+        getChessPanel().resetGame();
     }
     
     
@@ -773,10 +765,9 @@ public class ChessFrame extends JFrame {
         jTabbedPane2.setSelectedIndex(tabIndex);
     }
     
-    public void updateMovesTextArea() 
+    public void updateMovesTextArea(String move) 
     {
-        String moves = chessPanel.getMoves();
-        moveTextArea.append(moves);
+        moveTextArea.append(move);
     }
     
     /**
@@ -889,5 +880,12 @@ public class ChessFrame extends JFrame {
      */
     public void setChessPanel(ChessPanel chessPanel) {
         this.chessPanel = chessPanel;
+    }
+
+    /**
+     * @param chessController the chessController to set
+     */
+    public void setChessController(ChessController chessController) {
+        this.chessController = chessController;
     }
 }

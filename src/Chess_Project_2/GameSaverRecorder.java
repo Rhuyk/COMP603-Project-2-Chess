@@ -36,7 +36,7 @@ public final class GameSaverRecorder extends GameDB {
             if (!resultSet.next()) {
                 statement = getConn().createStatement();
                 statement.execute(createStatement);
-                statement.close();
+                //statement.close();
             }
         } catch (SQLException ex) {
             Logger.getLogger(GameSaverRecorder.class.getName()).log(Level.SEVERE, null, ex);
@@ -107,7 +107,7 @@ public final class GameSaverRecorder extends GameDB {
                 statement = getConn().createStatement();
             }
             statement.executeUpdate(deleteStatement);
-            statement.close();
+            //statement.close();
         }
         catch (SQLException ex) {
             Logger.getLogger(GameSaverRecorder.class.getName()).log(Level.SEVERE, null, ex);
@@ -124,7 +124,7 @@ public final class GameSaverRecorder extends GameDB {
                 statement = getConn().createStatement();
             }
             resultset = statement.executeQuery(queryStatement);
-            statement.close();
+            //statement.close();
         }
         catch (SQLException ex) {
             Logger.getLogger(GameSaverRecorder.class.getName()).log(Level.SEVERE, null, ex);

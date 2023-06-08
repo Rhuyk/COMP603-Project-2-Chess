@@ -20,106 +20,116 @@ import javax.swing.JPanel;
 public class ChessPanel extends JPanel {
     private static final int BOARD_SIZE = 8;
     private static final int CELL_SIZE = 63;
-    private PiecesOnBoard board;
     private boolean[][] availableMoves;
     private int selectedRow = -1;
     private int selectedCol = -1;
 
-    private Player player1;
-    private Player player2;
-    private Player currentPlayer;
-    private boolean whiteTurn;
-    
     private int currentRow;
     private int rowChange;
     private boolean flipFlag = false;
     private boolean toggleSwitch = false;
-    private String moves;
     private ChessFrame chessFrame;
     private ChessController chessController;
+    private Piece selectedPiece = null; 
     
     public ChessPanel(ChessFrame frame) 
     {
         chessController = new ChessController();
         chessFrame = frame;
-        moves = "";
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(513, 514));
-        board = new PiecesOnBoard();
         availableMoves = new boolean[8][8];
-        whiteTurn = true;
         
-        addMouseListener();
-    }
-
-    private void addMouseListener() {
         addMouseListener(new MouseAdapter() {
-            Piece selectedPiece = null;
             @Override
             public void mousePressed(MouseEvent e) 
             {
-                if (getPlayer1() != null && getPlayer2() != null) 
+                if (chessController.getPlayer1()!= null && chessController.getPlayer2() != null) 
                 {
                     int col = e.getX() / CELL_SIZE;
                     int row = (BOARD_SIZE - 1) - e.getY() / CELL_SIZE;
-                    if (isFlipFlag()) 
-                    {
-                        row = (BOARD_SIZE - 1) - row;
-                    }
-                    if (col >= 0 && col < BOARD_SIZE && row >= 0 && row < BOARD_SIZE) 
-                    {
-                        Piece clickedPiece = board.getBoard()[col][row];
-                        if(selectedPiece == null) 
-                        {
-                            if (clickedPiece != null && clickedPiece.getColour() == getCurrentPlayer().getColourPiece()) 
-                            {
-                                selectedPiece = clickedPiece;
-                                selectedRow = row;
-                                selectedCol = col;
-                                availableMoves = selectedPiece.getAvailableMoves();
-                            }
-                        } else {
-                            if(availableMoves[col][row]) 
-                            {
-                                if(selectedPiece.getColour() == getCurrentPlayer().getColourPiece() && board.movePiece(selectedCol, selectedRow, col, row)) 
-                                {
-                                    setWhiteTurn(!isWhiteTurn());
-                                    flipBoard();
-                                    moves = "(" + selectedPiece.getSymbol() + ")" + String.format(" %s%d, %s%d%n", (char)('a' + selectedCol), selectedRow + 1, (char)('a' + col), row + 1);
-                                    if(chessFrame != null)
-                                    {
-                                        chessFrame.updateMovesTextArea();
-                                    }
-                                   
-                                }
-                                
-                            }
 
-                            selectedPiece = null;
-                            selectedRow = -1;
-                            selectedCol = -1;
-                            availableMoves = new boolean[8][8];
-                        }
-
-                        repaint();
-                    }
-                    if(!whiteTurn) 
+                    if (isLegalMove(col, row)) 
                     {
-                        currentPlayer = player2;
-                    }
-                    else
-                    {
-                        currentPlayer = player1;
-                    }
-                    
-                    if(!checkForCheckmate())
-                    {
-                        checkForPromotion();
-                        checkForStalement();
+                        handleClick(col, row);
                     }
                 }
             }
         });
+    }
+    
+    private boolean isLegalMove(int col, int row) 
+    {   
+        if (isFlipFlag()) 
+        {
+            row = (BOARD_SIZE - 1) - row;
+        }
+        
+        return col >= 0 && col < BOARD_SIZE && row >= 0 && row < BOARD_SIZE;
+    }
+    
+    private void handleClick(int col, int row) 
+    {
+        if (selectedRow == -1 && selectedCol == -1)  // Check for if piece has not been selected
+        {
+            selectPiece(col, row);
+        } 
+        else 
+        {
+            movePiece(col, row);
+        }
+
+        repaint();
+    }
+    
+    private void selectPiece(int col, int row) 
+    {
+        selectedPiece = chessController.getBoard()[col][row];
+
+        if (selectedPiece != null) // Check for Empty piece
+        {
+            if (selectedPiece.getColour() == chessController.getCurrentColourTurn())
+            {
+                selectedRow = row;
+                selectedCol = col;
+                availableMoves = selectedPiece.getAvailableMoves();
+            }
+        }
+    }
+    
+    private void movePiece(int col, int row) 
+    {
+        selectedPiece = chessController.getBoard()[selectedCol][selectedRow];
+
+        if (availableMoves[col][row]) {
+            if (chessController.movePiece(selectedCol, selectedRow, col, row)) {
+                //flipBoard();
+                String move = "(" + selectedPiece.getSymbol() + ")" + String.format(" %s%d, %s%d%n", (char)('a' + selectedCol), selectedRow + 1, (char)('a' + col), row + 1);
+                if(chessFrame != null)
+                {
+                    chessFrame.updateMovesTextArea(move);
+                }
+            }
+        }
+        
+        resetSelection();
+        //checkGameStatus();
+        if(chessController.gameEnded())
+        {
+            // Change later
+            JOptionPane.showMessageDialog(ChessPanel.this, "This Chess Game has ended via Checkmate! Game over.");
+            chessFrame.switchTab(4);
+        }
+        checkForPromotion();
+        repaint();
+    }
+    
+    private void resetSelection() 
+    {
+        selectedPiece = null;
+        selectedRow = -1;
+        selectedCol = -1;
+        availableMoves = new boolean[BOARD_SIZE][BOARD_SIZE];
     }
     
     public boolean checkForPromotion()
@@ -130,25 +140,6 @@ public class ChessPanel extends JPanel {
             return true;
         }
         return false;
-    }
-    
-    public boolean checkForCheckmate() 
-    {
-        if (board.isCheckmate(getCurrentPlayer().getColourPiece())) 
-        {
-            chessFrame.switchTab(4);
-            JOptionPane.showMessageDialog(ChessPanel.this, "This Chess Game has ended via Checkmate! Game over.");
-            return true;
-        }
-        return false;
-    }
-    
-    public void checkForStalement()
-    {
-        if(board.isStalemate(getCurrentPlayer().getColourPiece()))
-        {
-            JOptionPane.showMessageDialog(ChessPanel.this, "This Chess Game is a Stalement! Game over.");
-        }
     }
 
     @Override
@@ -168,11 +159,10 @@ public class ChessPanel extends JPanel {
         g.fillRect(CELL_SIZE - frameWidth - 59, CELL_SIZE - frameWidth - 58, boardWidth + 2 * frameWidth, frameWidth); // TOP
         g.fillRect(CELL_SIZE - frameWidth - 59, CELL_SIZE + boardHeight  - 58, boardWidth + 2 * frameWidth, frameWidth);
         g.fillRect(CELL_SIZE + boardWidth - 59, CELL_SIZE - frameWidth - 58, frameWidth, boardHeight + 2 * frameWidth);
-        if (player1 == null || player2 == null) // Check if player has logged in
+        if (chessController.getPlayer1() == null || chessController.getPlayer2() == null) // Check if player has logged in
         {
             g.setColor(new Color(0, 0, 0, 100));
             g.fillRect(CELL_SIZE - 59, CELL_SIZE - 58, BOARD_SIZE * CELL_SIZE, BOARD_SIZE * CELL_SIZE);
-            
         }
         
         if(availableMoves != null)
@@ -200,7 +190,7 @@ public class ChessPanel extends JPanel {
                 int y = row * CELL_SIZE;
                 x += 4;
                 y += 5;
-                Piece piece = getBoard().getBoard()[col][currentRow];
+                Piece piece = chessController.getBoard()[col][currentRow];
 
                 if ((row + col) % 2 == 0) 
                 {
@@ -240,7 +230,8 @@ public class ChessPanel extends JPanel {
                     g.drawString(String.valueOf(BOARD_SIZE - row), x + 3, y + CELL_SIZE / 2 - 16);
                 }
                 
-                if (piece != null && piece.getSymbol().contains("K") && board.isInCheck(piece.getColour())) {
+                if (piece != null && piece.getSymbol().contains("K") && chessController.isInCheck(piece)) 
+                {
                     g.setColor(Color.RED);
                     g.drawRect(x, y, CELL_SIZE - 1, CELL_SIZE - 1);
                 }
@@ -255,13 +246,13 @@ public class ChessPanel extends JPanel {
         }
     }
     
-    public void flipBoard()
-    {
-        if(isToggleSwitch())
-        {
-            setFlipFlag(!isFlipFlag());
-        }
-    }
+//    public void flipBoard()
+//    {
+//        if(isToggleSwitch())
+//        {
+//            setFlipFlag(!isFlipFlag());
+//        }
+//    }
     
     private void drawAvailableMoves(Graphics g) 
     {
@@ -288,97 +279,13 @@ public class ChessPanel extends JPanel {
         }
     }
 
-    /**
-     * @param player1 the player1 to set
-     */
-    public void setPlayer1(Player player1) 
+    public void resetGame() 
     {
-        this.player1 = player1;
-    }
-
-    /**
-     * @param player2 the player2 to set
-     */
-    public void setPlayer2(Player player2)
-    {
-        this.player2 = player2;
-    }
-
-
-    
-    public void resetGame(PiecesOnBoard board) 
-    {
-        //gameController.startNewGame();
-        board.resetBoardAndPieces();
+        chessController.startNewGame();
         selectedRow = -1;
         selectedCol = -1;
         availableMoves = new boolean[8][8];
-        setWhiteTurn(true);
-        setCurrentPlayer(getPlayer1());
         repaint();
-    }
-
-    /**
-     * @return the currentPlayer
-     */
-    public Player getCurrentPlayer() {
-        return currentPlayer;
-    }
-
-    /**
-     * @param currentPlayer the currentPlayer to set
-     */
-    public void setCurrentPlayer(Player currentPlayer) {
-        this.currentPlayer = currentPlayer;
-    }
-
-    /**
-     * @return the whiteTurn
-     */
-    public boolean isWhiteTurn() {
-        return whiteTurn;
-    }
-
-    /**
-     * @param whiteTurn the whiteTurn to set
-     */
-    public void setWhiteTurn(boolean whiteTurn) {
-        this.whiteTurn = whiteTurn;
-    }
-
-    /**
-     * @return the board
-     */
-    public PiecesOnBoard getBoard() {
-        return board;
-    }
-
-    /**
-     * @param board the board to set
-     */
-    public void setBoard(PiecesOnBoard board) {
-        this.board = board;
-    }
-
-    /**
-     * @return the player1
-     */
-    public Player getPlayer1() {
-        return player1;
-    }
-
-    /**
-     * @return the player2
-     */
-    public Player getPlayer2() {
-        return player2;
-    }
-
-    /**
-     * @return the moves
-     */
-    public String getMoves() {
-        return moves;
     }
 
     /**
