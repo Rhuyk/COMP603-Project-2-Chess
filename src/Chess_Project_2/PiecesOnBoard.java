@@ -79,40 +79,43 @@ public final class PiecesOnBoard {
         return moveNum;
     }
     
+    // Sets current move number
     public void setMoveNum(int moveNum)
     {
         this.moveNum = moveNum;
     }
     
-    //return piece from a selected square on the board
+    // Returns a piece from a location on the board and returns null if not found
     public Piece getPiece(int col, int row)
     {
         return allPieces.getPiece(col, row);
     }
     
+    // Returns all the existed pieces on the board
     public AllPieces getPieces()
     {
         return allPieces;
     }
     
+    // Returns true of false if a pawn can be promoted
     public boolean canPromote()
     {
         return isPromoting;
     }
     
-    //add a piece to white or black pieces list
+    // Adds a new piece into the board
     public void addPiece(Piece piece)
     {
         allPieces.addPiece(piece);
     }
     
-    //clear all pieces from all the pieces lists
+    // Removes all the existing pieces
     public void clearAllPieces()
     {
         allPieces.clearPieces();
     }
     
-    //reset the board and the pieces lists
+    // Resets board and pieces back to default
     public void resetBoardAndPieces()
     {
         this.moveNum = 0;
@@ -120,7 +123,7 @@ public final class PiecesOnBoard {
         refreshBoard();
     }
     
-    //update the board to the pieces lists
+    // Updates the board with correspnding existing pieces
     public void refreshBoard()
     {
         for(int col = 0; col < 8; col++) 
@@ -136,14 +139,14 @@ public final class PiecesOnBoard {
         }
     }
     
-    //return an area on the board of a piece checking a king (check path)
+    // Returns a path between a checking piece and a king (check path)
     public boolean[][] getCheckPath()
     {
         refreshPiecesStatus();
         return this.checkPath;
     }
     
-    //set white or black in check to true, and save the check path.
+    // Sets true or false if the colour piece is in check
     public void setInCheck(PieceColour colour, boolean[][] checkPath)
     {
         for(int col = 0; col < 8; col++)
@@ -168,7 +171,7 @@ public final class PiecesOnBoard {
         }
     }
     
-    //return true if white is in check, else false
+    // Returns true or false if the colour is in check, else false
     public boolean isInCheck(PieceColour colour)
     {
         if (colour == PieceColour.WHITE) {
@@ -178,7 +181,7 @@ public final class PiecesOnBoard {
         }
     }
     
-    //return true if a selected colour piece is checkmated, else false
+    // Returns true or false if the colour is checkmated
     public boolean isCheckmate(PieceColour colour)
     {
         refreshPiecesStatus();
@@ -215,7 +218,7 @@ public final class PiecesOnBoard {
         return isCheckmate;
     }
     
-    //return true if a selected colour piece is stalemated, else false
+    // Returns true or false if the colour is stalemated
     public boolean isStalemate(PieceColour colour)
     {
         refreshPiecesStatus();
@@ -253,14 +256,14 @@ public final class PiecesOnBoard {
         return isStalemate;
     }
     
-    //return true is castling is avaialable, else false
+    // Returns true or false if castling is avaialable
     public boolean isCastling(Piece king, int toCol, int toRow)
     {
         boolean availability = false;
         //if king has not moved yet
         if(king.getSymbol().contains("K") && king.hasNotMoved() && (toRow == 0 || toRow == 7))
         {
-            //long castle: if the rook has not moved yet and the castle path has no other pieces
+            //long castle: if rook has not moved yet and castle path has no other pieces
             if(toCol == 2 && board[0][king.getRow()] != null && board[0][king.getRow()].hasNotMoved() 
                     && board[1][king.getRow()] == null && board[2][king.getRow()] == null && board[3][king.getRow()] == null)
             {
@@ -275,7 +278,7 @@ public final class PiecesOnBoard {
                     }
                 }
             }
-            //short castle: if the rook has not moved yet and the castle path has no other pieces
+            //short castle: if rook has not moved yet and castle path has no other pieces
             else if(toCol == 6 && board[7][king.getRow()] != null && board[7][king.getRow()].hasNotMoved() 
                     && board[5][king.getRow()] == null && board[6][king.getRow()] == null)
             {
@@ -293,7 +296,7 @@ public final class PiecesOnBoard {
         return availability;
     }
     
-    //perform castling
+    // Performs castling
     private void castle(Piece king, int toCol)
     {
         int col = king.getColumn();
@@ -324,16 +327,16 @@ public final class PiecesOnBoard {
         refreshBoard();
     }
     
-    //return true if en passant move is available, else false
+    // Returns true or false if en passant is available
     public boolean isEnPassant(Piece pawn, int toCol, int toRow)
     {
         boolean availability = false;
-        //if the target square if not empty
+        //if the target square is not empty
         if(board[toCol][pawn.getRow()] != null && (toRow == 5 || toRow == 2))
         {
             /* if selected piece is white pawn at row 5
-             * and the target piece is black pawn
-             * and that black pawn advanced two squares in the previous move
+             * and target piece is black pawn
+             * and target piece advanced two squares in previous move
              */
             if(pawn.getSymbol().equals("wP") && pawn.getRow() == 4 
                     && board[toCol][pawn.getRow()].getSymbol().equals("bP") 
@@ -343,8 +346,8 @@ public final class PiecesOnBoard {
                 availability = true;
             }
             /* if selected piece is black pawn at row 4
-             * and the target piece is white pawn
-             * and that white pawn advanced two squares in the previous move
+             * and target piece is white pawn
+             * and target piece advanced two squares in previous move
              */
             else if(pawn.getSymbol().equals("bP") && pawn.getRow() == 3 
                     && board[toCol][pawn.getRow()].getSymbol().equals("wP") 
@@ -358,7 +361,7 @@ public final class PiecesOnBoard {
         return availability;
     }
     
-    //perform en passant move
+    // Performs en passant
     private void enPassant(Piece pawn, int toCol)
     {
         int col = pawn.getColumn();
@@ -379,23 +382,13 @@ public final class PiecesOnBoard {
         refreshBoard();
     }
     
-    private void checkPromotion(Piece pawn)
-    {
-        if(pawn.getSymbol().contains("P") && (pawn.getRow() == 7 || pawn.getRow() == 0))
-        {
-            promotionPawn = pawn;
-            isPromoting = true;
-        }
-    }
-    
-    //promote pawn to other piece
+    // Promotes pawn to a chosen piece type such as queen, rook, bishop, and knight
     public void promote(String pieceType)
     {
         int col = promotionPawn.getColumn();
         int row = promotionPawn.getRow();
         Piece promotion;
         
-        //player select promotion piece
         if(pieceType.contains("Q"))
         {
             promotion = new Queen(promotionPawn.getColour(), col, row);
@@ -421,6 +414,17 @@ public final class PiecesOnBoard {
         refreshBoard();
     }
     
+    // Saves pawn if promotion is available and sets isPromoting to true
+    private void checkPromotion(Piece pawn)
+    {
+        if(pawn.getSymbol().contains("P") && (pawn.getRow() == 7 || pawn.getRow() == 0))
+        {
+            promotionPawn = pawn;
+            isPromoting = true;
+        }
+    }
+    
+    // Moves a piece to a location, and removes any piece that is in the location, then updates board
     private void move(int fromCol, int fromRow, int toCol, int toRow)
     {
         moveNum++;
@@ -431,7 +435,7 @@ public final class PiecesOnBoard {
         refreshBoard();
     }
     
-    //set isInCheck, isUnderPin, and checkPath back to default then update again
+    // Updates isInCheck, isUnderPin, and checkPath based on current board situation
     private void refreshPiecesStatus()
     {
         whiteIsInCheck = false;

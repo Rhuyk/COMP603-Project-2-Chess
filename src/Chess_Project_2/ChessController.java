@@ -95,14 +95,14 @@ public class ChessController {
         return false;
     }
     
-    // Uploads resigned chess game into the database
+    // Uploads manually resigned chess game into the database
     public void resignGame()
     {
         gameHistory.uploadCompletedGame(player1.getName(), player2.getName(), getGameResult(colourTurn, true), board.getMoveNum(), getCurrentDate());
         gameHRecorder.uploadCompletedGame();
     }
     
-    // Uploads draw chess game into the database
+    // Uploads manually draw chess game into the database
     public void drawGame()
     {
         gameHistory.uploadCompletedGame(player1.getName(), player2.getName(), "DD", board.getMoveNum(), getCurrentDate());
@@ -129,6 +129,12 @@ public class ChessController {
         gameSRecorder.saveCurrentGame(slotNum);
     }
     
+    /**
+     * Gets a saved game info at a certain slot
+     * 
+     * @param slotNum (1, 2, 3, 4, 5)
+     * @return a result set, where col 1: (white player name), col 2: (black player name), col 3: (date)
+     */
     public ResultSet getSavedGameInfo(int slotNum)
     {
         return gameSaver.getSavedGameInfo(slotNum);
@@ -150,7 +156,7 @@ public class ChessController {
             while (resultset.next())
             {
                 Piece piece = createPiece(resultset.getString(2), resultset.getInt(3), resultset.getInt(4), resultset.getInt(5), resultset.getInt(6), resultset.getInt(7));
-                board.addPiece(piece);
+                board.getPieces().addPiece(piece);
             }
             board.refreshBoard();
             colourTurn = board.getPieces().getCurrentColourTurn();
