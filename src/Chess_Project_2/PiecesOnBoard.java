@@ -30,6 +30,9 @@ public final class PiecesOnBoard {
     // Moves a piece from square to square on the board
     public boolean movePiece(int fromCol, int fromRow, int toCol, int toRow)
     {
+        if (!(checkInput(fromCol) && checkInput(fromRow) && checkInput(toCol) && checkInput(toRow))) {
+            return false;
+        }
         Piece selectedPiece = board[fromCol][fromRow];
         if(selectedPiece != null)
         {
@@ -65,6 +68,12 @@ public final class PiecesOnBoard {
             checkPromotion(board[toCol][toRow]);
         }
         return true;
+    }
+    
+    // Returns true or false if the col_or_row value is within the board boundary
+    private boolean checkInput(int col_or_row)
+    {
+        return (col_or_row <= 7 && col_or_row >= 0);
     }
     
     // Returns current board
@@ -179,6 +188,23 @@ public final class PiecesOnBoard {
         } else {
             return blackIsInCheck;
         }
+    }
+    
+    // Updates isInCheck, isUnderPin, and checkPath based on current board situation
+    public void refreshPiecesStatus()
+    {
+        whiteIsInCheck = false;
+        blackIsInCheck = false;
+        allPieces.resetUnderPin();
+        for(int col = 0; col < 8; col++)
+        {
+            for(int row = 0; row < 8; row++)
+            {
+                checkPath[col][row] = true;
+            }
+        }
+        allPieces.getTargetAreas(PieceColour.WHITE);
+        allPieces.getTargetAreas(PieceColour.BLACK);
     }
     
     // Returns true or false if the colour is checkmated
@@ -433,22 +459,5 @@ public final class PiecesOnBoard {
         allPieces.removePiece(toCol, toRow);
         allPieces.getPiece(fromCol, fromRow).setColAndRow(toCol, toRow);
         refreshBoard();
-    }
-    
-    // Updates isInCheck, isUnderPin, and checkPath based on current board situation
-    public void refreshPiecesStatus()
-    {
-        whiteIsInCheck = false;
-        blackIsInCheck = false;
-        allPieces.resetUnderPin();
-        for(int col = 0; col < 8; col++)
-        {
-            for(int row = 0; row < 8; row++)
-            {
-                checkPath[col][row] = true;
-            }
-        }
-        allPieces.getTargetAreas(PieceColour.WHITE);
-        allPieces.getTargetAreas(PieceColour.BLACK);
     }
 }
