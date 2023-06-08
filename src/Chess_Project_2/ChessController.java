@@ -24,6 +24,7 @@ public class ChessController {
     private static Player player1;
     private static Player player2;
     private static PieceColour colourTurn;
+    
 
     // Constructs ChessController class
     public ChessController()
@@ -52,9 +53,9 @@ public class ChessController {
         return player2;
     }
     
-    public boolean isInCheck(Piece piece)
+    public boolean isInCheck(PieceColour piece)
     {
-        return board.isInCheck(piece.getColour());
+        return board.isInCheck(piece);
     }
     
     // Returns current player turn (black or white)
@@ -66,8 +67,8 @@ public class ChessController {
     // Sets players' name
     public void setPlayers(String playerWhite, String playerBlack)
     {
-        player1 = new Player(PieceColour.WHITE, playerWhite);
-        player2 = new Player(PieceColour.BLACK, playerBlack);
+        setPlayer1(new Player(PieceColour.WHITE, playerWhite));
+        setPlayer2(new Player(PieceColour.BLACK, playerBlack));
     }
     
     // Moves a chess piece and updates the board
@@ -133,6 +134,7 @@ public class ChessController {
     public void startNewGame()
     {
         board.resetBoardAndPieces();
+        board.refreshPiecesStatus();
         gameSRecorder.deleteGame(0);
         recordCurrentBoard();
         colourTurn = PieceColour.WHITE;
@@ -342,5 +344,19 @@ public class ChessController {
      */
     public Player getPlayer2() {
         return player2;
+    }
+
+    /**
+     * @param aPlayer1 the player1 to set
+     */
+    public void setPlayer1(Player aPlayer1) {
+        player1 = aPlayer1;
+    }
+
+    /**
+     * @param aPlayer2 the player2 to set
+     */
+    public void setPlayer2(Player aPlayer2) {
+        player2 = aPlayer2;
     }
 }

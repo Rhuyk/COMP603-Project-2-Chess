@@ -436,7 +436,7 @@ public final class PiecesOnBoard {
     }
     
     // Updates isInCheck, isUnderPin, and checkPath based on current board situation
-    private void refreshPiecesStatus()
+    public void refreshPiecesStatus()
     {
         whiteIsInCheck = false;
         blackIsInCheck = false;

@@ -31,6 +31,7 @@ public class ChessPanel extends JPanel {
     private ChessFrame chessFrame;
     private ChessController chessController;
     private Piece selectedPiece = null; 
+    private boolean gameEnded = false;
     
     public ChessPanel(ChessFrame frame) 
     {
@@ -40,11 +41,16 @@ public class ChessPanel extends JPanel {
         setPreferredSize(new Dimension(513, 514));
         availableMoves = new boolean[8][8];
         
+        addMouseListener();
+    }
+    
+    private void addMouseListener()
+    {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) 
             {
-                if (chessController.getPlayer1()!= null && chessController.getPlayer2() != null) 
+                if (!gameEnded && getChessController().getPlayer1()!= null && getChessController().getPlayer2() != null) 
                 {
                     int col = e.getX() / CELL_SIZE;
                     int row = (BOARD_SIZE - 1) - e.getY() / CELL_SIZE;
@@ -82,11 +88,11 @@ public class ChessPanel extends JPanel {
     
     private void selectPiece(int col, int row) 
     {
-        selectedPiece = chessController.getBoard()[col][row];
+        selectedPiece = getChessController().getBoard()[col][row];
 
         if (selectedPiece != null) // Check for Empty piece
         {
-            if (selectedPiece.getColour() == chessController.getCurrentColourTurn())
+            if (selectedPiece.getColour() == getChessController().getCurrentColourTurn()) // Check if it is the player chess piece colour
             {
                 selectedRow = row;
                 selectedCol = col;
@@ -97,28 +103,35 @@ public class ChessPanel extends JPanel {
     
     private void movePiece(int col, int row) 
     {
-        selectedPiece = chessController.getBoard()[selectedCol][selectedRow];
+        selectedPiece = getChessController().getBoard()[selectedCol][selectedRow];
 
-        if (availableMoves[col][row]) {
-            if (chessController.movePiece(selectedCol, selectedRow, col, row)) {
+        if (availableMoves[col][row]) // Check the availableMoves 
+        {
+            if (getChessController().movePiece(selectedCol, selectedRow, col, row)) // Check if it is legal move
+            {
                 flipBoard();
-                String move = "(" + selectedPiece.getSymbol() + ")" + String.format(" %s%d, %s%d%n", (char)('a' + selectedCol), selectedRow + 1, (char)('a' + col), row + 1);
-                if(chessFrame != null)
-                {
-                    chessFrame.updateMovesTextArea(move);
-                }
+                updateMoves(selectedCol,selectedRow,col,row);
             }
         }
         
         resetSelection();
-        if(chessController.gameEnded())
+        if(getChessController().gameEnded())
         {
-            // Change later
-            JOptionPane.showMessageDialog(ChessPanel.this, "This Chess Game has ended via Checkmate! Game over.");
+            gameEnded = true;
             chessFrame.switchTab(4);
+            repaint();
+            JOptionPane.showMessageDialog(ChessPanel.this, "This Chess Game has ended via Checkmate! Game over.");
         }
         checkForPromotion();
-        repaint();
+    }
+    
+    private void updateMoves(int fromCol, int fromRow, int toCol, int toRow)
+    {
+        String moves = "(" + selectedPiece.getSymbol() + ")" + String.format(" %s%d, %s%d%n", (char) ('a' + fromCol), fromRow + 1, (char) ('a' + toCol), toRow + 1);
+        if(chessFrame != null)
+        {
+            chessFrame.updateMovesTextArea(moves);
+        }
     }
     
     private void resetSelection() 
@@ -131,7 +144,7 @@ public class ChessPanel extends JPanel {
     
     public boolean checkForPromotion()
     {
-        if(chessController.canPromote())
+        if(getChessController().canPromote())
         {
             chessFrame.switchTab(5);
             return true;
@@ -143,6 +156,7 @@ public class ChessPanel extends JPanel {
     protected void paintComponent(Graphics g) 
     {
         super.paintComponent(g);
+        
         
         drawChessBoard(g);
         
@@ -156,7 +170,7 @@ public class ChessPanel extends JPanel {
         g.fillRect(CELL_SIZE - frameWidth - 59, CELL_SIZE - frameWidth - 58, boardWidth + 2 * frameWidth, frameWidth); // TOP
         g.fillRect(CELL_SIZE - frameWidth - 59, CELL_SIZE + boardHeight  - 58, boardWidth + 2 * frameWidth, frameWidth);
         g.fillRect(CELL_SIZE + boardWidth - 59, CELL_SIZE - frameWidth - 58, frameWidth, boardHeight + 2 * frameWidth);
-        if (chessController.getPlayer1() == null || chessController.getPlayer2() == null) // Check if player has logged in
+        if (getChessController().getPlayer1() == null || getChessController().getPlayer2() == null) // Check if player has logged in
         {
             g.setColor(new Color(0, 0, 0, 100));
             g.fillRect(CELL_SIZE - 59, CELL_SIZE - 58, BOARD_SIZE * CELL_SIZE, BOARD_SIZE * CELL_SIZE);
@@ -187,7 +201,7 @@ public class ChessPanel extends JPanel {
                 int y = row * CELL_SIZE;
                 x += 4;
                 y += 5;
-                Piece piece = chessController.getBoard()[col][currentRow];
+                Piece piece = getChessController().getBoard()[col][currentRow];
 
                 if ((row + col) % 2 == 0) 
                 {
@@ -227,16 +241,17 @@ public class ChessPanel extends JPanel {
                     g.drawString(String.valueOf(BOARD_SIZE - row), x + 3, y + CELL_SIZE / 2 - 16);
                 }
                 
-                if (piece != null && piece.getSymbol().contains("K") && chessController.isInCheck(piece)) 
-                {
-                    g.setColor(Color.RED);
-                    g.drawRect(x, y, CELL_SIZE - 1, CELL_SIZE - 1);
-                }
-                
                 // Add yellow overlay on the square where the piece was
                 if (selectedCol == col && selectedRow == currentRow) {
                     g.setColor(new Color(255, 255, 0, 100));
                     g.fillRect(x, y, CELL_SIZE, CELL_SIZE);
+                }
+                
+                // Draw red outline on checked king (!gameEnded &&)
+                if (piece != null && piece.getSymbol().contains("K") && getChessController().isInCheck(piece.getColour())) 
+                {
+                    g.setColor(Color.RED);
+                    g.drawRect(x, y, CELL_SIZE - 1, CELL_SIZE - 1);
                 }
             }
             currentRow += rowChange; 
@@ -278,10 +293,9 @@ public class ChessPanel extends JPanel {
 
     public void resetGame() 
     {
-        chessController.startNewGame();
-        selectedRow = -1;
-        selectedCol = -1;
-        availableMoves = new boolean[8][8];
+        resetSelection();
+        getChessController().startNewGame();
+        gameEnded = false;
         repaint();
     }
 
@@ -295,7 +309,8 @@ public class ChessPanel extends JPanel {
     /**
      * @param chessFrame the chessFrame to set
      */
-    public void setChessFrame(ChessFrame chessFrame) {
+    public void setChessFrame(ChessFrame chessFrame) 
+    {
         this.chessFrame = chessFrame;
     }
 
@@ -316,14 +331,16 @@ public class ChessPanel extends JPanel {
     /**
      * @return the toggleSwitch
      */
-    public boolean isToggleSwitch() {
+    public boolean isToggleSwitch() 
+    {
         return toggleSwitch;
     }
 
     /**
      * @param toggleSwitch the toggleSwitch to set
      */
-    public void setToggleSwitch(boolean toggleSwitch) {
+    public void setToggleSwitch(boolean toggleSwitch) 
+    {
         this.toggleSwitch = toggleSwitch;
     }
 

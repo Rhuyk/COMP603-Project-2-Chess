@@ -17,10 +17,6 @@ public class ChessMain {
         frame.setChessController(chessController);
         frame.setVisible(true);
         
-        if(!frame.isActive())
-        {
-            chessController.quit();
-        }
     }
     
 }
