@@ -44,17 +44,11 @@ public final class GameHistory extends GameDB {
         }
     }
     
-//    public void uploadCompletedGame(String playerWhite, String playerBlack, String result, int moves, Date date) {
-//        
-//        String insertStatement = "INSERT INTO GAME_HISTORY VALUES (" + playerWhite + "', '" + playerBlack + "', '" + result + "', " + moves + ", '" + date + "')";
-//        updateDB(insertStatement);
-//    }
-    
     public void uploadCompletedGame(String playerWhite, String playerBlack, String result, int moves, Date date)
     {
+        String insertStatement = "INSERT INTO GAME_HISTORY VALUES (1, '" + playerWhite + "', '" + playerBlack + "', '" + result + "', " + moves + ", '" + date + "')";
         try {
             updateGameHistoryTable();
-            String insertStatement = "INSERT INTO GAME_HISTORY VALUES (1, '" + playerWhite + "', '" + playerBlack + "', '" + result + "', " + moves + ", '" + date + "')";
             if (statement == null) {
                 statement = getConn().createStatement();
             }
@@ -69,7 +63,7 @@ public final class GameHistory extends GameDB {
     public ResultSet getHistoryGameInfo(int slotNum)
     {
         ResultSet resultSet = null;
-        String queryStatement = "SELECT WHITE, BLACK, RESULT, MOVES, DATE FROM GAME_HISTORY WHERE NUMBER=" + slotNum;
+        String queryStatement = "SELECT WHITE, BLACK, RESULT, MOVES, DATE FROM GAME_HISTORY WHERE NUMBER = " + slotNum;
         
         try {
             if (statement == null) {

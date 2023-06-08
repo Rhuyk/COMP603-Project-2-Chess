@@ -44,25 +44,25 @@ public class Player {
     }
 
     /**
-    * Method: getPlayerName
-    * 
-    * This method will return the player name.
+    * Method: getName
+ 
+ This method will return the player name.
     * 
     * @return 
     */     
-    public String getPlayerName() 
+    public String getName() 
     {
         return playerName;
     }
  
     /**
-    * Method: setPlayerName
-    * 
-    * This method will modify the player name.
+    * Method: setName
+ 
+ This method will modify the player name.
     * 
     * @param playerName
     */    
-    public void setPlayerName(String playerName) 
+    public void setName(String playerName) 
     {
         this.playerName = playerName;
     }

@@ -26,8 +26,8 @@ public class ChessGame {
         
         startNewPlayers(player1,player2);
         
-        moveHistory += player1.getPlayerName() + " is playing the " + player1.getColourPiece() + " chess pieces \n";
-        moveHistory += player2.getPlayerName() + " is playing the " + player2.getColourPiece() + " chess pieces \n\n";
+        moveHistory += player1.getName() + " is playing the " + player1.getColourPiece() + " chess pieces \n";
+        moveHistory += player2.getName() + " is playing the " + player2.getColourPiece() + " chess pieces \n\n";
         
         System.out.println("Commands: ");
         System.out.println("Enter 'quit' to leave anytime.");
@@ -106,7 +106,7 @@ public class ChessGame {
             
             if(board.isCheckmate(currentPlayer.getColourPiece()))
             {
-                System.out.println(currentPlayer.getPlayerName() + " has been checkmated.");
+                System.out.println(currentPlayer.getName() + " has been checkmated.");
                 
                 isWhiteTurn = !isWhiteTurn;
                 
@@ -119,11 +119,11 @@ public class ChessGame {
                     currentPlayer = player1;
                 }
                 
-                System.out.println(currentPlayer.getPlayerName() + " is the winner.");
+                System.out.println(currentPlayer.getName() + " is the winner.");
                 break;
             }
             
-            System.out.println(currentPlayer.getPlayerName()+" Enter your chess move(e.g 'c2 c4'): ");
+            System.out.println(currentPlayer.getName()+" Enter your chess move(e.g 'c2 c4'): ");
             String chessMove = scanner.nextLine();
             
             if(chessMove.equalsIgnoreCase("save"))
@@ -131,7 +131,7 @@ public class ChessGame {
                 Player whiteTemp = player1;
                 Player blackTemp = player2;
                 
-//                if(ChessBoardFileIO.saveGameForUser(currentPlayer.getPlayerName(),whiteTemp,blackTemp,board))
+//                if(ChessBoardFileIO.saveGameForUser(currentPlayer.getName(),whiteTemp,blackTemp,board))
 //                {
 //                    ChessBoardFileIO.saveMovesToText(moveHistory);
 //                }
@@ -139,7 +139,7 @@ public class ChessGame {
             
             else if(chessMove.equalsIgnoreCase("resign"))
             {
-                System.out.println(currentPlayer.getPlayerName() + " has resigned.");
+                System.out.println(currentPlayer.getName() + " has resigned.");
                 System.out.println("This game has offically ended via resignation");
                 gameEnded = true;
             }
@@ -151,7 +151,7 @@ public class ChessGame {
             
             else if(chessMove.equalsIgnoreCase("draw"))
             {
-                System.out.println(currentPlayer.getPlayerName() + " has suggested a draw.");
+                System.out.println(currentPlayer.getName() + " has suggested a draw.");
                 
                 isWhiteTurn = !isWhiteTurn;
                 
@@ -165,18 +165,18 @@ public class ChessGame {
                 }
                 
                 
-                System.out.print(currentPlayer.getPlayerName() + " do you accept? (Y/N): ");
+                System.out.print(currentPlayer.getName() + " do you accept? (Y/N): ");
                 String drawChoice = scanner.nextLine();
                 
                 if(drawChoice.equalsIgnoreCase("Y"))
                 {
-                    System.out.println(currentPlayer.getPlayerName() + " has accepted a draw.");
+                    System.out.println(currentPlayer.getName() + " has accepted a draw.");
                     System.out.println("This game has offically ended as a draw.");
                     gameEnded = true;
                 }
                 else if(drawChoice.equalsIgnoreCase("N"))
                 {
-                    System.out.println(currentPlayer.getPlayerName() + " has rejected a draw.");
+                    System.out.println(currentPlayer.getName() + " has rejected a draw.");
                     System.out.println("This game will continue.");
                 }
                 else
@@ -189,9 +189,9 @@ public class ChessGame {
                     
             else if(chessMove.equalsIgnoreCase("load"))
             {
-                //board = ChessBoardFileIO.loadGame(currentPlayer.getPlayerName(),currentPlayer);
+                //board = ChessBoardFileIO.loadGame(currentPlayer.getName(),currentPlayer);
                 
-                System.out.println("Welcome back! " + currentPlayer.getPlayerName());
+                System.out.println("Welcome back! " + currentPlayer.getName());
             }
             
             else if(chessMove.equalsIgnoreCase("reset"))
@@ -230,8 +230,8 @@ public class ChessGame {
                     
                     if(board.movePiece(fromCol, fromRow, toCol, toRow))
                     {
-                        moveHistory += currentPlayer.getPlayerName() + " has moved " + chessMove + "\n";
-                        System.out.println(currentPlayer.getPlayerName() +" moved "+ chessMove +"\n");
+                        moveHistory += currentPlayer.getName() + " has moved " + chessMove + "\n";
+                        System.out.println(currentPlayer.getName() +" moved "+ chessMove +"\n");
                         isWhiteTurn = !isWhiteTurn;
                     }
                 }
@@ -280,7 +280,7 @@ public class ChessGame {
             }
             
             
-            player1.setPlayerName(player1Name);
+            player1.setName(player1Name);
             player1.setColourPiece(PieceColour.WHITE);
             
             System.out.println("\nPlayer 2 will play as black, Please enter your name:");
@@ -297,7 +297,7 @@ public class ChessGame {
                 System.exit(0);
             }
             
-            player2.setPlayerName(player2Name);
+            player2.setName(player2Name);
             player2.setColourPiece(PieceColour.BLACK);
             System.out.println();
             

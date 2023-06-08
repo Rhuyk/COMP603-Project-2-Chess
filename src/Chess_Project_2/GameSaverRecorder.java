@@ -19,12 +19,10 @@ import java.util.logging.Logger;
 public final class GameSaverRecorder extends GameDB {
     
     private Statement statement;
-    private int currentGameMoveNum;
     
     public GameSaverRecorder() {
         super();
         createTable();
-        //currentGameMoveNum = 0;
     }
     
     public void createTable()
@@ -73,7 +71,6 @@ public final class GameSaverRecorder extends GameDB {
             preparedStatement.setInt(1, slotNum);
             preparedStatement.executeUpdate();
             preparedStatement.close();
-            //updateCurrentMoveNum();
         }
         catch (SQLException ex) {
             Logger.getLogger(GameSaverRecorder.class.getName()).log(Level.SEVERE, null, ex);
@@ -111,9 +108,6 @@ public final class GameSaverRecorder extends GameDB {
             }
             statement.executeUpdate(deleteStatement);
             statement.close();
-//            if (slotNum == 0) {
-//                currentGameMoveNum = 0;
-//            }
         }
         catch (SQLException ex) {
             Logger.getLogger(GameSaverRecorder.class.getName()).log(Level.SEVERE, null, ex);
@@ -122,9 +116,8 @@ public final class GameSaverRecorder extends GameDB {
     
     public ResultSet getCurrentGameBoard()
     {
-        //updateCurrentMoveNum();
         ResultSet resultset = null;
-        String queryStatement = "SELECT MOVE_NUM, PIECE_TYPE, col, row, LMN, HNM, HMO FROM GAME_SAVER_RECORDER WHERE NUMBER=0 AND MOVE_NUM=MAX(MOVE_NUM)";
+        String queryStatement = "SELECT MOVE_NUM, PIECE_TYPE, col, row, LMN, HNM, HMO FROM GAME_SAVER_RECORDER WHERE NUMBER = 0 AND MOVE_NUM = MAX(MOVE_NUM)";
         
         try {
             if (statement == null) {
@@ -138,23 +131,4 @@ public final class GameSaverRecorder extends GameDB {
         }
         return resultset;
     }
-
-//    private void updateCurrentMoveNum()
-//    {
-//        String selectStatement = "SELECT MAX(MOVE_NUM) AS MAX_MOVE_NUM FROM GAME_SAVER_RECORDER WHERE NUMBER = 0";
-//
-//        try {
-//            if (statement == null) {
-//                statement = getConn().createStatement();
-//            }
-//            ResultSet resultSet = statement.executeQuery(selectStatement);
-//            if (resultSet.next()) {
-//                currentGameMoveNum = resultSet.getInt("MAX_MOVE_NUM") + 1;
-//            }
-//            statement.close();
-//        }
-//        catch (SQLException ex) {
-//            Logger.getLogger(GameSaverRecorder.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
 }

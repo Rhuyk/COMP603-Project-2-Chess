@@ -50,35 +50,4 @@ public class GameDB {
             }
         }
     }
-    
-//    private ResultSet queryDB(String sql) {
-//
-//        Connection connection = this.conn;
-//        Statement statement = null;
-//        ResultSet resultSet = null;
-//
-//        try {
-//            statement = connection.createStatement();
-//            resultSet = statement.executeQuery(sql);
-//
-//        } catch (SQLException ex) {
-//            System.out.println(ex.getMessage());
-//        }
-//        return resultSet;
-//    }
-//
-//    private void updateDB(String sql) {
-//
-//        Connection connection = this.conn;
-//        Statement statement = null;
-//        ResultSet resultSet = null;
-//
-//        try {
-//            statement = connection.createStatement();
-//            statement.executeUpdate(sql);
-//
-//        } catch (SQLException ex) {
-//            System.out.println(ex.getMessage());
-//        }
-//    }
 }

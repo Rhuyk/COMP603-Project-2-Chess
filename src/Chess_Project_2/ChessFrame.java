@@ -606,8 +606,8 @@ public class ChessFrame extends JFrame {
     private void drawButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drawButtonActionPerformed
         // Draw
         Player otherPlayer = (getChessPanel().getCurrentPlayer() == getChessPanel().getPlayer1()) ? getChessPanel().getPlayer2() : getChessPanel().getPlayer1();
-        int response = JOptionPane.showConfirmDialog(null, getChessPanel().getCurrentPlayer().getPlayerName() 
-                + " asks for a draw. " + otherPlayer.getPlayerName() + ", do you accept the draw?", "Draw Proposal", JOptionPane.YES_NO_OPTION);
+        int response = JOptionPane.showConfirmDialog(null, getChessPanel().getCurrentPlayer().getName() 
+                + " asks for a draw. " + otherPlayer.getName() + ", do you accept the draw?", "Draw Proposal", JOptionPane.YES_NO_OPTION);
 
         if (response == JOptionPane.YES_OPTION) {
             getChessPanel().setPlayer1(null);
@@ -616,7 +616,7 @@ public class ChessFrame extends JFrame {
             JOptionPane.showMessageDialog(null, "The game has ended via draw.");
             
         } else {
-            JOptionPane.showMessageDialog(null, otherPlayer.getPlayerName() + " has declined the draw.");
+            JOptionPane.showMessageDialog(null, otherPlayer.getName() + " has declined the draw.");
         }
     }//GEN-LAST:event_drawButtonActionPerformed
 
@@ -625,13 +625,13 @@ public class ChessFrame extends JFrame {
     }//GEN-LAST:event_quitButtonActionPerformed
 
     private void resignButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resignButtonActionPerformed
-        int response = JOptionPane.showConfirmDialog(null, getChessPanel().getCurrentPlayer().getPlayerName()+", do you wish to resign?", "Resign", JOptionPane.YES_NO_OPTION);
+        int response = JOptionPane.showConfirmDialog(null, getChessPanel().getCurrentPlayer().getName()+", do you wish to resign?", "Resign", JOptionPane.YES_NO_OPTION);
             if(response == JOptionPane.YES_OPTION)
             {
                 getChessPanel().setPlayer1(null);
                 getChessPanel().setPlayer2(null);
                 jTabbedPane2.setSelectedIndex(4);
-                JOptionPane.showMessageDialog(null, getChessPanel().getCurrentPlayer().getPlayerName() + " has resigned. This game has ended via resignation");
+                JOptionPane.showMessageDialog(null, getChessPanel().getCurrentPlayer().getName() + " has resigned. This game has ended via resignation");
             } 
     }//GEN-LAST:event_resignButtonActionPerformed
 

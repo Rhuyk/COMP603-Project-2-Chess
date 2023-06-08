@@ -70,7 +70,7 @@ public final class GameSaver extends GameDB {
     public ResultSet getSavedGameInfo(int slotNum)
     {
         ResultSet resultSet = null;
-        String queryStatement = "SELECT WHITE, BLACK, DATE FROM GAME_SAVER WHERE NUMBER=" + slotNum;
+        String queryStatement = "SELECT WHITE, BLACK, DATE FROM GAME_SAVER WHERE NUMBER = " + slotNum;
         
         try {
             if (statement == null) {

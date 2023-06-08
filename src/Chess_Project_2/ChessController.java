@@ -16,20 +16,23 @@ import java.util.logging.Logger;
  */
 public class ChessController {
     
-    private static PiecesOnBoard board = new PiecesOnBoard();
-    
-    private static GameSaver gameSaver = new GameSaver();
-    private static GameSaverRecorder gameSRecorder = new GameSaverRecorder();
-    private static GameHistory gameHistory = new GameHistory();
-    private static GameHistoryRecorder gameHRecorder = new GameHistoryRecorder();
-    
+    private static PiecesOnBoard board;
+    private static GameSaver gameSaver;
+    private static GameSaverRecorder gameSRecorder;
+    private static GameHistory gameHistory;
+    private static GameHistoryRecorder gameHRecorder;
     private static Player player1;
     private static Player player2;
-    
-    private PieceColour colourTurn = PieceColour.WHITE;
-    
-    public static void main(String[] args) {
-        
+    private PieceColour colourTurn;
+
+    public ChessController()
+    {
+        board = new PiecesOnBoard();
+        gameSaver = new GameSaver();
+        gameSRecorder = new GameSaverRecorder();
+        gameHistory = new GameHistory();
+        gameHRecorder = new GameHistoryRecorder();
+        colourTurn = PieceColour.WHITE;
     }
     
     public Piece[][] getBoard()
@@ -65,19 +68,108 @@ public class ChessController {
         board.promote(pieceType);
     }
     
+    public boolean gameEnded()
+    {
+        if (board.isCheckmate(colourTurn) || board.isStalemate(colourTurn))
+        {
+            gameHistory.uploadCompletedGame(player1.getName(), player2.getName(), getGameResult(colourTurn, false), board.getMoveNum(), getCurrentDate());
+            gameHRecorder.uploadCompletedGame();
+            return true;
+        }
+        return false;
+    }
+    
+    public void resignGame()
+    {
+        gameHistory.uploadCompletedGame(player1.getName(), player2.getName(), getGameResult(colourTurn, true), board.getMoveNum(), getCurrentDate());
+        gameHRecorder.uploadCompletedGame();
+    }
+    
+    public void drawGame()
+    {
+        gameHistory.uploadCompletedGame(player1.getName(), player2.getName(), "DD", board.getMoveNum(), getCurrentDate());
+        gameHRecorder.uploadCompletedGame();
+    }
+    
+    public ResultSet getGameHistoryInfo(int slotNum)
+    {
+        return gameHistory.getHistoryGameInfo(slotNum);
+    }
+    
+    public void setHistoryGameBoard(int slotNum, int moveNum)
+    {
+        ResultSet resultSet = gameHRecorder.getHistoryGameBoard(slotNum);
+        
+        try {
+            board.clearAllPieces();
+            while(resultSet.next())
+            {
+                if (resultSet.getInt("MOVE_NUM") == moveNum)
+                {
+                    Piece piece = createPiece(resultSet.getString(3), resultSet.getInt(4), resultSet.getInt(5), 0, 0, 0);
+                    board.addPiece(piece);
+                }
+            }
+            board.refreshBoard();
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(ChessController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public void startNewGame()
     {
         board.resetBoardAndPieces();
         gameSRecorder.deleteGame(0);
+        recordCurrentBoard();
         colourTurn = PieceColour.WHITE;
     }
     
     public void saveGame(int slotNum) //1 to 5
     {
+        gameSaver.saveGame(slotNum, player1.getName(), player2.getName(), getCurrentDate());
+        gameSRecorder.saveCurrentGame(slotNum);
+    }
+    
+    public ResultSet getSavedGameInfo(int slotNum)
+    {
+        return gameSaver.getSavedGameInfo(slotNum);
+    }
+    
+    public void loadSavedGame(int slotNum) //1 to 5
+    {
+        gameSRecorder.loadSavedGame(slotNum);
+        ResultSet resultset = gameSRecorder.getCurrentGameBoard();
+        
+        try {
+            board.setMoveNum(resultset.getInt(1));
+            board.clearAllPieces();
+            while (resultset.next())
+            {
+                Piece piece = createPiece(resultset.getString(2), resultset.getInt(3), resultset.getInt(4), resultset.getInt(5), resultset.getInt(6), resultset.getInt(7));
+                board.addPiece(piece);
+            }
+            board.refreshBoard();
+            colourTurn = board.getPieces().getCurrentColourTurn();
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(ChessController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void quit()
+    {
+        gameSaver.closeConnections();
+        gameSRecorder.closeConnections();
+        gameHistory.closeConnections();
+        gameHRecorder.closeConnections();
+    }
+    
+    private java.sql.Date getCurrentDate()
+    {
         Date currentDate = new Date();
         java.sql.Date sqlDate = new java.sql.Date(currentDate.getTime());
-        gameSaver.saveGame(slotNum, player1.getPlayerName(), player2.getPlayerName(), sqlDate);
-        gameSRecorder.saveCurrentGame(slotNum);
+        return sqlDate;
     }
     
     private void recordCurrentBoard()
@@ -97,24 +189,22 @@ public class ChessController {
         }
     }
     
-    public void loadSavedGame(int slotNum) //1 to 5
+    private String getGameResult(PieceColour colourTurn, boolean manual)
     {
-        gameSRecorder.loadSavedGame(slotNum);
-        ResultSet resultset = gameSRecorder.getCurrentGameBoard();
-        
-        try {
-            board.setMoveNum(resultset.getInt(1));
-            board.clearAllPieces();
-            while (resultset.next())
-            {
-                Piece piece = createPiece(resultset.getString(2), resultset.getInt(3), resultset.getInt(4), resultset.getInt(5), resultset.getInt(6), resultset.getInt(7));
-                board.addPiece(piece);
+        String gameResult = "";
+        if (board.isCheckmate(colourTurn) || manual)
+        {
+            if (colourTurn == PieceColour.BLACK) {
+                gameResult = "wW";
+            } else {
+                gameResult = "bW";
             }
-            board.refreshBoard();
-            colourTurn = board.getPieces().getCurrentColourTurn();
-        } catch (SQLException ex) {
-            Logger.getLogger(ChessController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        else if (board.isStalemate(colourTurn))
+        {
+            gameResult = "DD";
+        }
+        return gameResult;
     }
     
     private Piece createPiece(String pieceType, int col, int row, int LMN, int HNM, int HMO)

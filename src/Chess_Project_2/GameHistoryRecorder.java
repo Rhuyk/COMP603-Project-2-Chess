@@ -64,7 +64,7 @@ public final class GameHistoryRecorder extends GameDB {
     public ResultSet getHistoryGameBoard(int slotNum)
     {
         ResultSet resultset = null;
-        String queryStatement = "SELECT MOVE_NUM, PIECE_TYPE, col, row FROM GAME_SAVER_RECORDER WHERE NUMBER=" + slotNum + " ORDER BY MOVE_NUM ASC";
+        String queryStatement = "SELECT MOVE_NUM, PIECE_TYPE, col, row FROM GAME_HISTORY_RECORDER WHERE NUMBER=" + slotNum + " ORDER BY MOVE_NUM ASC";
         
         try {
             if (statement == null) {
@@ -74,7 +74,7 @@ public final class GameHistoryRecorder extends GameDB {
             statement.close();
         }
         catch (SQLException ex) {
-            Logger.getLogger(GameSaverRecorder.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GameHistoryRecorder.class.getName()).log(Level.SEVERE, null, ex);
         }
         return resultset;
     }
