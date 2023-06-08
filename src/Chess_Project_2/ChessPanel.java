@@ -48,7 +48,10 @@ public class ChessPanel extends JPanel {
                 {
                     int col = e.getX() / CELL_SIZE;
                     int row = (BOARD_SIZE - 1) - e.getY() / CELL_SIZE;
-
+                    if (isFlipFlag()) 
+                    {
+                        row = (BOARD_SIZE - 1) - row;
+                    }
                     if (isLegalMove(col, row)) 
                     {
                         handleClick(col, row);
@@ -60,11 +63,6 @@ public class ChessPanel extends JPanel {
     
     private boolean isLegalMove(int col, int row) 
     {   
-        if (isFlipFlag()) 
-        {
-            row = (BOARD_SIZE - 1) - row;
-        }
-        
         return col >= 0 && col < BOARD_SIZE && row >= 0 && row < BOARD_SIZE;
     }
     
@@ -103,7 +101,7 @@ public class ChessPanel extends JPanel {
 
         if (availableMoves[col][row]) {
             if (chessController.movePiece(selectedCol, selectedRow, col, row)) {
-                //flipBoard();
+                flipBoard();
                 String move = "(" + selectedPiece.getSymbol() + ")" + String.format(" %s%d, %s%d%n", (char)('a' + selectedCol), selectedRow + 1, (char)('a' + col), row + 1);
                 if(chessFrame != null)
                 {
@@ -113,7 +111,6 @@ public class ChessPanel extends JPanel {
         }
         
         resetSelection();
-        //checkGameStatus();
         if(chessController.gameEnded())
         {
             // Change later
@@ -246,13 +243,13 @@ public class ChessPanel extends JPanel {
         }
     }
     
-//    public void flipBoard()
-//    {
-//        if(isToggleSwitch())
-//        {
-//            setFlipFlag(!isFlipFlag());
-//        }
-//    }
+    public void flipBoard()
+    {
+        if(isToggleSwitch())
+        {
+            setFlipFlag(!isFlipFlag());
+        }
+    }
     
     private void drawAvailableMoves(Graphics g) 
     {
