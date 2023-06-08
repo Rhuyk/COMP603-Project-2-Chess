@@ -32,6 +32,16 @@ public class ChessController {
         
     }
     
+    public Piece[][] getBoard()
+    {
+        return board.getBoard();
+    }
+    
+    public PieceColour getCurrentColourTurn()
+    {
+        return colourTurn;
+    }
+    
     public void setPlayers(String playerWhite, String playerBlack)
     {
         player1 = new Player(PieceColour.WHITE, playerWhite);
@@ -41,7 +51,6 @@ public class ChessController {
     public void movePiece(int fromCol, int fromRow, int toCol, int toRow)
     {
         board.movePiece(fromCol, fromRow, toCol, toRow);
-        //if promote...
         recordCurrentBoard();
         colourTurn = colourTurn.getOppColour();
     }
@@ -54,16 +63,6 @@ public class ChessController {
     public void promote(String pieceType)
     {
         board.promote(pieceType);
-    }
-    
-    public Piece[][] getBoard()
-    {
-        return board.getBoard();
-    }
-    
-    public PieceColour getCurrentColourTurn()
-    {
-        return colourTurn;
     }
     
     public void startNewGame()
