@@ -4,8 +4,6 @@
  */
 package Chess_Project_2;
 
-import java.awt.Graphics;
-import java.lang.reflect.Field;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -14,7 +12,7 @@ import static org.junit.Assert.*;
  *
  * @author User
  */
-public class ChessPanelTest {
+public class ChessPanelAndFrameTest {
     
     private ChessPanel chessPanel;
     private ChessFrame chessFrame;
@@ -74,9 +72,29 @@ public class ChessPanelTest {
         assertEquals(-1, chessPanel.getSelectedRow());
     }
     
+    /**
+     * Test of the text area update.
+     */
+    @Test
+    public void testUpdateMovesTextArea() 
+    {
+        String moves = "c2-c4 ";
+        chessFrame.updateMovesTextArea(moves);
+        String expectedText = "c2-c4 ";
+        String actualText = chessFrame.getMoveTextArea().getText();
+        assertEquals(expectedText, actualText);
+    }
     
-    
-    
+    /**
+     * Test of correct tab switching
+     */
+    @Test
+    public void switchTab_shouldSetSelectedIndex() 
+    {
+        int tabIndex = 2;
 
+        chessFrame.switchTab(tabIndex);
+        assertEquals(tabIndex, chessFrame.getjTabbedPane2().getSelectedIndex());
+    }
     
 }
