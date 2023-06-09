@@ -236,12 +236,13 @@ public class ChessFrame extends JFrame {
             }
         });
 
+        gameList.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
         gameList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Game 1", "Game 2", "Game 3", "Game 4", "Game 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        gameList.setFixedCellHeight(50);
+        gameList.setFixedCellHeight(45);
         jScrollPane1.setViewportView(gameList);
 
         loadHistoryButton.setText("Load Game");
@@ -317,12 +318,13 @@ public class ChessFrame extends JFrame {
 
         jLabel2.setText("Save Game");
 
+        gameList1.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         gameList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Game 1", "Game 2", "Game 3", "Game 4", "Game 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        gameList1.setFixedCellHeight(50);
+        gameList1.setFixedCellHeight(45);
         jScrollPane2.setViewportView(gameList1);
 
         saveGameButton.setText("Save Game");
@@ -437,7 +439,7 @@ public class ChessFrame extends JFrame {
                         .addComponent(flipToggleButton, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(drawButton, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+                            .addComponent(drawButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(resignButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -455,8 +457,8 @@ public class ChessFrame extends JFrame {
                 .addGap(26, 26, 26)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(flipToggleButton, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 32, Short.MAX_VALUE)
+                    .addComponent(flipToggleButton, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -524,7 +526,7 @@ public class ChessFrame extends JFrame {
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
-                .addContainerGap(18, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
                         .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -662,7 +664,7 @@ public class ChessFrame extends JFrame {
                     .addComponent(knightButton, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(33, 33, 33)
                 .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton5)
                 .addGap(45, 45, 45))
         );
@@ -671,12 +673,13 @@ public class ChessFrame extends JFrame {
 
         loadLabel.setText("Load Game");
 
+        gameList2.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         gameList2.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Game 1", "Game 2", "Game 3", "Game 4", "Game 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        gameList2.setFixedCellHeight(50);
+        gameList2.setFixedCellHeight(45);
         jScrollPane3.setViewportView(gameList2);
 
         loadGame.setText("Load Game");
@@ -721,7 +724,7 @@ public class ChessFrame extends JFrame {
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(loadGame)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 96, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton7)
                 .addGap(87, 87, 87))
         );
@@ -831,35 +834,42 @@ public class ChessFrame extends JFrame {
     }//GEN-LAST:event_restartButtonActionPerformed
 
     private void loadHistoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadHistoryButtonActionPerformed
-        this.boardNum = 0;
-        chessPanel.resetGame();
-        chessPanel.setGameEnded(true);
-        nextButton.setVisible(true);
-        prevButton.setVisible(true);
-        this.historyNum = gameList.getSelectedIndex()+1;
-        chessController.getGameHistoryInfo(historyNum);
-        try 
+        if(gameList.isSelectionEmpty())
         {
-            ResultSet resultSet = chessController.getGameHistoryInfo(historyNum);
-            if(resultSet.next())
-            {
-                String player1Name = resultSet.getString(1);
-                String player2Name = resultSet.getString(2);
-                chessController.setPlayers(player1Name, player2Name);
-            }
-            prevButton.setEnabled(false);
-            nextButton.setEnabled(true);
-            if(this.boardNum + 1 > chessController.getMaxMoves()) {
-                nextButton.setEnabled(false);
-            }
-        } 
-        catch (SQLException ex) 
-        {
-            Logger.getLogger(ChessFrame.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Please select a game!", "Error", JOptionPane.ERROR_MESSAGE);
         }
-        chessController.loadHistoryGameBoard(historyNum, boardNum);
-        displayNames();
-        chessPanel.repaint();
+        else
+        {
+            this.boardNum = 0;
+            chessPanel.resetGame();
+            chessPanel.setGameEnded(true);
+            nextButton.setVisible(true);
+            prevButton.setVisible(true);
+            this.historyNum = gameList.getSelectedIndex()+1;
+            chessController.getGameHistoryInfo(historyNum);
+            try 
+            {
+                ResultSet resultSet = chessController.getGameHistoryInfo(historyNum);
+                if(resultSet.next())
+                {
+                    String player1Name = resultSet.getString(1);
+                    String player2Name = resultSet.getString(2);
+                    chessController.setPlayers(player1Name, player2Name);
+                }
+                prevButton.setEnabled(false);
+                nextButton.setEnabled(true);
+                if(this.boardNum + 1 > chessController.getMaxMoves()) {
+                    nextButton.setEnabled(false);
+                }
+            } 
+            catch (SQLException ex) 
+            {
+                Logger.getLogger(ChessFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            chessController.loadHistoryGameBoard(historyNum, boardNum);
+            displayNames();
+            chessPanel.repaint();
+        }
     }//GEN-LAST:event_loadHistoryButtonActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -934,39 +944,53 @@ public class ChessFrame extends JFrame {
     }//GEN-LAST:event_knightButtonActionPerformed
 
     private void saveGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveGameButtonActionPerformed
-        int selectedGameIndex = gameList1.getSelectedIndex();
-        ++selectedGameIndex;
-        chessController.saveGame(selectedGameIndex);
-        
-        gameList1.setListData(setSavedGameInfo());
-        gameList.setListData(setPlayersHistory());
-        gameList2.setListData(setSavedGameInfo());
-        jTabbedPane2.setSelectedIndex(3);
+        if(gameList1.isSelectionEmpty())
+        {
+            JOptionPane.showMessageDialog(this, "Please select a game!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        else
+        {
+            int selectedGameIndex = gameList1.getSelectedIndex();
+            ++selectedGameIndex;
+            chessController.saveGame(selectedGameIndex);
+
+            gameList1.setListData(setSavedGameInfo());
+            gameList.setListData(setPlayersHistory());
+            gameList2.setListData(setSavedGameInfo());
+            jTabbedPane2.setSelectedIndex(3);
+        }
     }//GEN-LAST:event_saveGameButtonActionPerformed
 
     private void loadGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadGameActionPerformed
-        chessPanel.resetGame();
-        int selectedGameIndex = gameList2.getSelectedIndex();
-        ++selectedGameIndex;
-        chessController.loadSavedGame(selectedGameIndex);
-        try 
+        if(gameList2.isSelectionEmpty())
         {
-            ResultSet resultSet = chessController.getSavedGameInfo(selectedGameIndex);
-            if(resultSet.next())
-            {
-                String player1Name = resultSet.getString(1);
-                String player2Name = resultSet.getString(2);
-                chessController.setPlayers(player1Name, player2Name);
-            }
-        } 
-        catch (SQLException ex) 
-        {
-            Logger.getLogger(ChessFrame.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Please select a game!", "Error", JOptionPane.ERROR_MESSAGE);
         }
-        
-        jTabbedPane2.setSelectedIndex(3);
-        displayNames();
-        chessPanel.repaint();
+        else
+        {
+            chessPanel.resetGame();
+            int selectedGameIndex = gameList2.getSelectedIndex();
+            ++selectedGameIndex;
+            chessController.loadSavedGame(selectedGameIndex);
+            try 
+            {
+                ResultSet resultSet = chessController.getSavedGameInfo(selectedGameIndex);
+                if(resultSet.next())
+                {
+                    String player1Name = resultSet.getString(1);
+                    String player2Name = resultSet.getString(2);
+                    chessController.setPlayers(player1Name, player2Name);
+                }
+            } 
+            catch (SQLException ex) 
+            {
+                Logger.getLogger(ChessFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            jTabbedPane2.setSelectedIndex(3);
+            displayNames();
+            chessPanel.repaint();
+        }
     }//GEN-LAST:event_loadGameActionPerformed
 
     private void prevButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevButtonActionPerformed
@@ -1074,7 +1098,7 @@ public class ChessFrame extends JFrame {
                     String player1Name = resultSet.getString(1);
                     String player2Name = resultSet.getString(2);
                     String Date = resultSet.getString(3);
-                    list[j] = list[j] + " " + player1Name + ", " + player2Name + ": " + Date;
+                    list[j] = list[j] + " " + player1Name + "(W) " + player2Name + "(B): " + Date;
                 }
             }
         } 
@@ -1087,7 +1111,7 @@ public class ChessFrame extends JFrame {
     
     private String[] setPlayersHistory()
     {
-        String list[] = {"Game 1: ","Game 2: ","Game 3: ","Game 4: ","Game 5: "};
+        String list[] = {"","","","",""};
         try 
         {
             for(int i = 1; i <= 5; i++)
@@ -1099,9 +1123,21 @@ public class ChessFrame extends JFrame {
                     String player1Name = resultSet.getString(1);
                     String player2Name = resultSet.getString(2);
                     String outcome = resultSet.getString(3);
+                    if(outcome.equalsIgnoreCase("ww"))
+                    {
+                        outcome = "White won";
+                    }
+                    else if(outcome.equalsIgnoreCase("bw"))
+                    {
+                        outcome = "Black won";
+                    }
+                    else if(outcome.equalsIgnoreCase("DD"))
+                    {
+                        outcome = "Draw";
+                    }
                     String NumOfMoves = resultSet.getString(4);
                     String Date = resultSet.getString(5);
-                    list[j] = list[j] + " " + player1Name + ", " + player2Name + ", " + outcome + " " + NumOfMoves + " " + Date;
+                    list[j] = list[j] + " " + player1Name + "(W) " + player2Name + "(B), " + outcome + ", " + NumOfMoves + " moves, " + Date;
                 }
             }
         } 
