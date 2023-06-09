@@ -4,6 +4,9 @@
  */
 package Chess_Project_2;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 /**
  *
  * @author rh200
@@ -17,7 +20,13 @@ public class ChessMain {
         frame.setChessController(chessController);
         frame.setResizable(false);
         frame.setVisible(true);
-        
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                frame.getChessController().quit();
+                System.exit(0); 
+            }
+        });
     }
     
 }

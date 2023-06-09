@@ -766,6 +766,7 @@ public class ChessFrame extends JFrame {
     }//GEN-LAST:event_rematchButtonActionPerformed
 
     private void forceQuitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forceQuitButtonActionPerformed
+        chessController.quit();
         System.exit(0);
     }//GEN-LAST:event_forceQuitButtonActionPerformed
 
@@ -904,6 +905,7 @@ public class ChessFrame extends JFrame {
     }//GEN-LAST:event_loadButtonActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        chessController.quit();
         System.exit(0);
     }//GEN-LAST:event_jButton2ActionPerformed
 
