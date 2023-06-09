@@ -4,8 +4,6 @@
  */
 package Chess_Project_2;
 
-import java.util.Scanner;
-
 /**
  *
  * @author rh200
@@ -127,7 +125,7 @@ public final class PiecesOnBoard {
     // Resets board and pieces back to default
     public void resetBoardAndPieces()
     {
-        this.moveNum = 0;
+        moveNum = 0;
         allPieces = new AllPieces();
         refreshBoard();
     }
