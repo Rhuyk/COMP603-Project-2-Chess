@@ -77,6 +77,7 @@ public final class PiecesOnBoard {
     // Returns current board
     public Piece[][] getBoard()
     {
+        refreshBoard();
         return board;
     }
     
@@ -296,7 +297,7 @@ public final class PiecesOnBoard {
                 //check if king, rook, and their path are not being targeted
                 for(int col = 0; col <= 4; col++)
                 {
-                    if(allPieces.getTargetAreas(king.getColour().getOppColour())[col][0])
+                    if(allPieces.getTargetAreas(king.getColour().getOppColour())[col][toRow])
                     {
                         availability = false;
                     }
@@ -310,7 +311,7 @@ public final class PiecesOnBoard {
                 for(int col = 7; col >= 4; col--)
                 {
                     //check if king, rook, and their path are not being targeted
-                    if(allPieces.getTargetAreas(king.getColour().getOppColour())[col][0])
+                    if(allPieces.getTargetAreas(king.getColour().getOppColour())[col][toRow])
                     {
                         availability = false;
                     }
