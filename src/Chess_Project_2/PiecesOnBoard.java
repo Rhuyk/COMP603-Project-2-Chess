@@ -13,20 +13,15 @@ public final class PiecesOnBoard {
     private static final Piece[][] board = new Piece[8][8]; // [column][row]
     private static final boolean[][] checkPath = new boolean[8][8]; // [column][row]
     private static AllPieces allPieces = new AllPieces();
-    private static boolean whiteIsInCheck;
-    private static boolean blackIsInCheck;
-    private static boolean isPromoting;
-    private static Piece promotionPawn;
-    private static int moveNum;
+    private static boolean whiteIsInCheck = false;
+    private static boolean blackIsInCheck = false;
+    private static boolean isPromoting = false;;
+    private static Piece promotionPawn = null;
+    private static int moveNum = 0;
     
     //Contructs PiecesOnBoard class
     public PiecesOnBoard()
     {
-        whiteIsInCheck = false;
-        blackIsInCheck = false;
-        isPromoting = false;
-        promotionPawn = null;
-        moveNum = 0;
         refreshBoard();
     }
     
