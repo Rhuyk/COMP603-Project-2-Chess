@@ -8,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -889,7 +888,22 @@ public class ChessFrame extends JFrame {
         chessPanel.setGameEnded(true);
         this.historyNum = gameList.getSelectedIndex()+1;
         chessController.getGameHistoryInfo(historyNum);
+        try 
+        {
+            ResultSet resultSet = chessController.getGameHistoryInfo(historyNum);
+            if(resultSet.next())
+            {
+                String player1Name = resultSet.getString(1);
+                String player2Name = resultSet.getString(2);
+                chessController.setPlayers(player1Name, player2Name);
+            }
+        } 
+        catch (SQLException ex) 
+        {
+            Logger.getLogger(ChessFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
         chessController.loadHistoryGameBoard(historyNum, boardNum);
+        displayNames();
         chessPanel.repaint();
     }//GEN-LAST:event_loadHistoryButtonActionPerformed
 
@@ -930,6 +944,7 @@ public class ChessFrame extends JFrame {
     }//GEN-LAST:event_startButtonActionPerformed
 
     private void loadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadButtonActionPerformed
+        gameList2.setListData(setSavedGameInfo());
         jTabbedPane2.setSelectedIndex(6);
         
     }//GEN-LAST:event_loadButtonActionPerformed
