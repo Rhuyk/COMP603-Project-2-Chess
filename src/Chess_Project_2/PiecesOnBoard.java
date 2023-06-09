@@ -13,15 +13,20 @@ public final class PiecesOnBoard {
     private static final Piece[][] board = new Piece[8][8]; // [column][row]
     private static final boolean[][] checkPath = new boolean[8][8]; // [column][row]
     private static AllPieces allPieces = new AllPieces();
-    private static boolean whiteIsInCheck = false;
-    private static boolean blackIsInCheck = false;
-    private static boolean isPromoting = false;
+    private static boolean whiteIsInCheck;
+    private static boolean blackIsInCheck;
+    private static boolean isPromoting;
     private static Piece promotionPawn;
-    private static int moveNum = 0;
+    private static int moveNum;
     
     //Contructs PiecesOnBoard class
     public PiecesOnBoard()
     {
+        whiteIsInCheck = false;
+        blackIsInCheck = false;
+        isPromoting = false;
+        promotionPawn = null;
+        moveNum = 0;
         refreshBoard();
     }
     
@@ -161,11 +166,7 @@ public final class PiecesOnBoard {
         {
             for(int row = 0; row < 8; row++)
             {
-                if(this.checkPath[col][row] && checkPath[col][row]) {
-                    this.checkPath[col][row] = true;
-                } else {
-                    this.checkPath[col][row] = false;
-                }
+                this.checkPath[col][row] = this.checkPath[col][row] && checkPath[col][row];
             }
         }
         
@@ -410,6 +411,11 @@ public final class PiecesOnBoard {
     // Promotes pawn to a chosen piece type such as queen, rook, bishop, and knight
     public void promote(String pieceType)
     {
+        if (promotionPawn == null) {
+            System.out.println("No available pawn promotion");
+            return;
+        }
+        
         int col = promotionPawn.getColumn();
         int row = promotionPawn.getRow();
         Piece promotion;

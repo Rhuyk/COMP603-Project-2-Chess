@@ -108,7 +108,7 @@ public class Pawn extends Piece {
                 }
 
                 //two squares advance
-                if(super.hasNotMoved() && pieces.getPiece(super.getColumn(), row+forwardValue) == null && pieces.getCheckPath()[col][row+forwardValue])
+                if(super.hasNotMoved() && col == super.getColumn() && pieces.getPiece(super.getColumn(), row+forwardValue) == null && pieces.getCheckPath()[super.getColumn()][row+forwardValue])
                 {
                     availableMoves[super.getColumn()][row+forwardValue] = true;
                 }

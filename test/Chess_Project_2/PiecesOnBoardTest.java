@@ -37,96 +37,106 @@ public class PiecesOnBoardTest {
     }
 
     /**
-     * Test of movePiece method, of class PiecesOnBoard.
+     * Test of movePiece method, of class PiecesOnBoard. For unavailable move
      */
     @Test
     public void testMovePiece() {
         System.out.println("movePiece");
-        int fromCol = 0;
-        int fromRow = 0;
-        int toCol = 0;
-        int toRow = 0;
+        int fromCol = 9;
+        int fromRow = 34;
+        int toCol = -2;
+        int toRow = 4;
         PiecesOnBoard instance = new PiecesOnBoard();
         boolean expResult = false;
         boolean result = instance.movePiece(fromCol, fromRow, toCol, toRow);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
-
+    
     /**
-     * Test of getBoard method, of class PiecesOnBoard.
+     * Test of movePiece method, of class PiecesOnBoard. For available move
      */
     @Test
-    public void testGetBoard() {
-        System.out.println("getBoard");
+    public void testMovePiece2() {
+        System.out.println("movePiece");
+        int fromCol = 1;
+        int fromRow = 1;
+        int toCol = 1;
+        int toRow = 3;
         PiecesOnBoard instance = new PiecesOnBoard();
-        Piece[][] expResult = null;
-        Piece[][] result = instance.getBoard();
-        assertArrayEquals(expResult, result);
+        boolean expResult = true;
+        boolean result = instance.movePiece(fromCol, fromRow, toCol, toRow);
+        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
-     * Test of getMoveNum method, of class PiecesOnBoard.
+     * Test of getMoveNum method, of class PiecesOnBoard. No move, move number = 0
      */
     @Test
     public void testGetMoveNum() {
         System.out.println("getMoveNum");
         PiecesOnBoard instance = new PiecesOnBoard();
+        instance.resetBoardAndPieces();
         int expResult = 0;
         int result = instance.getMoveNum();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
-
+    
     /**
-     * Test of setMoveNum method, of class PiecesOnBoard.
+     * Test of getMoveNum method, of class PiecesOnBoard. Move once, move number = 1
      */
     @Test
-    public void testSetMoveNum() {
-        System.out.println("setMoveNum");
-        int moveNum = 0;
+    public void testGetMoveNum2() {
+        System.out.println("getMoveNum");
         PiecesOnBoard instance = new PiecesOnBoard();
-        instance.setMoveNum(moveNum);
+        instance.resetBoardAndPieces();
+        instance.movePiece(1, 1, 1, 3);
+        int expResult = 1;
+        int result = instance.getMoveNum();
+        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
-     * Test of getPiece method, of class PiecesOnBoard.
+     * Test of getPiece method, of class PiecesOnBoard. Non-existing piece
      */
     @Test
     public void testGetPiece() {
         System.out.println("getPiece");
-        int col = 0;
-        int row = 0;
+        int col = 38;
+        int row = -4;
         PiecesOnBoard instance = new PiecesOnBoard();
         Piece expResult = null;
         Piece result = instance.getPiece(col, row);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
-
+    
     /**
-     * Test of getPieces method, of class PiecesOnBoard.
+     * Test of getPiece method, of class PiecesOnBoard. Existing piece
      */
     @Test
-    public void testGetPieces() {
-        System.out.println("getPieces");
+    public void testGetPiece2() {
+        System.out.println("getPiece");
+        int col = 0;
+        int row = 0;
         PiecesOnBoard instance = new PiecesOnBoard();
-        AllPieces expResult = null;
-        AllPieces result = instance.getPieces();
+        Piece expResult = instance.getBoard()[0][0];
+        Piece result = instance.getPiece(col, row);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
-     * Test of canPromote method, of class PiecesOnBoard.
+     * Test of canPromote method, of class PiecesOnBoard. No pawn reach the end
      */
     @Test
     public void testCanPromote() {
@@ -136,7 +146,7 @@ public class PiecesOnBoardTest {
         boolean result = instance.canPromote();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -145,11 +155,11 @@ public class PiecesOnBoardTest {
     @Test
     public void testAddPiece() {
         System.out.println("addPiece");
-        Piece piece = null;
+        Piece piece = new Pawn(PieceColour.BLACK, 0, 0);
         PiecesOnBoard instance = new PiecesOnBoard();
         instance.addPiece(piece);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -161,7 +171,7 @@ public class PiecesOnBoardTest {
         PiecesOnBoard instance = new PiecesOnBoard();
         instance.clearAllPieces();
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -173,7 +183,7 @@ public class PiecesOnBoardTest {
         PiecesOnBoard instance = new PiecesOnBoard();
         instance.resetBoardAndPieces();
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -185,7 +195,7 @@ public class PiecesOnBoardTest {
         PiecesOnBoard instance = new PiecesOnBoard();
         instance.refreshBoard();
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -195,11 +205,19 @@ public class PiecesOnBoardTest {
     public void testGetCheckPath() {
         System.out.println("getCheckPath");
         PiecesOnBoard instance = new PiecesOnBoard();
-        boolean[][] expResult = null;
+        boolean[][] path = new boolean[8][8];
+        for(int col = 0; col < 8; col++)
+        {
+            for(int row = 0; row < 8; row++)
+            {
+                path[col][row] = true;
+            }
+        }
+        boolean[][] expResult = path;
         boolean[][] result = instance.getCheckPath();
         assertArrayEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -208,12 +226,20 @@ public class PiecesOnBoardTest {
     @Test
     public void testSetInCheck() {
         System.out.println("setInCheck");
-        PieceColour colour = null;
-        boolean[][] checkPath = null;
+        PieceColour colour = PieceColour.WHITE;
+        boolean[][] path = new boolean[8][8];
+        for(int col = 0; col < 8; col++)
+        {
+            for(int row = 0; row < 8; row++)
+            {
+                path[col][row] = true;
+            }
+        }
+        boolean[][] checkPath = path;
         PiecesOnBoard instance = new PiecesOnBoard();
         instance.setInCheck(colour, checkPath);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -222,13 +248,13 @@ public class PiecesOnBoardTest {
     @Test
     public void testIsInCheck() {
         System.out.println("isInCheck");
-        PieceColour colour = null;
+        PieceColour colour = PieceColour.BLACK;
         PiecesOnBoard instance = new PiecesOnBoard();
         boolean expResult = false;
         boolean result = instance.isInCheck(colour);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -240,7 +266,7 @@ public class PiecesOnBoardTest {
         PiecesOnBoard instance = new PiecesOnBoard();
         instance.refreshPiecesStatus();
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -249,13 +275,13 @@ public class PiecesOnBoardTest {
     @Test
     public void testIsCheckmate() {
         System.out.println("isCheckmate");
-        PieceColour colour = null;
+        PieceColour colour = PieceColour.WHITE;
         PiecesOnBoard instance = new PiecesOnBoard();
         boolean expResult = false;
         boolean result = instance.isCheckmate(colour);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -264,13 +290,13 @@ public class PiecesOnBoardTest {
     @Test
     public void testIsStalemate() {
         System.out.println("isStalemate");
-        PieceColour colour = null;
+        PieceColour colour = PieceColour.BLACK;
         PiecesOnBoard instance = new PiecesOnBoard();
         boolean expResult = false;
         boolean result = instance.isStalemate(colour);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -279,15 +305,15 @@ public class PiecesOnBoardTest {
     @Test
     public void testIsCastling() {
         System.out.println("isCastling");
-        Piece king = null;
-        int toCol = 0;
-        int toRow = 0;
         PiecesOnBoard instance = new PiecesOnBoard();
+        Piece king = instance.getPiece(4, 0);
+        int toCol = 6;
+        int toRow = 0;
         boolean expResult = false;
         boolean result = instance.isCastling(king, toCol, toRow);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -296,15 +322,15 @@ public class PiecesOnBoardTest {
     @Test
     public void testIsEnPassant() {
         System.out.println("isEnPassant");
-        Piece pawn = null;
-        int toCol = 0;
-        int toRow = 0;
         PiecesOnBoard instance = new PiecesOnBoard();
+        Piece pawn = instance.getPiece(0, 1);
+        int toCol = 2;
+        int toRow = 1;
         boolean expResult = false;
         boolean result = instance.isEnPassant(pawn, toCol, toRow);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -313,11 +339,13 @@ public class PiecesOnBoardTest {
     @Test
     public void testPromote() {
         System.out.println("promote");
-        String pieceType = "";
+        String pieceType = "Q";
         PiecesOnBoard instance = new PiecesOnBoard();
+        instance.getPieces().replacePiece(new Pawn(PieceColour.WHITE, 0, 6), 0, 6);
+        instance.movePiece(0, 6, 1, 7);
         instance.promote(pieceType);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
     
 }
