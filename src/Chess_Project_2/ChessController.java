@@ -201,7 +201,6 @@ public class ChessController {
             if(resultSet.next())
             {
                 maxMoves = resultSet.getInt(4);
-                System.out.println("max move is = "+maxMoves);
             }
         } catch (SQLException ex) {
             Logger.getLogger(ChessFrame.class.getName()).log(Level.SEVERE, null, ex);
@@ -224,18 +223,13 @@ public class ChessController {
             board.clearAllPieces();
             if (resultSet.next()) // Move the cursor to the first row
             {
-                System.out.println("Yessssssssssss");
                 do {
                     Piece piece = createPiece(resultSet.getString(1), resultSet.getInt(2), resultSet.getInt(3), 0, 0, 0);
                     board.addPiece(piece);
                 } while(resultSet.next());
             }
-            else
-            {
-                System.out.println("Noooooooooooooo");
-            }
+            
             board.refreshBoard();
-            //resultSet.close();
         }
         catch (SQLException ex) {
             Logger.getLogger(ChessController.class.getName()).log(Level.SEVERE, null, ex);
@@ -320,16 +314,8 @@ public class ChessController {
             colour = PieceColour.BLACK;
         }
         
-        if (HNM == 1) {
-            HNMboolean = true;
-        } else {
-            HNMboolean = false;
-        }
-        if (HMO == 1) {
-            HMOboolean = true;
-        } else {
-            HMOboolean = false;
-        }
+        HNMboolean = HNM == 1;
+        HMOboolean = HMO == 1;
         
         if (pieceType.contains("P")) {
             piece = new Pawn(colour, col, row, LMN, HNMboolean, HMOboolean);

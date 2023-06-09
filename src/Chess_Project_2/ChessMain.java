@@ -15,6 +15,7 @@ public class ChessMain {
         ChessFrame frame = new ChessFrame();
         ChessController chessController = new ChessController();
         frame.setChessController(chessController);
+        frame.setResizable(false);
         frame.setVisible(true);
         
     }
