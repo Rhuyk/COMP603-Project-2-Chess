@@ -835,7 +835,6 @@ public class ChessFrame extends JFrame {
         chessPanel.setGameEnded(true);
         nextButton.setVisible(true);
         prevButton.setVisible(true);
-        prevButton.setEnabled(false);
         this.historyNum = gameList.getSelectedIndex()+1;
         chessController.getGameHistoryInfo(historyNum);
         try 
@@ -846,6 +845,11 @@ public class ChessFrame extends JFrame {
                 String player1Name = resultSet.getString(1);
                 String player2Name = resultSet.getString(2);
                 chessController.setPlayers(player1Name, player2Name);
+            }
+            prevButton.setEnabled(false);
+            nextButton.setEnabled(true);
+            if(this.boardNum + 1 > chessController.getMaxMoves()) {
+                nextButton.setEnabled(false);
             }
         } 
         catch (SQLException ex) 
