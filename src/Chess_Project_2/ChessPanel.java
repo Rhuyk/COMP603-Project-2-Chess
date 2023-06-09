@@ -126,13 +126,12 @@ public class ChessPanel extends JPanel {
         resetSelection();
         if(chessController.gameEnded())
         {
-            gameEnded = true;
+            setGameEnded(true);
             chessFrame.switchTab(4);
             repaint();
             JOptionPane.showMessageDialog(ChessPanel.this, "This Chess Game has ended via Checkmate! Game over.");
         }
         checkForPromotion();
-        
     }
     
     private void updateMoves(int fromCol, int fromRow, int toCol, int toRow)
@@ -324,7 +323,7 @@ public class ChessPanel extends JPanel {
         movedToRow = -1;
         resetSelection();
         chessController.startNewGame();
-        gameEnded = false;
+        setGameEnded(false);
         repaint();
     }
 
@@ -371,6 +370,13 @@ public class ChessPanel extends JPanel {
     public void setToggleSwitch(boolean toggleSwitch) 
     {
         this.toggleSwitch = toggleSwitch;
+    }
+
+    /**
+     * @param gameEnded the gameEnded to set
+     */
+    public void setGameEnded(boolean gameEnded) {
+        this.gameEnded = gameEnded;
     }
 
 }
