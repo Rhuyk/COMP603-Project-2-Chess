@@ -24,163 +24,59 @@ public class ChessPanelTest {
     {
         chessFrame = new ChessFrame();
         chessPanel = new ChessPanel(chessFrame);
-        chessFrame.add(chessPanel);
-        chessFrame.pack();
-        chessFrame.setVisible(true);
     }
     
-//    @Test
-//    public void testSelectPiece() throws NoSuchFieldException, IllegalAccessException {
-//        setMockBoard();
-//        setMouseCoordinates(0, 0);  // Select the piece at (0, 0)
-//        simulateMousePress(chessPanel);
-//
-//        Piece selectedPiece = getSelectedPiece(chessPanel);
-//        assertNotNull(selectedPiece);
-//        assertEquals("R", selectedPiece.getSymbol());
-//        assertEquals(0, getSelectedRow(chessPanel));
-//        assertEquals(0, getSelectedCol(chessPanel));
-//    }
-
-    private void setBoard(ChessPanel chessPanel, Piece[][] board) throws NoSuchFieldException, IllegalAccessException 
+    /**
+     * Test of if if a move is legal based on the board size.
+     */
+    @Test
+    public void testIsLegalMove() 
     {
-        Field boardField = ChessPanel.class.getDeclaredField("chessController");
-        boardField.setAccessible(true);
-        ChessController chessController = (ChessController) boardField.get(chessPanel);
-        Field boardArrayField = ChessController.class.getDeclaredField("board");
-        boardArrayField.setAccessible(true);
-        boardArrayField.set(chessController, board);
-    }
+        int legalCol = 3;
+        int legalRow = 4;
+        int illegalCol = -1;
+        int illegalRow = 8;
 
+        assertTrue(chessPanel.isLegalMove(legalCol, legalRow));
+        assertFalse(chessPanel.isLegalMove(illegalCol, legalRow));
+        assertFalse(chessPanel.isLegalMove(legalCol, illegalRow));
+        assertFalse(chessPanel.isLegalMove(illegalCol, illegalRow));
+    }
+    
     /**
-     * Test of paintComponent method, of class ChessPanel.
+     * Test of if if a move is legal based on the board size.
      */
     @Test
-    public void testPaintComponent() {
-        System.out.println("paintComponent");
-        Graphics g = null;
-        ChessPanel instance = null;
-        instance.paintComponent(g);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+    public void testValidSelectPiece() 
+    {
+        int validCol = 3;
+        int validRow = 1;
 
+        chessPanel.selectPiece(validCol, validRow);
+
+        assertNotNull(chessPanel.getSelectedPiece());
+        assertEquals(validCol, chessPanel.getSelectedCol());
+        assertEquals(validRow, chessPanel.getSelectedRow());
+    }
+    
     /**
-     * Test of flipBoard method, of class ChessPanel.
+     * Test of if if a move is illegal based on the board size.
      */
     @Test
-    public void testFlipBoard() {
-        System.out.println("flipBoard");
-        ChessPanel instance = null;
-        instance.flipBoard();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+    public void testInvalidSelectPiece()
+    {
+        int illegalCol = 4;
+        int illegalRow = 5;
 
-    /**
-     * Test of resetGame method, of class ChessPanel.
-     */
-    @Test
-    public void testResetGame() {
-        System.out.println("resetGame");
-        ChessPanel instance = null;
-        instance.resetGame();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        chessPanel.selectPiece(illegalCol, illegalRow);
+        assertNull(chessPanel.getSelectedPiece());
+        assertEquals(-1, chessPanel.getSelectedCol());
+        assertEquals(-1, chessPanel.getSelectedRow());
     }
+    
+    
+    
+    
 
-    /**
-     * Test of getChessFrame method, of class ChessPanel.
-     */
-    @Test
-    public void testGetChessFrame() {
-        System.out.println("getChessFrame");
-        ChessPanel instance = null;
-        ChessFrame expResult = null;
-        ChessFrame result = instance.getChessFrame();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setChessFrame method, of class ChessPanel.
-     */
-    @Test
-    public void testSetChessFrame() {
-        System.out.println("setChessFrame");
-        ChessFrame chessFrame = null;
-        ChessPanel instance = null;
-        instance.setChessFrame(chessFrame);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of isFlipFlag method, of class ChessPanel.
-     */
-    @Test
-    public void testIsFlipFlag() {
-        System.out.println("isFlipFlag");
-        ChessPanel instance = null;
-        boolean expResult = false;
-        boolean result = instance.isFlipFlag();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setFlipFlag method, of class ChessPanel.
-     */
-    @Test
-    public void testSetFlipFlag() {
-        System.out.println("setFlipFlag");
-        boolean flipFlag = false;
-        ChessPanel instance = null;
-        instance.setFlipFlag(flipFlag);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of isToggleSwitch method, of class ChessPanel.
-     */
-    @Test
-    public void testIsToggleSwitch() {
-        System.out.println("isToggleSwitch");
-        ChessPanel instance = null;
-        boolean expResult = false;
-        boolean result = instance.isToggleSwitch();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setToggleSwitch method, of class ChessPanel.
-     */
-    @Test
-    public void testSetToggleSwitch() {
-        System.out.println("setToggleSwitch");
-        boolean toggleSwitch = false;
-        ChessPanel instance = null;
-        instance.setToggleSwitch(toggleSwitch);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setGameEnded method, of class ChessPanel.
-     */
-    @Test
-    public void testSetGameEnded() {
-        System.out.println("setGameEnded");
-        boolean gameEnded = false;
-        ChessPanel instance = null;
-        instance.setGameEnded(gameEnded);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
     
 }

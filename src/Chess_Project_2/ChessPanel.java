@@ -46,6 +46,7 @@ public class ChessPanel extends JPanel {
         addMouseListener();
     }
     
+    // Check if the game has not ended or the players have not signed in.
     private void addMouseListener()
     {
         addMouseListener(new MouseAdapter() {
@@ -70,14 +71,16 @@ public class ChessPanel extends JPanel {
         });
     }
     
-    private boolean isLegalMove(int col, int row) 
+    // Check if the move is within the board of 8 x 8.
+    public boolean isLegalMove(int col, int row) 
     {   
         return col >= 0 && col < BOARD_SIZE && row >= 0 && row < BOARD_SIZE;
     }
     
+    // If a piece has been selected, then it will being to call the movePiece method to attempt to move it.
     private void handleClick(int col, int row) 
     {
-        if (selectedRow == -1 && selectedCol == -1)  // Check for if piece has not been selected
+        if (getSelectedRow() == -1 && getSelectedCol() == -1)  // Check for if piece has not been selected
         {
             selectPiece(col, row);
         } 
@@ -89,13 +92,14 @@ public class ChessPanel extends JPanel {
         repaint();
     }
     
-    private void selectPiece(int col, int row) 
+    // Select piece if the piece isn't empty and if it is the same piece colour as the player playing.
+    public void selectPiece(int col, int row) 
     {
         selectedPiece = chessController.getBoard()[col][row];
 
-        if (selectedPiece != null) // Check for Empty piece
+        if (getSelectedPiece() != null) // Check for Empty piece
         {
-            if (selectedPiece.getColour() == chessController.getCurrentColourTurn()) // Check if it is the player chess piece colour
+            if (getSelectedPiece().getColour() == chessController.getCurrentColourTurn()) // Check if it is the player chess piece colour
             {
                 selectedRow = row;
                 selectedCol = col;
@@ -103,22 +107,23 @@ public class ChessPanel extends JPanel {
                 wasAtRow = row;
                 movedToCol = -1;
                 movedToRow = -1;
-                availableMoves = selectedPiece.getAvailableMoves();
+                availableMoves = getSelectedPiece().getAvailableMoves();
             }
         }
     }
     
+    // Move piece if it is a legal move and if it a availableMoves. It uses the chessController to move the piece.
     private void movePiece(int col, int row) 
     {
-        selectedPiece = chessController.getBoard()[selectedCol][selectedRow];
+        selectedPiece = chessController.getBoard()[getSelectedCol()][getSelectedRow()];
 
         if (availableMoves[col][row]) // Check the availableMoves 
         {
-            if (chessController.movePiece(selectedCol, selectedRow, col, row)) // Check if it is legal move
+            if (chessController.movePiece(getSelectedCol(), getSelectedRow(), col, row)) // Check if it is legal move
             {
                 movedToCol = col;
                 movedToRow = row;
-                updateMoves(selectedCol,selectedRow,col,row);
+                updateMoves(getSelectedCol(), getSelectedRow(),col,row);
                 flipBoard();
             }
         }
@@ -134,15 +139,17 @@ public class ChessPanel extends JPanel {
         checkForPromotion();
     }
     
+    // Update moves to a TextArea in the frame.
     private void updateMoves(int fromCol, int fromRow, int toCol, int toRow)
     {
-        String moves = "(" + selectedPiece.getSymbol() + ")" + String.format(" %s%d, %s%d%n", (char) ('a' + fromCol), fromRow + 1, (char) ('a' + toCol), toRow + 1);
+        String moves = "(" + getSelectedPiece().getSymbol() + ")" + String.format(" %s%d, %s%d%n", (char) ('a' + fromCol), fromRow + 1, (char) ('a' + toCol), toRow + 1);
         if(chessFrame != null)
         {
             chessFrame.updateMovesTextArea(moves);
         }
     }
     
+    // Reset all the piece selections for resetting animations such as the check outline and highlights.
     private void resetSelection() 
     {
         selectedPiece = null;
@@ -151,6 +158,7 @@ public class ChessPanel extends JPanel {
         availableMoves = new boolean[BOARD_SIZE][BOARD_SIZE];
     }
     
+    // Check for class promotion using the controller class
     public boolean checkForPromotion()
     {
         if(chessController.canPromote())
@@ -173,7 +181,7 @@ public class ChessPanel extends JPanel {
         int boardWidth = BOARD_SIZE * CELL_SIZE;
         int boardHeight = BOARD_SIZE * CELL_SIZE;
 
-        // Draw the frame
+        // Draw the frame around the chess board
         g.setColor(Color.BLACK);
         g.fillRect(CELL_SIZE - frameWidth - 59, CELL_SIZE - frameWidth - 58, frameWidth, boardHeight + 2 * frameWidth); // LEFT
         g.fillRect(CELL_SIZE - frameWidth - 59, CELL_SIZE - frameWidth - 58, boardWidth + 2 * frameWidth, frameWidth); // TOP
@@ -185,12 +193,13 @@ public class ChessPanel extends JPanel {
             g.fillRect(CELL_SIZE - 59, CELL_SIZE - 58, BOARD_SIZE * CELL_SIZE, BOARD_SIZE * CELL_SIZE);
         }
         
+        // If there are available moves, the program will draw them to the GUI
         if(availableMoves != null)
         {
             drawAvailableMoves(g);
         }
     }
-
+    
     private void drawChessBoard(Graphics g) 
     {
         int currentRow = 7;
@@ -200,7 +209,6 @@ public class ChessPanel extends JPanel {
             currentRow = 0;
             rowChange = 1;
         }
-        boolean flag = true;
         for (int row = 0; row < 8; row++) 
         {
             for (int col = 0; col < 8; col++) 
@@ -226,60 +234,81 @@ public class ChessPanel extends JPanel {
                 else 
                 {
                     g.setColor(Color.LIGHT_GRAY);
-
                 }
                 
                 g.fillRect(x, y, CELL_SIZE, CELL_SIZE);
                 
-                if(piece != null)
-                {
-                    g.drawImage(piece.getImage(), x + 8, y + 7, null);
-                }
-                if (row == BOARD_SIZE - 1) 
-                {   
-                    if(flag)
-                    {
-                        g.setColor(Color.WHITE);
-                        flag = !flag;
-                    }
-                    else
-                    {
-                        g.setColor(Color.LIGHT_GRAY);
-                        flag = !flag;
-                    }
-                    char displayedColumn = isFlipFlag() ? (char) ('h' - col) : (char) ('a' + col);
-                    g.drawString(String.valueOf(displayedColumn), x + CELL_SIZE / 2 + 20, y + CELL_SIZE - 6); // Draw row from a-h
-                }
-
-                if (col == 0) 
-                {   
-                    g.setColor(Color.BLACK);
-                    int displayedRow = isFlipFlag() ? row + 1 : BOARD_SIZE - row;
-                    g.drawString(String.valueOf(displayedRow), x + 3, y + CELL_SIZE / 2 - 16);
-                }
-                
-                // A yellow overlay on the square where the piece was
-                if (wasAtCol == currentCol && wasAtRow == currentRow) {
-                    g.setColor(new Color(255, 255, 0, 58));
-                    g.fillRect(x, y, CELL_SIZE, CELL_SIZE);
-                }
-
-                // A yellow overlay on the square the piece moved to
-                if (movedToCol == currentCol && movedToRow == currentRow) {
-                    g.setColor(new Color(255, 255, 0, 58));
-                    g.fillRect(x, y, CELL_SIZE, CELL_SIZE);
-                }
-                
-                if (piece != null && piece.getSymbol().contains("K") && chessController.isInCheck(piece.getColour())) 
-                {
-                    g.setColor(Color.RED);
-                    g.drawRect(x, y, CELL_SIZE - 1, CELL_SIZE - 1);
-                }
+                drawPiece(g,piece,x,y);
+                drawColumnLabels(g,row,col,x,y);
+                drawRowLabels(g,col,row,x,y);
+                drawYellowOverlay(g,x,y,currentCol,currentRow);
+                drawCheckHighlight(g,piece,x,y);
             }
             currentRow += rowChange; 
         }
     }
     
+    // Draw chess piece using their image
+    private void drawPiece(Graphics g, Piece piece, int x, int y) 
+    {
+        if(piece != null)
+        {
+            g.drawImage(piece.getImage(), x + 8, y + 7, null);
+        }
+    }
+    
+    // Draw row labels of chess board
+    private void drawRowLabels(Graphics g, int col, int row, int x, int y) 
+    {
+        if (col == 0) 
+        {   
+            g.setColor(Color.BLACK);
+            int displayedRow = isFlipFlag() ? row + 1 : BOARD_SIZE - row;
+            g.drawString(String.valueOf(displayedRow), x + 3, y + CELL_SIZE / 2 - 16);
+        }
+    }
+    
+    // Draw Column labels of chess board
+    private void drawColumnLabels(Graphics g, int row, int col, int x, int y) 
+    {
+        if (row == BOARD_SIZE - 1) {
+            if (col % 2 == 0) {
+                g.setColor(Color.WHITE);
+            } else {
+                g.setColor(Color.LIGHT_GRAY);
+            }
+            char displayedColumn = isFlipFlag() ? (char) ('h' - col) : (char) ('a' + col);
+            g.drawString(String.valueOf(displayedColumn), x + CELL_SIZE / 2 + 20, y + CELL_SIZE - 6);
+        }
+    }
+    
+    private void drawYellowOverlay(Graphics g, int x, int y,int currentCol, int currentRow) 
+    {
+        // A yellow overlay on the square where the piece was
+        if(wasAtCol == currentCol && wasAtRow == currentRow) 
+        {
+            g.setColor(new Color(255, 255, 0, 58));
+            g.fillRect(x, y, CELL_SIZE, CELL_SIZE);
+        }
+        // A yellow overlay on the square the piece moved to
+        if(movedToCol == currentCol && movedToRow == currentRow) 
+        {
+            g.setColor(new Color(255, 255, 0, 58));
+            g.fillRect(x, y, CELL_SIZE, CELL_SIZE);
+        }
+    }
+    
+    private void drawCheckHighlight(Graphics g, Piece piece, int x, int y) 
+    {
+        // Draw red outline on the square where the king is in check.
+        if (piece != null && piece.getSymbol().contains("K") && chessController.isInCheck(piece.getColour())) 
+        {
+            g.setColor(Color.RED);
+            g.drawRect(x, y, CELL_SIZE - 1, CELL_SIZE - 1);
+        }
+    }
+    
+    // This is a toggle switch for the GUI to allow for automatic flipping between turns.
     public void flipBoard()
     {
         if(isToggleSwitch())
@@ -288,9 +317,10 @@ public class ChessPanel extends JPanel {
         }
     }
     
+    // Highlight the availablemoves of a chess piece.
     private void drawAvailableMoves(Graphics g) 
     {
-        if (selectedRow != -1 && selectedCol != -1) 
+        if (getSelectedRow() != -1 && getSelectedCol() != -1) 
         {
             g.setColor(new Color(0, 0, 0, 50));
 
@@ -314,7 +344,8 @@ public class ChessPanel extends JPanel {
             }
         }
     }
-
+    
+    // Reset the whole game and selections
     public void resetGame() 
     {
         wasAtCol = -1;
@@ -379,4 +410,24 @@ public class ChessPanel extends JPanel {
         this.gameEnded = gameEnded;
     }
 
+    /**
+     * @return the selectedRow
+     */
+    public int getSelectedRow() {
+        return selectedRow;
+    }
+
+    /**
+     * @return the selectedCol
+     */
+    public int getSelectedCol() {
+        return selectedCol;
+    }
+
+    /**
+     * @return the selectedPiece
+     */
+    public Piece getSelectedPiece() {
+        return selectedPiece;
+    }
 }

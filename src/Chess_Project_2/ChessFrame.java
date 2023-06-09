@@ -759,6 +759,7 @@ public class ChessFrame extends JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    // Rematch button will reset the game but not the players. Also reset if the flag is switched because white starts first.
     private void rematchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rematchButtonActionPerformed
         getChessPanel().setFlipFlag(false);
         getChessPanel().setToggleSwitch(false);
@@ -768,25 +769,30 @@ public class ChessFrame extends JFrame {
         jTabbedPane2.setSelectedIndex(3);
     }//GEN-LAST:event_rematchButtonActionPerformed
 
+    // Close data base connections and then closes the program.
     private void forceQuitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forceQuitButtonActionPerformed
         chessController.quit();
         System.exit(0);
     }//GEN-LAST:event_forceQuitButtonActionPerformed
 
+    // Goes back to main Screen
     private void startNewGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startNewGameButtonActionPerformed
 
         backToMainScreen();
     }//GEN-LAST:event_startNewGameButtonActionPerformed
 
+    // Goes to the load screen
     private void loadGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadGameButtonActionPerformed
         jTabbedPane2.setSelectedIndex(6);
     }//GEN-LAST:event_loadGameButtonActionPerformed
-
+    
+    // Toggle the automatic flip based on user input
     private void flipToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flipToggleButtonActionPerformed
         getChessPanel().setToggleSwitch(flipToggleButton.isSelected());
         getChessPanel().repaint();
     }//GEN-LAST:event_flipToggleButtonActionPerformed
-
+    
+    // Goes to the save screen
     private void SaveGameButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveGameButton2ActionPerformed
         
         jTabbedPane2.setSelectedIndex(2);
@@ -796,6 +802,7 @@ public class ChessFrame extends JFrame {
         backToMainScreen();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    // Resign and outputs a message confirmation and then set players to null, so they can not interact with the board.
     private void resignButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resignButtonActionPerformed
         int response = JOptionPane.showConfirmDialog(null, chessController.getCurrentPlayer().getName() +", do you wish to resign?", "Resign", JOptionPane.YES_NO_OPTION);
         if(response == JOptionPane.YES_OPTION)
@@ -808,6 +815,7 @@ public class ChessFrame extends JFrame {
         }
     }//GEN-LAST:event_resignButtonActionPerformed
 
+    // Draw and output a message confirmation and set players to null, so they can not interact with the board.
     private void drawButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drawButtonActionPerformed
         // Draw
         Player otherPlayer = (chessController.getCurrentPlayer() == chessController.getPlayer1()) ? chessController.getPlayer2() : chessController.getPlayer1();
@@ -833,6 +841,7 @@ public class ChessFrame extends JFrame {
         restartGame();
     }//GEN-LAST:event_restartButtonActionPerformed
 
+    // Load history from table
     private void loadHistoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadHistoryButtonActionPerformed
         if(gameList.isSelectionEmpty())
         {
@@ -876,6 +885,7 @@ public class ChessFrame extends JFrame {
         backToMainScreen();
     }//GEN-LAST:event_jButton6ActionPerformed
 
+    // Allow user to login without typing a name, assign a default name of player 1 and player 2 for their names.
     private void guestLogin1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guestLogin1ActionPerformed
         String player1Name = "Player 1";
         String player2Name = "Player 2";
@@ -890,6 +900,7 @@ public class ChessFrame extends JFrame {
         repaint();
     }//GEN-LAST:event_guestLogin1ActionPerformed
 
+    // Allow user to login using their names, assign their names to the Player object using the controller class.
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
         String player1Name = jTextPane1.getText().trim();
         String player2Name = jTextPane2.getText().trim();
@@ -943,6 +954,7 @@ public class ChessFrame extends JFrame {
         repaint();
     }//GEN-LAST:event_knightButtonActionPerformed
 
+    // Save game if the user has selected a game from the text area.
     private void saveGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveGameButtonActionPerformed
         if(gameList1.isSelectionEmpty())
         {
@@ -961,6 +973,7 @@ public class ChessFrame extends JFrame {
         }
     }//GEN-LAST:event_saveGameButtonActionPerformed
 
+    // load Game if the user has selected a game from the text area
     private void loadGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadGameActionPerformed
         if(gameList2.isSelectionEmpty())
         {
@@ -993,6 +1006,7 @@ public class ChessFrame extends JFrame {
         }
     }//GEN-LAST:event_loadGameActionPerformed
 
+    // Go back a move to see their previous moves
     private void prevButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevButtonActionPerformed
         this.boardNum--;
         if(chessController.getMaxMoves() >= this.boardNum && this.boardNum >= 0)
@@ -1007,6 +1021,7 @@ public class ChessFrame extends JFrame {
         }
     }//GEN-LAST:event_prevButtonActionPerformed
 
+    // Go forward a move to see their next moves.
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
         
         this.boardNum++;
@@ -1045,6 +1060,7 @@ public class ChessFrame extends JFrame {
         jTabbedPane2.setSelectedIndex(1);
     }//GEN-LAST:event_jButton9ActionPerformed
     
+    // Reset the whole game, calls the getChessPanel which uses the ChessController to reset the game.
     private void restartGame()
     {
         moveTextArea.setText("");
@@ -1052,12 +1068,13 @@ public class ChessFrame extends JFrame {
         getChessPanel().repaint();
     }
     
-    
+    // Allow users to switch to different pages
     public void switchTab(int tabIndex) 
     {
         jTabbedPane2.setSelectedIndex(tabIndex);
     }
     
+    // Update text area with chess moves
     public void updateMovesTextArea(String moves) 
     {
         moveTextArea.append(moves);
@@ -1076,6 +1093,7 @@ public class ChessFrame extends JFrame {
         jTabbedPane2.setSelectedIndex(0);
     }
     
+    // Display current players on the bottom of the chess board
     private void displayNames()
     {
         jLabel3.setText(chessController.getPlayer1().getName() + " playing as WHITE pieces");
@@ -1084,6 +1102,7 @@ public class ChessFrame extends JFrame {
         jLabel9.setVisible(true);
     }
     
+    // Save user info to the text list.
     private String[] setSavedGameInfo()
     {
         String list[] = {"Game 1: ","Game 2: ","Game 3: ","Game 4: ","Game 5: "};
@@ -1109,6 +1128,7 @@ public class ChessFrame extends JFrame {
         return list;
     }
     
+     // Save user info to the text list.
     private String[] setPlayersHistory()
     {
         String list[] = {"","","","",""};
