@@ -29,6 +29,6 @@ public class ChessMain {
                 System.exit(0); 
             }
         });
-        System.out.print("test");
+        System.out.print("test 2");
     }
 }
