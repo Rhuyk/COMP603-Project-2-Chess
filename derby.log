@@ -1,11 +1,11 @@
 ----------------------------------------------------------------
-Fri Jun 09 23:30:04 NZST 2023:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0188-9feb-b58e-000006bb1548 
-on database directory C:\Users\rh200\Documents\NetBeansProjects\COMP603-Project-2-Chess\ChessDB with class loader sun.misc.Launcher$AppClassLoader@55f96302 
-Loaded from file:/C:/Users/rh200/Documents/NetBeansProjects/COMP603-Project-2-Chess/lib/derby.jar
-java.vendor=Oracle Corporation
-java.runtime.version=1.8.0_361-b09
-user.dir=C:\Users\rh200\Documents\NetBeansProjects\COMP603-Project-2-Chess
+Fri Jun 23 16:02:56 NZST 2023:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0188-e66b-5cd0-0000069a5090 
+on database directory C:\Users\rh200\Documents\VisualStudioProjects\COMP603-Project-2-Chess\ChessDB with class loader sun.misc.Launcher$AppClassLoader@15db9742 
+Loaded from file:/c:/Users/rh200/Documents/VisualStudioProjects/COMP603-Project-2-Chess/lib/derby.jar
+java.vendor=Temurin
+java.runtime.version=1.8.0_372-b07
+user.dir=C:\Users\rh200\Documents\VisualStudioProjects\COMP603-Project-2-Chess
 os.name=Windows 11
 os.arch=amd64
 os.version=10.0

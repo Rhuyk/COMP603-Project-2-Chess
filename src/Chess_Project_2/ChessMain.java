@@ -7,6 +7,8 @@ package Chess_Project_2;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.sound.sampled.SourceDataLine;
+
 /**
  *
  * @author rh200
@@ -27,6 +29,6 @@ public class ChessMain {
                 System.exit(0); 
             }
         });
+        System.out.print("test");
     }
-    
 }
